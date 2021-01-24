@@ -1,11 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
+
 const Order = () => {
-  return (
-    <PageContainer>
-        order
-    </PageContainer>
-  );
+  return <PageContainer>order</PageContainer>;
 };
 
 export default Order;

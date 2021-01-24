@@ -1,19 +1,18 @@
-import { stringify } from 'querystring';
+// import { stringify } from 'querystring';
 import { history } from 'umi';
 import { routerRedux } from 'dva/router';
-import { login,logout } from '@/services/login';
-import { setAuthority,setToken,setCurrentUser,removeToken } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
+import { login, logout } from '@/services/login';
+import { setAuthority, setToken, setCurrentUser, removeToken } from '@/utils/authority';
+// import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 
 const Model = {
   namespace: 'login',
-  state: {
-  },
+  state: {},
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
-      console.log("--fffff",response);
+      console.log('--fffff', response);
       if (response?.access_token) {
         setToken(response.access_token);
         setCurrentUser(response.user);
@@ -57,12 +56,12 @@ const Model = {
         // routerRedux.replace({
         //   pathname: '/user/login',
         // }),
-                history.replace({
+        history.replace({
           pathname: '/user/login',
           // search: stringify({
           //   redirect: window.location.href,
           // }),
-        })
+        }),
       );
     },
     // logout() {

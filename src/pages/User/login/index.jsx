@@ -4,7 +4,7 @@ import {
   // MailTwoTone,
   // MobileTwoTone,
   // TaobaoCircleOutlined,
-  // UserOutlined,
+  UserOutlined,
   // WeiboCircleOutlined,
 } from '@ant-design/icons';
 import { Alert } from 'antd';
@@ -26,9 +26,9 @@ const LoginMessage = ({ content }) => (
 );
 
 const Login = (props) => {
-  const { userLogin = {}, submitting } = props;
+  const { submitting } = props;
   // const { status, type: loginType } = userLogin;
-  const [type, setType] = useState('account');
+  // const [type, setType] = useState('account');
   const [errStatus, setErrStatus] = useState(false);
   const intl = useIntl();
 
@@ -38,12 +38,11 @@ const Login = (props) => {
       // aa
       await dispatch({
         type: 'login/login',
-        payload: { ...values, type },
+        payload: { ...values, type: 'account' },
       });
     } catch (error) {
-      setErrStatus(true)
+      setErrStatus(true);
     }
-
   };
 
   return (
@@ -85,7 +84,7 @@ const Login = (props) => {
             })}
           />
         )}
-        {type === 'account' && (
+        {
           <>
             <ProFormText
               name="username"
@@ -132,7 +131,7 @@ const Login = (props) => {
               ]}
             />
           </>
-        )}
+        }
 
         {/* {errStatus === 'error' && loginType === 'mobile' && !submitting && (
           <LoginMessage content="验证码错误" />
