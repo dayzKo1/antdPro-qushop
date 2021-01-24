@@ -29,13 +29,13 @@ export default [
               },
               {
                 path: '/home',
-                name: '主页',
+                name: 'Home',
                 icon: 'smile',
                 component: './Home',
               },
               {
                 path: '/order',
-                name: '订单',
+                name: 'Order',
                 icon: 'crown',
                 component: './Order',
                 authority: ['admin'],
@@ -51,21 +51,21 @@ export default [
               },
               {
                 path: '/products',
-                name: '商品',
+                name: 'Products',
                 icon: 'crown',
                 component: './Products/productsList',
                 authority: ['admin'],
                 routes: [
                   {
                     path: '/products/productsList',
-                    name: '商品列表',
+                    name: 'ProductsList',
                     icon: 'smile',
                     component: './Products/productsList',
                     authority: ['admin'],
                   },
                   {
                     path: '/products/categoryList',
-                    name: '分类列表',
+                    name: 'CategoryList',
                     icon: 'smile',
                     component: './Products/categoryList',
                     authority: ['admin'],
@@ -73,10 +73,26 @@ export default [
                 ],
               },
               {
-                path: '/Customers',
-                name: '顾客',
+                path: '/customers',
+                name: 'Customers',
                 icon: 'crown',
                 component: './Customers',
+                authority: ['admin'],
+                routes: [
+                  // {
+                  //   path: '/Customers/add',
+                  //   name: 'sub-page',
+                  //   icon: 'smile',
+                  //   component: './Order/add',
+                  //   authority: ['admin'],
+                  // },
+                ],
+              },
+              {
+                path: '/set',
+                name: 'Set',
+                icon: 'crown',
+                component: './Set',
                 authority: ['admin'],
                 routes: [
                   // {

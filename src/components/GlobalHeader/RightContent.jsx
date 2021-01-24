@@ -53,7 +53,7 @@ const GlobalHeaderRight = (props) => {
             color: 'inherit',
           }}
           target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
+          href="https://help.wshopon.com/zh/"
           rel="noopener noreferrer"
           className={styles.action}
         >

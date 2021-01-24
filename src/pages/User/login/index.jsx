@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
 // import { getFakeCaptcha } from '@/services/login';
+import { removeToken } from '@/utils/authority';
 import styles from './index.less';
 
 const LoginMessage = ({ content }) => (
@@ -35,7 +36,7 @@ const Login = (props) => {
   const handleSubmit = async (values) => {
     const { dispatch } = props;
     try {
-      // aa
+      removeToken();
       await dispatch({
         type: 'login/login',
         payload: { ...values, type: 'account' },
@@ -80,7 +81,7 @@ const Login = (props) => {
           <LoginMessage
             content={intl.formatMessage({
               id: 'pages.login.accountLogin.errorMessage',
-              defaultMessage: '账户或密码错误（admin/ant.design)',
+              defaultMessage: '账户或密码错误（admin@qushop.com/123456)',
             })}
           />
         )}
@@ -94,7 +95,7 @@ const Login = (props) => {
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.username.placeholder',
-                defaultMessage: '用户名: admin or user',
+                defaultMessage: '用户名: admin@qushop.com',
               })}
               rules={[
                 {
@@ -116,7 +117,7 @@ const Login = (props) => {
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.password.placeholder',
-                defaultMessage: '密码: ant.design',
+                defaultMessage: '密码: 123456',
               })}
               rules={[
                 {

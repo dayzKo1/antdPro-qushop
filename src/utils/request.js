@@ -30,12 +30,11 @@ const codeMessage = {
 
 const errorHandler = (error) => {
   const { response } = error;
-
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
+    const { status } = response;
     notification.error({
-      message: `请求错误 ${status}: ${url}`,
+      message: `请求错误 ${status}`,
       description: errorText,
     });
   } else if (!response) {
@@ -44,8 +43,7 @@ const errorHandler = (error) => {
       message: '网络异常',
     });
   }
-
-  return response;
+  throw error;
 };
 /**
  * 配置request请求时的默认参数
@@ -84,16 +82,21 @@ request.interceptors.request.use(async (url, options) => {
   };
 });
 
-// // // 添加拦截器统一处理返回response
+// // 添加拦截器统一处理返回response
 // request.interceptors.response.use(
-//   (response,error)=> new Promise((resolve, reject)=>{
-//       if(response.status<400){
-//         return resolve(response);
-//       }else{
-//         return reject(error)
-//       }
+//   (response, error) => new Promise((resolve, reject) => {
+//     console.log("-11",response,error);
+//     if (response.status < 400) {
+//       return resolve(response);
+//     } else {
+//       notification.error({
+//         message: `请求错误 ${status}: ${url}`,
+//         description: errorText,
+//       });
+//       return reject(error)
+//     }
 //     //   // throw error;
-//     })
+//   })
 // );
 
 export default request;
