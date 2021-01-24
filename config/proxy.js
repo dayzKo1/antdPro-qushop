@@ -7,8 +7,8 @@
  */
 export default {
   dev: {
-    '/api/admin/': {
-      target: 'https://x136.wshopon.com/',
+    '/api/': {
+      target: 'https://preview.pro.ant.design',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
@@ -17,7 +17,7 @@ export default {
   },
   test: {
     '/api/': {
-      target: 'https://x136.wshopon.com/',
+      target: 'https://preview.pro.ant.design',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
@@ -26,7 +26,7 @@ export default {
   },
   pre: {
     '/api/': {
-      target: 'https://x136.wshopon.com/',
+      target: 'your pre url',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
