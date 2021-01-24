@@ -53,21 +53,21 @@ export default [
                 path: '/products',
                 name: 'Products',
                 icon: 'crown',
-                component: './Products/productsList',
+                // component: './Products/ProductsList',
                 authority: ['admin'],
                 routes: [
                   {
                     path: '/products/productsList',
                     name: 'ProductsList',
                     icon: 'smile',
-                    component: './Products/productsList',
+                    component: './Products/ProductsList',
                     authority: ['admin'],
                   },
                   {
                     path: '/products/categoryList',
                     name: 'CategoryList',
                     icon: 'smile',
-                    component: './Products/categoryList',
+                    component: './Products/CategoryList',
                     authority: ['admin'],
                   },
                 ],
@@ -126,12 +126,12 @@ export default [
               //     },
               //   ],
               // },
-              // {
-              //   name: 'list.table-list',
-              //   icon: 'table',
-              //   path: '/list',
-              //   component: './TableList',
-              // },
+              {
+                name: 'list.table-list',
+                icon: 'table',
+                path: '/list',
+                component: './TableList',
+              },
               {
                 component: './404',
               },
