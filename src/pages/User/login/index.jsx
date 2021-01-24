@@ -1,17 +1,17 @@
 import {
-  AlipayCircleOutlined,
+  // AlipayCircleOutlined,
   LockTwoTone,
-  MailTwoTone,
-  MobileTwoTone,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
+  // MailTwoTone,
+  // MobileTwoTone,
+  // TaobaoCircleOutlined,
+  // UserOutlined,
+  // WeiboCircleOutlined,
 } from '@ant-design/icons';
-import { Alert, Space, message, Tabs } from 'antd';
+import { Alert } from 'antd';
 import React, { useState } from 'react';
-import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
+import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
-import { getFakeCaptcha } from '@/services/login';
+// import { getFakeCaptcha } from '@/services/login';
 import styles from './index.less';
 
 const LoginMessage = ({ content }) => (
@@ -27,16 +27,23 @@ const LoginMessage = ({ content }) => (
 
 const Login = (props) => {
   const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
+  // const { status, type: loginType } = userLogin;
   const [type, setType] = useState('account');
+  const [errStatus, setErrStatus] = useState(false);
   const intl = useIntl();
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     const { dispatch } = props;
-    dispatch({
-      type: 'login/login',
-      payload: { ...values, type },
-    });
+    try {
+      // aa
+      await dispatch({
+        type: 'login/login',
+        payload: { ...values, type },
+      });
+    } catch (error) {
+      setErrStatus(true)
+    }
+
   };
 
   return (
@@ -60,7 +67,7 @@ const Login = (props) => {
           return Promise.resolve();
         }}
       >
-        <Tabs activeKey={type} onChange={setType}>
+        {/* <Tabs activeKey={type} onChange={setType}>
           <Tabs.TabPane
             key="account"
             tab={intl.formatMessage({
@@ -68,16 +75,9 @@ const Login = (props) => {
               defaultMessage: '账户密码登录',
             })}
           />
-          <Tabs.TabPane
-            key="mobile"
-            tab={intl.formatMessage({
-              id: 'pages.login.phoneLogin.tab',
-              defaultMessage: '手机号登录',
-            })}
-          />
-        </Tabs>
+        </Tabs> */}
 
-        {status === 'error' && loginType === 'account' && !submitting && (
+        {errStatus && (
           <LoginMessage
             content={intl.formatMessage({
               id: 'pages.login.accountLogin.errorMessage',
@@ -88,7 +88,7 @@ const Login = (props) => {
         {type === 'account' && (
           <>
             <ProFormText
-              name="userName"
+              name="username"
               fieldProps={{
                 size: 'large',
                 prefix: <UserOutlined className={styles.prefixIcon} />,
@@ -134,10 +134,10 @@ const Login = (props) => {
           </>
         )}
 
-        {status === 'error' && loginType === 'mobile' && !submitting && (
+        {/* {errStatus === 'error' && loginType === 'mobile' && !submitting && (
           <LoginMessage content="验证码错误" />
-        )}
-        {type === 'mobile' && (
+        )} */}
+        {/* {type === 'mobile' && (
           <>
             <ProFormText
               fieldProps={{
@@ -218,7 +218,7 @@ const Login = (props) => {
               }}
             />
           </>
-        )}
+        )} */}
         <div
           style={{
             marginBottom: 24,
@@ -227,21 +227,15 @@ const Login = (props) => {
           <ProFormCheckbox noStyle name="autoLogin">
             <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
           </ProFormCheckbox>
-          <a
+          {/* <a
             style={{
               float: 'right',
             }}
           >
             <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-          </a>
+          </a> */}
         </div>
       </ProForm>
-      <Space className={styles.other}>
-        <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
-        <AlipayCircleOutlined className={styles.icon} />
-        <TaobaoCircleOutlined className={styles.icon} />
-        <WeiboCircleOutlined className={styles.icon} />
-      </Space>
     </div>
   );
 };
