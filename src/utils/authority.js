@@ -31,3 +31,32 @@ export function setAuthority(authority) {
 
   reloadAuthorized();
 }
+
+// 获取Token
+export function setToken(token) {
+  localStorage.setItem('token', `Bearer ${token}`);
+}
+
+// 清除token
+export function removeToken() {
+  localStorage.removeItem('token');
+}
+
+// 存储用户信息
+export function setCurrentUser(userInfo) {
+  localStorage.setItem('currentUser', JSON.stringify(userInfo));
+}
+
+export function getCurrentUser() {
+  try {
+    return JSON.parse(localStorage.getItem('currentUser'));
+  } catch (error) {
+    return null;
+  }
+}
+
+// 清除用户信息
+export function removeCurrentUser() {
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('antd-pro-authority');
+}

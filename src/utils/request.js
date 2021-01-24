@@ -4,6 +4,8 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import Qs from 'qs';
+// import { getLocale } from 'umi-plugin-react/locale';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -28,12 +30,11 @@ const codeMessage = {
 
 const errorHandler = (error) => {
   const { response } = error;
-
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
+    const { status } = response;
     notification.error({
-      message: `请求错误 ${status}: ${url}`,
+      message: `请求错误 ${status}`,
       description: errorText,
     });
   } else if (!response) {
@@ -42,8 +43,7 @@ const errorHandler = (error) => {
       message: '网络异常',
     });
   }
-
-  return response;
+  throw error;
 };
 /**
  * 配置request请求时的默认参数
@@ -51,7 +51,52 @@ const errorHandler = (error) => {
 
 const request = extend({
   errorHandler,
+  paramsSerializer(params) {
+    return Qs.stringify(params, {
+      arrayFormat: 'brackets',
+    });
+  },
   // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
+
+// request拦截器, 改变url 或 options.
+request.interceptors.request.use(async (url, options) => {
+  const token = localStorage.getItem('token') || '';
+  if (token) {
+    return {
+      url,
+      options: {
+        ...options,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: token,
+          // 'X-LANG':getLocale(),
+        },
+      },
+    };
+  }
+  return {
+    url,
+    options: { ...options },
+  };
+});
+
+// // 添加拦截器统一处理返回response
+// request.interceptors.response.use(
+//   (response, error) => new Promise((resolve, reject) => {
+//     console.log("-11",response,error);
+//     if (response.status < 400) {
+//       return resolve(response);
+//     } else {
+//       notification.error({
+//         message: `请求错误 ${status}: ${url}`,
+//         description: errorText,
+//       });
+//       return reject(error)
+//     }
+//     //   // throw error;
+//   })
+// );
+
 export default request;
