@@ -30,11 +30,10 @@ build:
       - export $ALIYUN_REGISTRY_PASSWORD
       - node -v;
       - npm -v;
-      - yarn -v;
-      - yarn config set registry "https://registry.npm.taobao.org"
+      - npm config set registry "https://registry.npm.taobao.org"
       - if [ ! -x "node_modules" ];then
         echo "node_modules not exist";
-        yarn install --frozen-lockfile;
+        npm install --frozen-lockfile;
         else 
         echo "node_modules exist";  
         fi  
@@ -44,8 +43,6 @@ build:
     paths:
       - public
       # - frontend/node_modules
-  tags:
-    - tag
 
 codestyle:
   stage: test
