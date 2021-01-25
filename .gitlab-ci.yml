@@ -16,7 +16,7 @@ stages:
     - deploy
     - verify
 
-app: 
+build: 
   stage: build
   cache:
     key: 
@@ -42,6 +42,8 @@ app:
     paths:
       - public
       # - frontend/node_modules
+  tags:
+    - tag
 
 codestyle:
   stage: test
