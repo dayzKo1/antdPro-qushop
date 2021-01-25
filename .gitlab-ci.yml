@@ -59,6 +59,7 @@ codestyle:
       - node_modules
     policy: pull
   script:
+    - npm run prettier
     - npm run lint
 
 # build-app-image:
