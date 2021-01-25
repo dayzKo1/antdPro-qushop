@@ -1,0 +1,135 @@
+image: registry.cn-hangzhou.aliyuncs.com/phenye/workspace:latest
+
+variables:
+   IMAGE : registry.cn-hangzhou.aliyuncs.com/phenye/xgrit-cms
+   ISSUER: letsencrypt-staging
+   BASE_APP_HOST: frp2.codefriend.top
+   BASE_APP_INNER_HOST: internal.codefriend.top
+
+before_script:
+  - IMAGE_TAG=${IMAGE}:${CI_COMMIT_SHORT_SHA}
+
+stages:
+    - build
+    - test
+    - dockerize
+    - deploy
+    - verify
+
+app: 
+  stage: build
+  cache:
+    key: 
+      files:
+        - package.json
+        - yarn.lock
+    paths:
+      - public
+      - node_modules
+  script:
+      - export $ALIYUN_REGISTRY_PASSWORD
+      - yarn config set registry "https://registry.npm.taobao.org"
+      - if [ ! -x "node_modules" ];then
+        echo "node_modules not exist";
+        yarn install --frozen-lockfile;
+        else 
+        echo "node_modules exist";  
+        fi  
+      - npm run build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - public
+      # - frontend/node_modules
+
+codestyle:
+  stage: test
+  cache:
+    key: 
+      files:
+        - package.json
+        - yarn.lock
+     # ${CI_COMMIT_REF_SLUG}-npm2
+    paths:
+      - dist
+      - node_modules
+    policy: pull
+  script:
+    - npm run lint
+
+# build-app-image:
+#   stage: dockerize
+#   cache:
+#     key: 
+#       files:
+#         - package.json
+#         - yarn.lock
+#      # ${CI_COMMIT_REF_SLUG}-npm2
+#     paths:
+#       - public
+#       # - frontend/node_modules
+#     policy: pull
+#   script:
+#     - chmod +x scripts/build.sh 
+#     - scripts/build.sh $CI_COMMIT_SHORT_SHA
+#     - chmod +x scripts/push.sh 
+#     - scripts/push.sh $CI_COMMIT_SHORT_SHA
+#   only:
+#     - master
+#     - develop
+#     - tags
+
+# deploy-staging:
+#   image: bitnami/kubectl
+#   stage: deploy
+#   variables:
+#     APP_ENV_HOST: staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+#     APP_ENV_INNER_HOST: staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+#     KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
+#   script:
+#     - echo "Deploy to staging server"
+#     - echo $CI_ENVIRONMENT_NAME
+#     - echo $CI_ENVIRONMENT_SLUGA
+#     - echo $CI_PROJECT_PATH_SLUG
+#     - echo $KUBE_NAMESPACE 
+#     - echo $IMAGE_TAG
+#     - echo $APP_ENV_HOST
+#     - echo $APP_ENV_INNER_HOST
+#     - echo $ISSUER    
+#     - kubectl delete secret myregistrykey || echo 'delete secret myregistrykey'
+
+#     - kubectl create secret docker-registry myregistrykey --docker-server=registry.cn-hangzhou.aliyuncs.com --docker-username=phenye --docker-password=${ALIYUN_REGISTRY_PASSWORD}
+    
+#     - cat deployment.yaml | 
+#       sed 's/\$ISSUER'"/$ISSUER/g" |
+#       sed 's/\$APP_ENV_HOST'"/$APP_ENV_HOST/g" |  
+#       sed 's/\$APP_ENV_INNER_HOST'"/$APP_ENV_INNER_HOST/g" |  
+#       sed 's/\$CI_ENVIRONMENT_SLUG'"/$CI_ENVIRONMENT_SLUG/g" | 
+#       sed 's/\$CI_PROJECT_PATH_SLUG'"/$CI_PROJECT_PATH_SLUG/g" |
+#       sed 's?\$IMAGE_TAG'"?$IMAGE_TAG?g" |
+#       kubectl apply -n=$KUBE_NAMESPACE -f -
+#   environment:
+#     name: staging
+#     url: http://staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+#   only:
+#   - master
+#   - tags
+
+# deploy-prod:
+#   stage: deploy
+#   image: registry.internal.codefriend.top/public/aliyuncli:latest
+#   script:
+#     - echo "布署生产环境"
+#     - mkdir -p ~/.aliyun
+#     - echo $ALIYUN_CONFIG
+#     - ls ~/.aliyun
+#     - mv $ALIYUN_CONFIG ~/.aliyun/config.json
+#     - aliyun oss cp public oss://xgrit -r  --parallel 100 --force
+#     - aliyun oss  set-meta  oss://xgrit/ Cache-Control:max-age=2592000 --update -r  --exclude *.html --force 
+#   environment:
+#     name: prod
+#     url: https://www.xgrit.com
+#   only:
+#     - master
+#     - tags
+#   when: manual
