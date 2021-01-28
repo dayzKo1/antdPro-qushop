@@ -66,8 +66,6 @@ build-image:
         - package.json
         - yarn.lock
      # ${CI_COMMIT_REF_SLUG}-npm2
-    paths:
-      - dist
       # - frontend/node_modules
     policy: pull
   script:
@@ -76,6 +74,10 @@ build-image:
     - scripts/build.sh $CI_COMMIT_SHORT_SHA
     - chmod +x scripts/push.sh 
     - scripts/push.sh $CI_COMMIT_SHORT_SHA
+
+  artifacts:
+    paths:
+      - dist
   # only:
   #   - master
   #   - develop
