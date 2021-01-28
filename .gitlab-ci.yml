@@ -77,8 +77,6 @@ build-image:
     - chmod +x scripts/push.sh 
     - scripts/push.sh $CI_COMMIT_SHORT_SHA
   only:
-    - master
-    - develop
     - tags
 
 deploy-staging:
@@ -114,5 +112,4 @@ deploy-staging:
     name: staging
     url: http://staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
   only:
-  - develop
   - tags
