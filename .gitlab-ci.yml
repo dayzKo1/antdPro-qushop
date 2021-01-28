@@ -74,10 +74,6 @@ build-image:
     - scripts/build.sh $CI_COMMIT_SHORT_SHA
     - chmod +x scripts/push.sh 
     - scripts/push.sh $CI_COMMIT_SHORT_SHA
-
-  artifacts:
-    paths:
-      - dist
   # only:
   #   - master
   #   - develop
