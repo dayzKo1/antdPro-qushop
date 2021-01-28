@@ -76,10 +76,10 @@ build-image:
     - scripts/build.sh $CI_COMMIT_SHORT_SHA
     - chmod +x scripts/push.sh 
     - scripts/push.sh $CI_COMMIT_SHORT_SHA
-  # only:
-  #   - master
-  #   - develop
-  #   - tags
+  only:
+    - master
+    - develop
+    - tags
 
 deploy-staging:
   image: bitnami/kubectl
@@ -113,6 +113,7 @@ deploy-staging:
   environment:
     name: staging
     url: http://staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
-  # only:
-  # - develop
-  # - tags
+  only:
+    - master
+    - develop
+    - tags
