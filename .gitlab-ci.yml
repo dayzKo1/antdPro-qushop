@@ -40,7 +40,7 @@ build:
   artifacts:
     expire_in: 1 day
     paths:
-      - public
+      - dist
       - node_modules
 
 codestyle:
