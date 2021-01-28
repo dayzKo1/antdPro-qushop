@@ -66,6 +66,8 @@ build-image:
         - package.json
         - yarn.lock
      # ${CI_COMMIT_REF_SLUG}-npm2
+      paths:
+      - dist
       # - frontend/node_modules
     policy: pull
   script:
