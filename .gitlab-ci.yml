@@ -41,7 +41,7 @@ build:
     expire_in: 1 day
     paths:
       - dist
-      - node_modules
+      # - node_modules
 
 codestyle:
   stage: test
