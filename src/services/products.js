@@ -6,3 +6,11 @@ export async function productList(params) {
     params,
   });
 }
+
+// 商品上架下架
+export async function productBatch(data) {
+  return request('/api/admin/batches', {
+    method: 'POST',
+    data,
+  });
+}

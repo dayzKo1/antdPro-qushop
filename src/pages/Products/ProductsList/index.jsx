@@ -1,31 +1,42 @@
 import React, { Component } from 'react';
-import { Card, Table, Row, Col, Select, Input, Button } from 'antd';
+import { Card, Table, Row, Col, Tag } from 'antd';
 import { connect } from 'dva';
 import defaultImg from '@/assets/defaultImg.png';
 // import { PageContainer } from '@ant-design/pro-layout';
 import BasicHeader from '@/components/BasicHeader';
+import TableFooter from '@/components/TableFooter';
+import BatchSelect from './BatchSelect';
+import FilterProduct from './FilterProduct';
 import style from './style.less';
 
-const { Option } = Select;
-
-@connect(({ product, tag, loading }) => ({
+@connect(({ product, tag, categories, loading }) => ({
   productsList: product.productsList,
+  query: product.query,
   tagsList: tag.tagsList,
+  categoriesList: categories.categoriesList,
   productLoading: loading.effects['product/fetch'],
   tagLoading: loading.effects['tags/fetchProTags'],
   categoryLoading: loading.effects['categories/fetchList'],
 }))
 class ProducstList extends Component {
   state = {
-    tag: undefined,
-    category: undefined,
-    search: undefined,
-    status: undefined,
+    currentPage: 1,
+    batchSel: false,
+    selectedRowKeys: [],
+    selectedRows: [],
   };
 
   async componentDidMount() {
     const { dispatch } = this.props;
-    await dispatch({ type: 'product/fetch' });
+    const query = JSON.parse(sessionStorage.getItem('proQuery')) || {};
+    await dispatch({
+      type: 'product/fetch',
+      payload: {
+        page: 1,
+        ...query,
+      },
+      save: true,
+    });
     await dispatch({
       type: 'tag/fetch',
       payload: {
@@ -33,37 +44,59 @@ class ProducstList extends Component {
         sort: 'name',
       },
     });
+    await dispatch({
+      type: 'categories/fetch',
+      payload: {
+        sort: 'name',
+      },
+    });
   }
 
-  handleSearch = (value) => {
-    if (value) {
-      fetch(value, (data) => this.setState({ data }));
-    } else {
-      this.setState({ data: [] });
-    }
-  };
+  async componentWillUnmount() {
+    sessionStorage.removeItem('proQuery');
+  }
 
-  handleChange = (value) => {
-    this.setState({ value });
-  };
-
-  // 保存搜索信息
-  saveSearch = (e) => {
-    console.log(e.target.value);
-    this.setState({
-      search: e.target.value,
-    });
-  };
-
-  search = async () => {
-    const { search } = this.state;
-    console.log('--', search);
-    const { dispatch } = this.props;
+  // 分页
+  changePage = async (page, prePage) => {
+    const { dispatch, query } = this.props;
+    console.log('params', page, prePage);
     await dispatch({
       type: 'product/fetch',
       payload: {
-        'filter[search]': search,
+        ...query,
+        page,
+        page_size: prePage,
       },
+      save: true,
+    });
+    this.setState({
+      currentPage: page,
+    });
+  };
+
+  // 多选
+  batchSelect = (selectedRowKeys, selectedRows) => {
+    console.log(selectedRows);
+    if (selectedRowKeys.length) {
+      this.setState({
+        batchSel: true,
+      });
+    } else {
+      this.setState({
+        batchSel: false,
+      });
+    }
+    this.setState({
+      selectedRowKeys,
+      selectedRows,
+    });
+  };
+
+  // 清除多选
+  clearBatchSelect = () => {
+    this.setState({
+      batchSel: false,
+      selectedRowKeys: [],
     });
   };
 
@@ -103,8 +136,8 @@ class ProducstList extends Component {
         dataIndex: 'post_status',
         render: (v, r) => (
           <>
-            {r.post_status === 'publish' && <div>上架中</div>}
-            {r.post_status === 'private' && <div>已下架</div>}
+            {r.post_status === 'publish' && <Tag color="green">上架中</Tag>}
+            {r.post_status === 'private' && <Tag color="magenta">已下架</Tag>}
           </>
         ),
       },
@@ -116,78 +149,41 @@ class ProducstList extends Component {
       },
     ];
 
-    const { productLoading, tagLoading, tagsList = {}, productsList } = this.props;
-    const { tag, category, search, status } = this.state;
-    const tagOptions =
-      tagsList?.data?.length > 0 && tagsList?.data.map((d) => <Option key={d.id}>{d.name}</Option>);
-    console.log('search', search);
+    const { productLoading, productsList, query } = this.props;
+    const { currentPage, selectedRowKeys, batchSel } = this.state;
+    const nuewCurrenPage = query.page;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.batchSelect,
+    };
+
     return (
       // <PageContainer>
       <>
         <BasicHeader title="商品列表" />
         <Card className={style.cardbox}>
-          <Row gutter={15} style={{ marginBottom: 10 }}>
-            <Col span={4}>
-              <Select
-                style={{ width: '100%' }}
-                showSearch
-                value={category}
-                placeholder="选择分类"
-                allowClear
-                onChange={this.handleChange}
-                onSearch={this.handleSearch}
-                loading={tagLoading}
-              >
-                {/* {tagOptions} */}
-              </Select>
-            </Col>
-            <Col span={4}>
-              <Select
-                showSearch
-                style={{ width: '100%' }}
-                value={tag}
-                placeholder="选择标签"
-                allowClear
-                onChange={this.handleChange}
-                onSearch={this.handleSearch}
-              >
-                {tagOptions}
-              </Select>
-            </Col>
-            <Col span={4}>
-              <Select
-                style={{ width: '100%' }}
-                value={status}
-                placeholder="选择状态"
-                allowClear
-                onChange={this.handleChange}
-                onSearch={this.handleSearch}
-              >
-                <Option value="publish">上架中</Option>
-                <Option value="private">已下架</Option>
-              </Select>
-            </Col>
-            <Col span={5}>
-              <Input
-                placeholder="请输入商品名或SKU"
-                allowClear
-                value={search}
-                onChange={this.saveSearch}
-              />
-            </Col>
-            <Col span={5}>
-              <Button type="primary" style={{ marginRight: 10 }} onClick={this.search}>
-                {' '}
-                查询
-              </Button>
-              <Button>重置</Button>
-            </Col>
-          </Row>
+          <FilterProduct />
+          <BatchSelect
+            batchSel={batchSel}
+            selectedRowKeys={selectedRowKeys}
+            clearBatchSelect={this.clearBatchSelect}
+          />
           <Table
             loading={productLoading}
-            rowKey={(r) => r.id}
+            pagination={false}
+            rowSelection={rowSelection}
+            rowKey={(r) => r.ID}
             columns={columns}
             dataSource={productsList.data}
+          />
+          <TableFooter
+            total={productsList.meta && productsList.meta.total}
+            changePage={this.changePage}
+            currentPage={nuewCurrenPage || currentPage}
+            perPage={productsList.meta && productsList.meta.per_page}
+            showSizeChanger
+            showQuickJumper
+            // changeShowSize={(page, prePage) => this.changePage(page, prePage, true)}
           />
         </Card>
         {/* // </PageContainer> */}
