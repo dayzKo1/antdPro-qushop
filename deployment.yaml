@@ -1,0 +1,110 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG
+  template:
+    metadata:
+      labels:
+        app: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG
+      annotations:
+        app.gitlab.com/env: $CI_ENVIRONMENT_SLUG
+        app.gitlab.com/app: $CI_PROJECT_PATH_SLUG
+    spec:
+      containers:
+        - name: $CI_PROJECT_PATH_SLUG
+          image: $IMAGE_TAG
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: timezone
+              mountPath: /etc/localtime
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: myregistrykey
+      volumes:
+        - name: timezone
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+            type: ''
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG-svc
+  labels:
+    app: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG-svc
+  annotations:
+    app.gitlab.com/env: $CI_ENVIRONMENT_SLUG
+    app.gitlab.com/app: $CI_PROJECT_PATH_SLUG
+spec:
+  selector:
+    app: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+# ---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG-ingress
+#   annotations:
+#     kubernets.io/ingress.class: "nginx"
+#     kubernetes.io/tls-acme: "true"
+#     # cert-manager.io/cluster-issuer: letsencrypt-prod
+#     cert-manager.io/cluster-issuer: $ISSUER
+#     nginx.ingress.kubernetes.io/ssl-redirect: 'false' 
+# spec:
+#   tls:
+#   - secretName: $CI_PROJECT_PATH_SLUG
+#     hosts:
+#     - $APP_ENV_HOST
+#   rules:
+#   - host: $APP_ENV_HOST
+#     http:
+#       paths:
+#       - path: 
+#         backend:
+#           serviceName: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG-svc
+#           servicePort: 80                                                                                                                                                                
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG-inner-ingress
+  annotations:
+    kubernets.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: $ISSUER
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false' 
+spec:
+  tls:
+  - secretName: $CI_PROJECT_PATH_SLUG
+    hosts:
+    - $APP_ENV_INNER_HOST
+    - $APP_ENV_HOST
+  rules:
+  - host: $APP_ENV_INNER_HOST
+    http:
+      paths:
+      - path: 
+        backend:
+          serviceName: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG-svc
+          servicePort: 80     
+  - host: $APP_ENV_HOST
+    http:
+      paths:
+      - path: 
+        backend:
+          serviceName: $CI_ENVIRONMENT_SLUG-canary-$CI_PROJECT_PATH_SLUG-svc
+          servicePort: 80     
+    
+  

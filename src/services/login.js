@@ -16,5 +16,3 @@ export async function logout() {
 export async function getFakeCaptcha(mobile) {
   return request(`/api/login/captcha?mobile=${mobile}`);
 }
-
-

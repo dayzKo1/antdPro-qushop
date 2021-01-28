@@ -1,3 +1,23 @@
-.top {
+.safe {
   width: 100%;
+  .rows {
+    margin: 20px 0 !important;
+    .letfCols {
+      margin: auto 0;
+      padding-right: 10px;
+      font-size: 17px;
+      text-align: right;
+    }
+    .submit {
+      margin-top: 30px;
+      text-align: center;
+    }
+  }
+}
+
+:global(.ant-tabs-ink-bar) {
+  width: 4px !important;
+}
+:global(.ant-tabs-tab-active) {
+  background-color: #e4f7ff;
 }
