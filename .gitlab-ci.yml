@@ -2,7 +2,7 @@ image: registry.cn-hangzhou.aliyuncs.com/phenye/workspace:latest
 
 variables:
    IMAGE : registry.internal.codefriend.top/qushop-136/qushop
-   ISSUER: letsencrypt-staging
+   ISSUER: letsencrypt-develop
    BASE_APP_HOST: frp2.codefriend.top
    BASE_APP_INNER_HOST: internal.codefriend.top
 
@@ -81,15 +81,15 @@ build-image:
     - develop
     - tags
 
-deploy-staging:
+deploy-develop:
   image: bitnami/kubectl
   stage: deploy
   variables:
-    APP_ENV_HOST: staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
-    APP_ENV_INNER_HOST: staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    APP_ENV_HOST: develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+    APP_ENV_INNER_HOST: develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
     KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
   script:
-    - echo "Deploy to staging server"
+    - echo "Deploy to develop server"
     - echo $CI_ENVIRONMENT_NAME
     - echo $CI_ENVIRONMENT_SLUGA
     - echo $CI_PROJECT_PATH_SLUG
@@ -111,9 +111,77 @@ deploy-staging:
       sed 's?\$IMAGE_TAG'"?$IMAGE_TAG?g" |
       kubectl apply -n=$KUBE_NAMESPACE -f -
   environment:
-    name: staging
-    url: http://staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    name: develop
+    url: http://develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+  only:
+    - develop
+
+deploy-master:
+  image: bitnami/kubectl
+  stage: deploy
+  variables:
+    APP_ENV_HOST: master-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+    APP_ENV_INNER_HOST: master-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
+  script:
+    - echo "Deploy to master server"
+    - echo $CI_ENVIRONMENT_NAME
+    - echo $CI_ENVIRONMENT_SLUGA
+    - echo $CI_PROJECT_PATH_SLUG
+    - echo $KUBE_NAMESPACE 
+    - echo $IMAGE_TAG
+    - echo $APP_ENV_HOST
+    - echo $APP_ENV_INNER_HOST
+    - echo $ISSUER    
+    - kubectl delete secret myregistrykey || echo 'delete secret myregistrykey'
+
+    - kubectl create secret docker-registry myregistrykey --docker-server=registry.internal.codefriend.top --docker-username=yanghui --docker-password=${HARBOR_REGISTRY_PASSWORD}
+    
+    - cat deployment.yaml | 
+      sed 's/\$ISSUER'"/$ISSUER/g" |
+      sed 's/\$APP_ENV_HOST'"/$APP_ENV_HOST/g" |  
+      sed 's/\$APP_ENV_INNER_HOST'"/$APP_ENV_INNER_HOST/g" |  
+      sed 's/\$CI_ENVIRONMENT_SLUG'"/$CI_ENVIRONMENT_SLUG/g" | 
+      sed 's/\$CI_PROJECT_PATH_SLUG'"/$CI_PROJECT_PATH_SLUG/g" |
+      sed 's?\$IMAGE_TAG'"?$IMAGE_TAG?g" |
+      kubectl apply -n=$KUBE_NAMESPACE -f -
+  environment:
+    name: master
+    url: http://master-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
   only:
     - master
-    - develop
+
+deploy-prod:
+  image: bitnami/kubectl
+  stage: deploy
+  variables:
+    APP_ENV_HOST: prod-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+    APP_ENV_INNER_HOST: prod-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
+  script:
+    - echo "Deploy to prod server"
+    - echo $CI_ENVIRONMENT_NAME
+    - echo $CI_ENVIRONMENT_SLUGA
+    - echo $CI_PROJECT_PATH_SLUG
+    - echo $KUBE_NAMESPACE 
+    - echo $IMAGE_TAG
+    - echo $APP_ENV_HOST
+    - echo $APP_ENV_INNER_HOST
+    - echo $ISSUER    
+    - kubectl delete secret myregistrykey || echo 'delete secret myregistrykey'
+
+    - kubectl create secret docker-registry myregistrykey --docker-server=registry.internal.codefriend.top --docker-username=yanghui --docker-password=${HARBOR_REGISTRY_PASSWORD}
+    
+    - cat deployment.yaml | 
+      sed 's/\$ISSUER'"/$ISSUER/g" |
+      sed 's/\$APP_ENV_HOST'"/$APP_ENV_HOST/g" |  
+      sed 's/\$APP_ENV_INNER_HOST'"/$APP_ENV_INNER_HOST/g" |  
+      sed 's/\$CI_ENVIRONMENT_SLUG'"/$CI_ENVIRONMENT_SLUG/g" | 
+      sed 's/\$CI_PROJECT_PATH_SLUG'"/$CI_PROJECT_PATH_SLUG/g" |
+      sed 's?\$IMAGE_TAG'"?$IMAGE_TAG?g" |
+      kubectl apply -n=$KUBE_NAMESPACE -f -
+  environment:
+    name: prod
+    url: http://prod-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+  only:
     - tags
