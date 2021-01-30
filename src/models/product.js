@@ -22,8 +22,9 @@ export default {
       }
       return res;
     },
-    *putProduct({ payload }, { call }) {
+    *batchProduct({ payload }, { call }) {
       const res = yield call(productBatch, payload);
+      console.log('---', res);
       return res;
     },
   },

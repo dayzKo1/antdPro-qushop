@@ -100,6 +100,20 @@ class ProducstList extends Component {
     });
   };
 
+  // 更新数据
+  updateData = async () => {
+    const { dispatch, query } = this.props;
+    // const query = JSON.parse(sessionStorage.getItem('proQuery')) || {};
+    await dispatch({
+      type: 'product/fetch',
+      payload: {
+        page: 1,
+        ...query,
+      },
+      save: true,
+    });
+  };
+
   render() {
     const columns = [
       {
@@ -167,6 +181,7 @@ class ProducstList extends Component {
             batchSel={batchSel}
             selectedRowKeys={selectedRowKeys}
             clearBatchSelect={this.clearBatchSelect}
+            updateData={this.updateData}
           />
           <Table
             loading={productLoading}

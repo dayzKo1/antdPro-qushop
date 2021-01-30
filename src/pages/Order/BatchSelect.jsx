@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'dva';
 import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
-import style from './style.less';
+import style from './styles.less';
 
 @connect(({ loading }) => ({
   loading: loading.effects['product/batchProduct'],
@@ -22,10 +22,10 @@ class BatchSelect extends Component {
   };
 
   handleOk = (type) => {
-    if (type === 'put') {
+    if (type === 'fulfilled') {
       this.putShelf();
     }
-    if (type === 'del') {
+    if (type === 'complete') {
       this.delProducts();
     }
   };
@@ -96,14 +96,14 @@ class BatchSelect extends Component {
           {batchSel ? (
             <div style={{ backgroundColor: '#fafafa' }}>
               <CaretLeftOutlined style={{ marginRight: '10px' }} />
-              <a onClick={() => this.showModal('put')} className={style.link}>
-                上架
+              <a onClick={() => this.showModal('fulfilled')} className={style.link}>
+                发货
               </a>
-              <a onClick={() => this.showModal('off')} className={style.link}>
-                下架
+              <a onClick={() => this.showModal('complete')} className={style.link}>
+                标记已完成
               </a>
-              <a onClick={() => this.showModal('del')} className={style.link}>
-                删除
+              <a onClick={() => this.showModal('ing')} className={style.link}>
+                标记进行中
               </a>
             </div>
           ) : (
@@ -112,9 +112,9 @@ class BatchSelect extends Component {
         </div>
         <Modal
           title={[
-            type === 'put' && `上架${selectedRowKeys.length}个商品`,
-            type === 'off' && `下架${selectedRowKeys.length}个商品`,
-            type === 'del' && `删除${selectedRowKeys.length}个商品`,
+            type === 'fulfilled' && `上架${selectedRowKeys.length}个商品`,
+            type === 'complete' && `下架${selectedRowKeys.length}个商品`,
+            type === 'ing' && `删除${selectedRowKeys.length}个商品`,
           ]}
           visible={visible}
           cancelText="取消"
@@ -123,9 +123,9 @@ class BatchSelect extends Component {
           onCancel={this.handleCancel}
           confirmLoading={loading}
         >
-          {type === 'put' && <p>确定上架吗？</p>}
-          {type === 'off' && <p>确定下架吗？</p>}
-          {type === 'del' && <p>确定删除吗？</p>}
+          {type === 'fulfilled' && <p>确定上架吗？</p>}
+          {type === 'complete' && <p>确定下架吗？</p>}
+          {type === 'ing' && <p>确定删除吗？</p>}
         </Modal>
       </div>
     );

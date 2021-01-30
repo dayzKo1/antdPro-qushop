@@ -7,11 +7,9 @@ const { Option } = Select;
 const { Search } = Input;
 
 @connect(({ product, tag, categories, loading }) => ({
-  productsList: product.productsList,
   query: product.query,
   tagsList: tag.tagsList,
   categoriesList: categories.categoriesList,
-  productLoading: loading.effects['product/fetch'],
   tagLoading: loading.effects['tags/fetchProTags'],
   categoryLoading: loading.effects['categories/fetchList'],
 }))
@@ -67,20 +65,30 @@ class FilterProduct extends Component {
     });
   };
 
+  // 延迟触发搜索tag
+  delaySearchTag = async (value) => {
+    setTimeout(() => {
+      this.setState({
+        tag: value,
+      });
+      // this.searchTag();
+    }, 3000);
+  };
+
   // 标签搜索
-  searchTag = async (value) => {
+  searchTag = async () => {
     const { dispatch } = this.props;
-    // const { category, status,search}=this.state;
+    const { tag } = this.state;
     await dispatch({
       type: 'tag/fetch',
       payload: {
         sort: 'name',
-        'filter[name]': value,
+        'filter[name]': tag,
       },
     });
-    this.setState({
-      tag: value,
-    });
+    // this.setState({
+    //   tag,
+    // });
   };
 
   // 状态筛选
@@ -171,7 +179,7 @@ class FilterProduct extends Component {
               placeholder="选择标签"
               allowClear
               onChange={this.changeTag}
-              onSearch={this.searchTag}
+              onSearch={this.delaySearchTag}
               loading={tagLoading}
             >
               {tagOptions}
