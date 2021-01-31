@@ -78,11 +78,7 @@ const Safe = (props) => {
                   { min: 6, message: '最少输入6位密码' },
                 ]}
               >
-                <Input.Password
-                  defaultValue="a123456"
-                  size="large"
-                  placeholder="请输入当前的密码"
-                />
+                <Input.Password size="large" placeholder="请输入当前的密码" />
               </Form.Item>
             </Col>
           </Row>
@@ -92,7 +88,7 @@ const Safe = (props) => {
             </Col>
             <Col xs={12} className={style.rightCols}>
               <Form.Item name="password" rules={[{ validator: password }]}>
-                <Input.Password defaultValue="a123456" size="large" placeholder="请输入新密码" />
+                <Input.Password size="large" placeholder="请输入新密码" />
               </Form.Item>
             </Col>
           </Row>
@@ -102,11 +98,7 @@ const Safe = (props) => {
             </Col>
             <Col xs={12} className={style.rightCols}>
               <Form.Item name="password2" rules={[{ validator: passwordTwo }]}>
-                <Input.Password
-                  defaultValue="a123456"
-                  size="large"
-                  placeholder="请再次输入新密码"
-                />
+                <Input.Password size="large" placeholder="请再次输入新密码" />
               </Form.Item>
             </Col>
           </Row>
