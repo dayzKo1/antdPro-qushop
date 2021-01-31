@@ -1,26 +1,33 @@
-import { routerRedux } from 'dva/router';
-import { queryCustomers } from '@/services/api';
-import { setAuthority, setToken, setCurrentUser, removeToken } from '@/utils/authority';
-// import { getPageQuery } from '@/utils/utils';
-import { message } from 'antd';
+import { queryCustomers, queryCountries } from '@/services/api';
 
 const Customers = {
   namespace: 'customers',
   state: {
-    customersData: []
+    customersData: [],
+    meta: {},
+    query: {},
+    countryList: [],
   },
 
   effects: {
     *queryCustomers({ payload }, { call, put }) {
       const response = yield call(queryCustomers, payload);
-      yield put({ type: "save", payload: response })
-      return response
+      yield put({ type: 'save', payload: response, query: payload });
+      return response;
+    },
+    *queryCountries(_, { call, put }) {
+      const response = yield call(queryCountries);
+      yield put({ type: 'saveCountries', payload: response });
+      return response;
     },
   },
   reducers: {
-    save(state, { payload }) {
-      return {...state,customersData: payload.data,meta: payload.meta}
-    }
+    save(state, { payload, query }) {
+      return { ...state, customersData: payload.data, meta: payload.meta, query };
+    },
+    saveCountries(state, { payload }) {
+      return { ...state, countryList: payload };
+    },
   },
 };
 export default Customers;

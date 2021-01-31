@@ -19,14 +19,23 @@ export async function categoriesList(params) {
     params,
   });
 }
-//查询顾客
+
+export async function batchesCategories(data) {
+  return request('/api/admin/batches', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 查询顾客
 export async function queryCustomers(params) {
   return request('api/admin/customers', {
     method: 'GET',
     params,
   });
 }
-//查询国家列表
+
+// 查询国家列表
 export async function queryCountries() {
   return request('api/admin/countries');
 }
