@@ -5,7 +5,7 @@ import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import style from './styles.less';
 
 @connect(({ loading }) => ({
-  loading: loading.effects['product/batchProduct'],
+  loading: loading.effects['order/batchOrder'],
 }))
 class BatchSelect extends Component {
   state = {
@@ -23,10 +23,10 @@ class BatchSelect extends Component {
 
   handleOk = (type) => {
     if (type === 'fulfilled') {
-      this.putShelf();
+      this.fulfilled();
     }
-    if (type === 'complete') {
-      this.delProducts();
+    if (type === 'complete' || type === 'ing') {
+      this.complete(type);
     }
   };
 
@@ -37,17 +37,18 @@ class BatchSelect extends Component {
     });
   };
 
-  putShelf = async () => {
+  //  发货
+  fulfilled = async () => {
     const { dispatch, selectedRowKeys, clearBatchSelect, updateData } = this.props;
-    const selectedPro = [];
+    const selectedId = [];
     for (let i = 0; i < selectedRowKeys.length; i += 1) {
-      selectedPro.push({ id: selectedRowKeys[i], status: 'private' });
+      selectedId.push({ id: selectedRowKeys[i], trackNo: '', sendEmail: true });
     }
-    console.log(selectedPro);
+    console.log(selectedId);
     await dispatch({
-      type: 'product/batchProduct',
+      type: 'order/batchOrder',
       payload: {
-        product_status: selectedPro,
+        order_shipping: selectedId,
       },
     });
     this.handleCancel();
@@ -55,20 +56,24 @@ class BatchSelect extends Component {
     updateData();
   };
 
-  // 批量删除
-  delProducts = async () => {
+  // 标记已完成 标记进行中
+  complete = async (type) => {
     const { dispatch, selectedRowKeys, clearBatchSelect, updateData } = this.props;
-    const selectedPro = [];
+    const selectedId = [];
     for (let i = 0; i < selectedRowKeys.length; i += 1) {
-      selectedPro.push({ id: selectedRowKeys[i] });
+      selectedId.push({
+        id: selectedRowKeys[i],
+        status: type === 'complete' ? 'wc-completed' : 'wc-processing',
+      });
     }
-    console.log('delProducts', selectedPro);
+    console.log('标记已完成', selectedId);
     try {
       await dispatch({
-        type: 'product/batchProduct',
-        payload: {
-          delete_product: selectedPro,
-        },
+        type: 'order/batchOrder',
+        payload: selectedId,
+        // payload: {
+        //   order_status: selectedId,
+        // },
       });
     } catch (e) {
       console.log(e);
@@ -112,9 +117,9 @@ class BatchSelect extends Component {
         </div>
         <Modal
           title={[
-            type === 'fulfilled' && `上架${selectedRowKeys.length}个商品`,
-            type === 'complete' && `下架${selectedRowKeys.length}个商品`,
-            type === 'ing' && `删除${selectedRowKeys.length}个商品`,
+            type === 'fulfilled' && `发货${selectedRowKeys.length}个订单`,
+            type === 'complete' && `标记已完成${selectedRowKeys.length}个订单`,
+            type === 'ing' && `标记进行中${selectedRowKeys.length}个订单`,
           ]}
           visible={visible}
           cancelText="取消"
@@ -123,9 +128,9 @@ class BatchSelect extends Component {
           onCancel={this.handleCancel}
           confirmLoading={loading}
         >
-          {type === 'fulfilled' && <p>确定上架吗？</p>}
-          {type === 'complete' && <p>确定下架吗？</p>}
-          {type === 'ing' && <p>确定删除吗？</p>}
+          {type === 'fulfilled' && <p>确定发货吗？</p>}
+          {type === 'complete' && <p>确定标记已完成吗？</p>}
+          {type === 'ing' && <p>确定标记进行中吗？</p>}
         </Modal>
       </div>
     );

@@ -37,6 +37,10 @@ class Order extends Component {
     });
   }
 
+  async componentWillUnmount() {
+    sessionStorage.removeItem('orderQuery');
+  }
+
   // 分页
   changePage = async (page, prePage) => {
     const { dispatch, query } = this.props;
@@ -157,7 +161,7 @@ class Order extends Component {
     return (
       // <PageContainer>
       <>
-        <BasicHeader title="商品列表" />
+        <BasicHeader title="订单列表" />
         <Card className={style.cardbox}>
           <FilterOrder />
           <BatchSelect

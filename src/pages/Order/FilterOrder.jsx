@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Row, Col, Select, Input, Button, DatePicker } from 'antd';
 import { connect } from 'dva';
+import moment from 'moment';
 import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
+import styles from './styles.less';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -66,20 +68,23 @@ class FilterOrder extends Component {
   };
 
   // 时间筛选
-  changeDate = async (dates, dateStrings) => {
-    console.log('dates: ', dates[0], ', to: ', dates[1]);
+  changeDate = async (_, dateStrings) => {
+    // console.log('dates: ', dates[0], ', to: ', dates[1]);
     console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+    const date =
+      dateStrings[0] && dateStrings[1] ? `${dateStrings[0]},${dateStrings[1]}` : undefined;
+    console.log(date);
     const { dispatch, query } = this.props;
     await dispatch({
       type: 'orders/fetch',
       payload: {
         ...query,
-        'filter[date]': `${dateStrings[0]},${dateStrings[1]}`,
+        'filter[date]': date,
       },
       save: true,
     });
     this.setState({
-      data: `${dateStrings[0]},${dateStrings[1]}`,
+      date,
     });
   };
 
@@ -121,6 +126,8 @@ class FilterOrder extends Component {
   render() {
     // const { loading, ordersList } = this.props;
     const { fulfillmentStatus, postStatus, date, search } = this.state;
+    const startDate = date && date.split(',')[0];
+    const endDate = date && date.split(',')[1];
 
     return (
       <Row gutter={5} style={{ marginBottom: 10 }}>
@@ -154,18 +161,23 @@ class FilterOrder extends Component {
           </Select>
         </Col>
         <Col span={6}>
-          <RangePicker locale={locale} defaultValue={date} onChange={this.changeDate} />
+          <RangePicker
+            locale={locale}
+            value={date ? [moment(startDate), moment(endDate)] : []}
+            onChange={this.changeDate}
+          />
         </Col>
         <Col span={5}>
           <Search
             placeholder="请输入订单编号/支付编号/商品名/SKU/邮箱"
+            className={styles.search}
             allowClear
             value={search}
             onChange={this.saveSearch}
             onSearch={this.search}
           />
         </Col>
-        <Col span={4}>
+        <Col span={5}>
           <Button type="primary" style={{ marginRight: 10 }} onClick={this.search}>
             {' '}
             查询

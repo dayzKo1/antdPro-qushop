@@ -1,4 +1,5 @@
 import { ordersList } from '@/services/api';
+import { obatch } from '@/services/api';
 
 export default {
   namespace: 'orders',
@@ -21,6 +22,11 @@ export default {
         });
         sessionStorage.setItem('orderQuery', JSON.stringify(payload));
       }
+      return res;
+    },
+    *batchOrder({ payload }, { call }) {
+      const res = yield call(obatch, payload);
+      console.log('---', res);
       return res;
     },
   },

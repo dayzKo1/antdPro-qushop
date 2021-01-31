@@ -22,7 +22,7 @@ class BatchSelect extends Component {
   };
 
   handleOk = (type) => {
-    if (type === 'put') {
+    if (type === 'put' || type === 'off') {
       this.putShelf();
     }
     if (type === 'del') {
@@ -37,11 +37,14 @@ class BatchSelect extends Component {
     });
   };
 
-  putShelf = async () => {
+  putShelf = async (type) => {
     const { dispatch, selectedRowKeys, clearBatchSelect, updateData } = this.props;
     const selectedPro = [];
     for (let i = 0; i < selectedRowKeys.length; i += 1) {
-      selectedPro.push({ id: selectedRowKeys[i], status: 'private' });
+      selectedPro.push({
+        id: selectedRowKeys[i],
+        status: type === 'put' ? 'publish' : 'private',
+      });
     }
     console.log(selectedPro);
     await dispatch({

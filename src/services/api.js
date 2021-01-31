@@ -19,3 +19,18 @@ export async function categoriesList(params) {
     params,
   });
 }
+
+// 批量操作
+export async function batch(data) {
+  return request('/api/admin/batches', {
+    method: 'POST',
+    data,
+  });
+}
+// 批量操作
+export async function obatch(data) {
+  return request('/api/admin/batches/orders-status', {
+    method: 'POST',
+    data,
+  });
+}

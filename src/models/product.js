@@ -1,4 +1,5 @@
-import { productList, productBatch } from '@/services/products';
+import { productList } from '@/services/products';
+import { batch } from '@/services/api';
 
 export default {
   namespace: 'product',
@@ -23,7 +24,7 @@ export default {
       return res;
     },
     *batchProduct({ payload }, { call }) {
-      const res = yield call(productBatch, payload);
+      const res = yield call(batch, payload);
       console.log('---', res);
       return res;
     },
