@@ -59,7 +59,6 @@ class ProducstList extends Component {
   // 分页
   changePage = async (page, prePage) => {
     const { dispatch, query } = this.props;
-    console.log('params', page, prePage);
     await dispatch({
       type: 'product/fetch',
       payload: {
@@ -76,7 +75,6 @@ class ProducstList extends Component {
 
   // 多选
   batchSelect = (selectedRowKeys, selectedRows) => {
-    console.log(selectedRows);
     if (selectedRowKeys.length) {
       this.setState({
         batchSel: true,
@@ -144,6 +142,14 @@ class ProducstList extends Component {
       {
         title: '分类',
         dataIndex: 'categories',
+        render: (v) =>
+          v.map((item) => {
+            return (
+              <Tag key={item.term_taxonomy_id} color="blue">
+                {item.name}
+              </Tag>
+            );
+          }),
       },
       {
         title: '状态',

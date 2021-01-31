@@ -69,7 +69,7 @@ request.interceptors.request.use(async (url, options) => {
       options: {
         ...options,
         headers: {
-          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'multipart/form-data',
           Authorization: token,
           // 'X-LANG':getLocale(),
         },

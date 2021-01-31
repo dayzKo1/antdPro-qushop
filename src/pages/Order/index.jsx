@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table } from 'antd';
+import { Card, Table, Badge } from 'antd';
 import { connect } from 'dva';
 import BasicHeader from '@/components/BasicHeader';
 import TableFooter from '@/components/TableFooter';
@@ -60,7 +60,6 @@ class Order extends Component {
 
   // 多选
   batchSelect = (selectedRowKeys, selectedRows) => {
-    console.log(selectedRows);
     if (selectedRowKeys.length) {
       this.setState({
         batchSel: true,
@@ -114,13 +113,13 @@ class Order extends Component {
         render: (v) => {
           switch (v) {
             case 'wc-completed':
-              return <div className={[style.poststatus, style.wcCompleted].join(' ')}>已完成</div>;
+              return <Badge status="success" text="已完成" />;
             //  break;
             case 'wc-cancelled':
-              return <div className={[style.poststatus, style.wcCancelled].join(' ')}>已取消</div>;
+              return <Badge status="error" text="已取消" />;
             //  break;
             default:
-              return <div className={[style.poststatus, style.wcOthers].join(' ')}>进行中</div>;
+              return <Badge status="processing" text="进行中" />;
           }
         },
       },

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import { connect } from 'dva';
 import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import style from './style.less';
@@ -23,7 +23,7 @@ class BatchSelect extends Component {
 
   handleOk = (type) => {
     if (type === 'put' || type === 'off') {
-      this.putShelf();
+      this.putOffShelf(type);
     }
     if (type === 'del') {
       this.delProducts();
@@ -37,22 +37,20 @@ class BatchSelect extends Component {
     });
   };
 
-  putShelf = async (type) => {
+  // 上下架
+  putOffShelf = async (type) => {
     const { dispatch, selectedRowKeys, clearBatchSelect, updateData } = this.props;
-    const selectedPro = [];
-    for (let i = 0; i < selectedRowKeys.length; i += 1) {
-      selectedPro.push({
-        id: selectedRowKeys[i],
-        status: type === 'put' ? 'publish' : 'private',
+    try {
+      await dispatch({
+        type: 'product/batchProduct',
+        operating: 'putOffShelf',
+        ids: selectedRowKeys,
+        status: type,
       });
+      message.success(type === 'put' ? '上架成功！' : '下架成功！');
+    } catch (e) {
+      message.error(type === 'put' ? '上架失败！' : '下架失败！');
     }
-    console.log(selectedPro);
-    await dispatch({
-      type: 'product/batchProduct',
-      payload: {
-        product_status: selectedPro,
-      },
-    });
     this.handleCancel();
     clearBatchSelect();
     updateData();
@@ -61,21 +59,17 @@ class BatchSelect extends Component {
   // 批量删除
   delProducts = async () => {
     const { dispatch, selectedRowKeys, clearBatchSelect, updateData } = this.props;
-    const selectedPro = [];
-    for (let i = 0; i < selectedRowKeys.length; i += 1) {
-      selectedPro.push({ id: selectedRowKeys[i] });
-    }
-    console.log('delProducts', selectedPro);
     try {
       await dispatch({
         type: 'product/batchProduct',
-        payload: {
-          delete_product: selectedPro,
-        },
+        operating: 'delProducts',
+        ids: selectedRowKeys,
       });
+      message.success('删除成功！');
     } catch (e) {
-      console.log(e);
+      message.error('删除失败！');
     }
+
     this.handleCancel();
     clearBatchSelect();
     updateData();

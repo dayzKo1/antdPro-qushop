@@ -23,10 +23,30 @@ export default {
       }
       return res;
     },
-    *batchProduct({ payload }, { call }) {
-      const res = yield call(batch, payload);
-      console.log('---', res);
-      return res;
+    *batchProduct({ operating, ids, status }, { call }) {
+      if (operating === 'putOffShelf') {
+        const selectedPro = [];
+        for (let i = 0; i < ids.length; i += 1) {
+          selectedPro.push({
+            id: ids[i],
+            status: status === 'put' ? 'publish' : 'private',
+          });
+        }
+        console.log(selectedPro);
+        const res = yield call(batch, { product_status: selectedPro });
+        console.log('---', res);
+        // return res;
+      }
+      if (operating === 'delProducts') {
+        const selectedPro = [];
+        for (let i = 0; i < ids.length; i += 1) {
+          selectedPro.push({ id: ids[i] });
+        }
+        console.log(selectedPro);
+        const res = yield call(batch, { delete_product: selectedPro });
+        console.log('---', res);
+        // return res;
+      }
     },
   },
   reducers: {

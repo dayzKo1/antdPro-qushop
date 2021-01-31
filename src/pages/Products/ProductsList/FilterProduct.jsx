@@ -197,7 +197,7 @@ class FilterProduct extends Component {
               <Option value="private">已下架</Option>
             </Select>
           </Col>
-          <Col span={5}>
+          <Col span={6}>
             <Search
               placeholder="请输入商品名或SKU"
               className={style.search}
@@ -207,7 +207,7 @@ class FilterProduct extends Component {
               onSearch={this.search}
             />
           </Col>
-          <Col span={5}>
+          <Col span={6}>
             <Button type="primary" style={{ marginRight: 10 }} onClick={this.search}>
               {' '}
               查询

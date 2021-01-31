@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import { connect } from 'dva';
 import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import style from './styles.less';
@@ -26,7 +26,7 @@ class BatchSelect extends Component {
       this.fulfilled();
     }
     if (type === 'complete' || type === 'ing') {
-      this.complete(type);
+      this.mark(type);
     }
   };
 
@@ -40,43 +40,35 @@ class BatchSelect extends Component {
   //  发货
   fulfilled = async () => {
     const { dispatch, selectedRowKeys, clearBatchSelect, updateData } = this.props;
-    const selectedId = [];
-    for (let i = 0; i < selectedRowKeys.length; i += 1) {
-      selectedId.push({ id: selectedRowKeys[i], trackNo: '', sendEmail: true });
+
+    try {
+      await dispatch({
+        type: 'orders/batchOrder',
+        operating: 'fulfilled',
+        ids: selectedRowKeys,
+      });
+      message.success('发货成功！');
+    } catch (e) {
+      message.error('发货失败！');
     }
-    console.log(selectedId);
-    await dispatch({
-      type: 'order/batchOrder',
-      payload: {
-        order_shipping: selectedId,
-      },
-    });
     this.handleCancel();
     clearBatchSelect();
     updateData();
   };
 
   // 标记已完成 标记进行中
-  complete = async (type) => {
+  mark = async (type) => {
     const { dispatch, selectedRowKeys, clearBatchSelect, updateData } = this.props;
-    const selectedId = [];
-    for (let i = 0; i < selectedRowKeys.length; i += 1) {
-      selectedId.push({
-        id: selectedRowKeys[i],
-        status: type === 'complete' ? 'wc-completed' : 'wc-processing',
-      });
-    }
-    console.log('标记已完成', selectedId);
     try {
       await dispatch({
-        type: 'order/batchOrder',
-        payload: selectedId,
-        // payload: {
-        //   order_status: selectedId,
-        // },
+        type: 'orders/batchOrder',
+        operating: 'mark',
+        ids: selectedRowKeys,
+        status: type,
       });
+      message.success(type === 'complete' ? '标记已完成成功！' : '标记进行中成功！');
     } catch (e) {
-      console.log(e);
+      message.error(type === 'complete' ? '标记已完成失败！' : '标记进行中失败！');
     }
     this.handleCancel();
     clearBatchSelect();

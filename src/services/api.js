@@ -27,10 +27,36 @@ export async function batch(data) {
     data,
   });
 }
-// 批量操作
-export async function obatch(data) {
-  return request('/api/admin/batches/orders-status', {
-    method: 'POST',
-    data,
+
+// 数据分析
+// 订单
+export async function reportsOrders(params) {
+  return request('/api/admin/reports/orders', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 商品销售数
+export async function reportsHotProducts(params) {
+  return request('/api/admin/reports/hot_products', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 总销售额
+export async function reportsSales(params) {
+  return request('/api/admin/reports/sales', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 访客
+export async function reportsVisits(params) {
+  return request('/api/admin/reports/visits', {
+    method: 'GET',
+    params,
   });
 }

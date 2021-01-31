@@ -35,7 +35,6 @@ class FilterOrder extends Component {
 
   // 订单状态筛选, wc-completed已完成，进行中(wc-pending待付款,wc-processing已付款)，wc-cancelled已取消，格式如:filter[status]=wc-completed
   changePostStatus = async (value) => {
-    console.log('changePostStatus', value);
     const { dispatch, query } = this.props;
     await dispatch({
       type: 'orders/fetch',
@@ -52,7 +51,6 @@ class FilterOrder extends Component {
 
   // 发货状态：未发货状态：unfulfilled,已发货状态：fulfilled，格式如:filter[fulfillment_status]=unfulfilled
   changeFulfillmentStatus = async (value) => {
-    console.log('changeFulfillmentStatus', value);
     const { dispatch, query } = this.props;
     await dispatch({
       type: 'orders/fetch',
@@ -69,11 +67,8 @@ class FilterOrder extends Component {
 
   // 时间筛选
   changeDate = async (_, dateStrings) => {
-    // console.log('dates: ', dates[0], ', to: ', dates[1]);
-    console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
     const date =
       dateStrings[0] && dateStrings[1] ? `${dateStrings[0]},${dateStrings[1]}` : undefined;
-    console.log(date);
     const { dispatch, query } = this.props;
     await dispatch({
       type: 'orders/fetch',
@@ -90,16 +85,14 @@ class FilterOrder extends Component {
 
   // 保存商品名或SKU搜索信息
   saveSearch = (e) => {
-    console.log(e.target.value);
     this.setState({
       search: e.target.value,
     });
   };
 
   // 商品名或SKU搜索
-  search = async () => {
+  search = async (search) => {
     const { dispatch, query } = this.props;
-    const { search } = this.state;
     await dispatch({
       type: 'orders/fetch',
       payload: {
@@ -131,7 +124,7 @@ class FilterOrder extends Component {
 
     return (
       <Row gutter={5} style={{ marginBottom: 10 }}>
-        <Col span={4}>
+        <Col span={3}>
           <Select
             style={{ width: '100%' }}
             showSearch
@@ -146,7 +139,7 @@ class FilterOrder extends Component {
             <Option value="wc-cancelled">已取消</Option>
           </Select>
         </Col>
-        <Col span={4}>
+        <Col span={3}>
           <Select
             showSearch
             style={{ width: '100%' }}
@@ -160,14 +153,14 @@ class FilterOrder extends Component {
             <Option value="unfulfilled">未发货</Option>
           </Select>
         </Col>
-        <Col span={6}>
+        <Col span={5}>
           <RangePicker
             locale={locale}
             value={date ? [moment(startDate), moment(endDate)] : []}
             onChange={this.changeDate}
           />
         </Col>
-        <Col span={5}>
+        <Col span={8}>
           <Search
             placeholder="请输入订单编号/支付编号/商品名/SKU/邮箱"
             className={styles.search}

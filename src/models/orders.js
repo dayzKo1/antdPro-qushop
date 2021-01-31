@@ -1,5 +1,4 @@
-import { ordersList } from '@/services/api';
-import { obatch } from '@/services/api';
+import { ordersList, batch } from '@/services/api';
 
 export default {
   namespace: 'orders',
@@ -24,10 +23,30 @@ export default {
       }
       return res;
     },
-    *batchOrder({ payload }, { call }) {
-      const res = yield call(obatch, payload);
-      console.log('---', res);
-      return res;
+    *batchOrder({ operating, ids, status }, { call }) {
+      if (operating === 'mark') {
+        const selectedId = [];
+        for (let i = 0; i < ids.length; i += 1) {
+          selectedId.push({
+            id: ids[i],
+            status: status === 'complete' ? 'wc-completed' : 'wc-processing',
+          });
+        }
+        console.log('标记已完成', selectedId);
+        yield call(batch, { order_status: selectedId });
+      }
+      if (operating === 'fulfilled') {
+        const selectedId = [];
+        for (let i = 0; i < ids.length; i += 1) {
+          selectedId.push({
+            id: ids[i],
+            trackNo: '',
+            sendEmail: true,
+          });
+        }
+        console.log('fulfilled', selectedId);
+        yield call(batch, { order_shipping: selectedId });
+      }
     },
   },
   reducers: {
