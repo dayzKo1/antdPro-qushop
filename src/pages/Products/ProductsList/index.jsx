@@ -59,7 +59,6 @@ class ProducstList extends Component {
   // 分页
   changePage = async (page, prePage) => {
     const { dispatch, query } = this.props;
-    console.log('params', page, prePage);
     await dispatch({
       type: 'product/fetch',
       payload: {
@@ -76,7 +75,6 @@ class ProducstList extends Component {
 
   // 多选
   batchSelect = (selectedRowKeys, selectedRows) => {
-    console.log(selectedRows);
     if (selectedRowKeys.length) {
       this.setState({
         batchSel: true,
@@ -97,6 +95,20 @@ class ProducstList extends Component {
     this.setState({
       batchSel: false,
       selectedRowKeys: [],
+    });
+  };
+
+  // 更新数据
+  updateData = async () => {
+    const { dispatch, query } = this.props;
+    // const query = JSON.parse(sessionStorage.getItem('proQuery')) || {};
+    await dispatch({
+      type: 'product/fetch',
+      payload: {
+        page: 1,
+        ...query,
+      },
+      save: true,
     });
   };
 
@@ -130,6 +142,14 @@ class ProducstList extends Component {
       {
         title: '分类',
         dataIndex: 'categories',
+        render: (v) =>
+          v.map((item) => {
+            return (
+              <Tag key={item.term_taxonomy_id} color="blue">
+                {item.name}
+              </Tag>
+            );
+          }),
       },
       {
         title: '状态',
@@ -167,6 +187,7 @@ class ProducstList extends Component {
             batchSel={batchSel}
             selectedRowKeys={selectedRowKeys}
             clearBatchSelect={this.clearBatchSelect}
+            updateData={this.updateData}
           />
           <Table
             loading={productLoading}

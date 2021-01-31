@@ -7,11 +7,9 @@ const { Option } = Select;
 const { Search } = Input;
 
 @connect(({ product, tag, categories, loading }) => ({
-  productsList: product.productsList,
   query: product.query,
   tagsList: tag.tagsList,
   categoriesList: categories.categoriesList,
-  productLoading: loading.effects['product/fetch'],
   tagLoading: loading.effects['tags/fetchProTags'],
   categoryLoading: loading.effects['categories/fetchList'],
 }))
@@ -67,20 +65,30 @@ class FilterProduct extends Component {
     });
   };
 
+  // 延迟触发搜索tag
+  delaySearchTag = async (value) => {
+    setTimeout(() => {
+      this.setState({
+        tag: value,
+      });
+      // this.searchTag();
+    }, 3000);
+  };
+
   // 标签搜索
-  searchTag = async (value) => {
+  searchTag = async () => {
     const { dispatch } = this.props;
-    // const { category, status,search}=this.state;
+    const { tag } = this.state;
     await dispatch({
       type: 'tag/fetch',
       payload: {
         sort: 'name',
-        'filter[name]': value,
+        'filter[name]': tag,
       },
     });
-    this.setState({
-      tag: value,
-    });
+    // this.setState({
+    //   tag,
+    // });
   };
 
   // 状态筛选
@@ -171,7 +179,7 @@ class FilterProduct extends Component {
               placeholder="选择标签"
               allowClear
               onChange={this.changeTag}
-              onSearch={this.searchTag}
+              onSearch={this.delaySearchTag}
               loading={tagLoading}
             >
               {tagOptions}
@@ -189,7 +197,7 @@ class FilterProduct extends Component {
               <Option value="private">已下架</Option>
             </Select>
           </Col>
-          <Col span={5}>
+          <Col span={6}>
             <Search
               placeholder="请输入商品名或SKU"
               className={style.search}
@@ -199,7 +207,7 @@ class FilterProduct extends Component {
               onSearch={this.search}
             />
           </Col>
-          <Col span={5}>
+          <Col span={6}>
             <Button type="primary" style={{ marginRight: 10 }} onClick={this.search}>
               {' '}
               查询

@@ -4,6 +4,7 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
+    summaryData: {},
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -26,7 +27,11 @@ const UserModel = {
   },
   reducers: {
     saveCurrentUser(state, action) {
-      return { ...state, currentUser: action?.payload?.user || {} };
+      return {
+        ...state,
+        currentUser: action?.payload?.user || {},
+        summaryData: action?.payload?.summary,
+      };
     },
 
     changeNotifyCount(

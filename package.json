@@ -53,6 +53,7 @@
     "@umijs/route-utils": "^1.0.33",
     "antd": "^4.9.4",
     "axios": "^0.21.1",
+    "bizcharts": "^4.1.5",
     "classnames": "^2.2.6",
     "i18n-iso-countries": "^6.4.0",
     "lodash": "^4.17.11",
