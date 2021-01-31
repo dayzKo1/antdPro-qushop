@@ -111,6 +111,7 @@ const Login = (props) => {
             />
             <ProFormText.Password
               name="password"
+              defaultMessage="adfasd"
               fieldProps={{
                 size: 'large',
                 prefix: <LockTwoTone className={styles.prefixIcon} />,

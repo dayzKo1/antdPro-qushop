@@ -3,6 +3,7 @@ import { Card, Table } from 'antd';
 import Grid from '@/components/Grid';
 import Search from './search';
 import TableFooter from '@/components/TableFooter';
+import BasicHeader from '@/components/BasicHeader'
 
 const CategoryList = () => {
   const columns = [
@@ -85,6 +86,7 @@ const CategoryList = () => {
 
   return (
     <Grid>
+      <BasicHeader title="分类列表" />
       <Card>
         <Search />
         <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} />
@@ -95,7 +97,7 @@ const CategoryList = () => {
           // perPage={groupProData.meta && groupProData.meta.per_page}
           showSizeChanger
           showQuickJumper
-          // changeShowSize={(page, prePage) => this.changePage(page, prePage, true)}
+        // changeShowSize={(page, prePage) => this.changePage(page, prePage, true)}
         />
       </Card>
     </Grid>
