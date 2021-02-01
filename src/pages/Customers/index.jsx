@@ -1,46 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Table } from 'antd';
+import { connect } from 'dva';
 import Grid from '@/components/Grid';
 import Search from './search';
 import TableFooter from '@/components/TableFooter';
+import BasicHeader from '@/components/BasicHeader';
+import style from './style.less';
 
-const Customers = () => {
+const countries = require('i18n-iso-countries');
+countries.registerLocale(require('i18n-iso-countries/langs/zh.json'));
+countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
+
+const Customers = (props) => {
+  const { customersData, dispatch, loading, meta, query } = props;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(async () => {
+    dispatch({
+      type: 'customers/queryCustomers',
+      payload: {
+        page: currentPage,
+      },
+    });
+  }, []);
+
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: '姓名',
+      dataIndex: 'display_name',
+      width: '20%',
+      align: 'center',
     },
     {
-      title: 'Chinese Score',
-      dataIndex: 'chinese',
-      sorter: {
-        compare: (a, b) => a.chinese - b.chinese,
-        multiple: 3,
-      },
+      title: '地区',
+      dataIndex: 'country',
+      width: '20%',
+      align: 'center',
+      render: (text) => <div>{countries.getName(text, 'zh')}</div>,
     },
     {
-      title: 'Math Score',
-      dataIndex: 'math',
-      sorter: {
-        compare: (a, b) => a.math - b.math,
-        multiple: 2,
-      },
+      title: '订阅状态',
+      dataIndex: 'subscribed',
+      width: '20%',
+      align: 'center',
+      render: (text) => (
+        <div>
+          {text ? (
+            <div className={`${style.yes} ${style.tag}`}>已订阅</div>
+          ) : (
+            <div className={`${style.no} ${style.tag}`}>未订阅</div>
+          )}
+        </div>
+      ),
     },
     {
-      title: 'English Score',
-      dataIndex: 'english',
-      sorter: {
-        compare: (a, b) => a.english - b.english,
-        multiple: 1,
-      },
+      title: '订单数',
+      dataIndex: 'order_count',
+      width: '20%',
+      align: 'center',
+      sorter: true,
     },
     {
-      title: 'qqq Score',
-      dataIndex: 'qqq',
-      sorter: {
-        compare: (a, b) => a.english - b.english,
-        multiple: 1,
-      },
+      title: '订单总金额',
+      dataIndex: 'order_total',
+      width: '20%',
+      align: 'center',
+      render: (text) => <div>{`$ ${text}`}</div>,
     },
   ];
 
@@ -57,7 +82,7 @@ const Customers = () => {
       key: '2',
       name: 'Jim Green',
       chinese: 98,
-      math: 66,
+      math: false,
       english: 89,
       qqq: 70,
     },
@@ -73,7 +98,7 @@ const Customers = () => {
       key: '4',
       name: 'Jim Red',
       chinese: 88,
-      math: 99,
+      math: false,
       english: 89,
       qqq: 70,
     },
@@ -81,25 +106,60 @@ const Customers = () => {
 
   function onChange(pagination, filters, sorter, extra) {
     console.log('params', pagination, filters, sorter, extra);
+    const { field, order } = sorter;
+    if (field === 'order_count') {
+      const val = order === 'ascend' ? 'count' : '-count';
+      dispatch({
+        type: 'customers/queryCustomers',
+        payload: {
+          ...query,
+          sort: order ? val : undefined,
+        },
+      });
+    }
   }
 
+  const changePage = (page, prePage) => {
+    dispatch({
+      type: 'customers/queryCustomers',
+      payload: {
+        ...query,
+        page,
+        page_size: prePage,
+      },
+    });
+    setCurrentPage(page);
+  };
+
   return (
-    <Grid>
+    <Grid className={style.customers}>
+      <BasicHeader title="顾客" />
       <Card>
-        <Search />
-        <Table columns={columns} dataSource={data} onChange={onChange} pagination={false} />
+        <Search currentPage={currentPage} />
+        <Table
+          className={style.tables}
+          columns={columns}
+          dataSource={customersData || data}
+          onChange={onChange}
+          pagination={false}
+          loading={loading}
+        />
         <TableFooter
-          // total={groupProData.meta && groupProData.meta.total}
-          // changePage={this.changePage}
-          // currentPage={currentPage}
-          // perPage={groupProData.meta && groupProData.meta.per_page}
+          total={meta && meta.total}
+          changePage={changePage}
+          currentPage={currentPage}
+          perPage={meta && meta.per_page}
           showSizeChanger
           showQuickJumper
-          // changeShowSize={(page, prePage) => this.changePage(page, prePage, true)}
         />
       </Card>
     </Grid>
   );
 };
 
-export default Customers;
+export default connect((state) => ({
+  customersData: state.customers.customersData,
+  meta: state.customers.meta,
+  query: state.customers.query,
+  loading: state.loading.effects['customers/queryCustomers'],
+}))(Customers);

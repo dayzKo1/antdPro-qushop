@@ -1,0 +1,60 @@
+.cardbox {
+  :global(.ant-card-body) {
+    padding: 12px;
+  }
+}
+.poststatus::before {
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  vertical-align: middle;
+  border: 1px solid #8c8c8c;
+  border-radius: 4px;
+  content: '';
+}
+
+.wcCompleted::before {
+  background-color: #00a854;
+}
+.wcCancelled::before {
+  background-color: #f04134;
+}
+.wcOthers::before {
+  background-color: #0e77d1;
+}
+
+.fulfillmentStatus {
+  width: 70px;
+  padding: 2px 12px;
+  border-radius: 25px;
+}
+
+.unfulfilled {
+  color: #d12929;
+  border: 1px solid #d12929;
+}
+
+.fulfilled {
+  color: #7b7b7b;
+  border: 1px solid #7b7b7b;
+}
+
+.search {
+  border-radius: 5px;
+  :global(.ant-input-group-addon:last-child) {
+    display: none;
+  }
+}
+
+.link {
+  display: inline-block;
+  margin-right: 10px;
+  color: #273a8a;
+  font-weight: 400;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}

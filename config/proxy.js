@@ -9,6 +9,7 @@ export default {
   dev: {
     '/api/admin/': {
       target: 'https://x136.wshopon.com/',
+      // target: 'http://zhoujiawei.frp.codefriend.top/',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

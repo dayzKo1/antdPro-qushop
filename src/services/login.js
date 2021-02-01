@@ -16,3 +16,12 @@ export async function logout() {
 export async function getFakeCaptcha(mobile) {
   return request(`/api/login/captcha?mobile=${mobile}`);
 }
+
+// 修改密码
+
+export async function changePassword(data) {
+  return request(`/api/admin/me/update-password`, {
+    method: 'POST',
+    data,
+  });
+}
