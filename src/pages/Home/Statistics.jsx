@@ -10,7 +10,6 @@ import styles from './styles.less';
 class Statistics extends Component {
   render() {
     const { summaryData } = this.props;
-    console.log(summaryData?.base?.sales);
     return (
       <Row gutter={[16, 16]} className={styles.home}>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
@@ -29,11 +28,16 @@ class Statistics extends Component {
                   marginTop: '9px',
                 }}
               >
-                <span>周同比</span>
-
-                <CaretUpOutlined style={{ color: '#52c41aa5' }} />
-                <span>日环比</span>
-                <CaretDownOutlined style={{ color: '#f5222d' }} />
+                <div>
+                  <span>周同比</span>
+                  <CaretUpOutlined style={{ color: '#52c41aa5' }} />
+                  <span>12%</span>
+                </div>
+                <div>
+                  <span>日环比</span>
+                  <CaretDownOutlined style={{ color: '#f5222d' }} />
+                  <span>12%</span>
+                </div>
               </div>
             }
           />
@@ -41,27 +45,27 @@ class Statistics extends Component {
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <ChartCard
             title="订单数量"
-            value="090"
+            value={summaryData?.base?.orders}
             today="今日新增"
-            todayVal="21201"
+            todayVal="0"
             detail={<img alt={User} src={User} style={{ width: '100%' }} />}
           />
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <ChartCard
-            title="用户总数"
-            value="90"
+            title="店铺实时访客"
+            value={summaryData?.base?.visits}
             today="今日新增"
-            todayVal="21201"
+            todayVal="0"
             detail={<img alt={Order} src={Order} style={{ width: '100%' }} />}
           />
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <ChartCard
             title="未发货订单数"
-            value="1090"
+            value={summaryData?.order?.unfulfilled}
             today="发货完成率"
-            todayVal="2101"
+            todayVal="1%"
             detail={
               <img
                 alt={UfilledOrder}
