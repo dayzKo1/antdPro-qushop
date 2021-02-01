@@ -23,7 +23,10 @@ const Searchs = (props) => {
   const resetting = () => {
     form.resetFields();
     dispatch({
-      type: 'categories/queryCategories',
+			type: 'categories/queryCategories',
+			payload:{
+				sort:query?.sort||undefined
+			}
     });
   };
   return (

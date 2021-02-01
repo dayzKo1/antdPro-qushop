@@ -1,7 +1,7 @@
 import { getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Link, useIntl, connect } from 'umi';
-import { Card, Row, Col } from 'antd';
+import { Card, Row, Col,Divider } from 'antd';
 import React from 'react';
 import logo from '../assets/logo.png';
 import styles from './UserLayout.less';
@@ -70,7 +70,10 @@ const UserLayout = (props) => {
                 </div>
                 {children}
               </Col>
-              <Col xs={12}>
+              <Col xs={1} style={{height:"80%"}} >
+                <Divider style={{height:"100%",borderLeft: "2px solid rgba(0, 0, 0, 0.06)"}} plain type="vertical" />
+              </Col>
+              <Col xs={11}>
                 <img alt="logo" style={{ width: '100%', height: '100%' }} src={u8} />
               </Col>
             </Row>

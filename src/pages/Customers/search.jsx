@@ -37,6 +37,7 @@ const Searchs = (props) => {
       type: 'customers/queryCustomers',
       payload: {
         page: currentPage,
+        sort: query?.sort || undefined,
       },
     });
   };
@@ -53,7 +54,7 @@ const Searchs = (props) => {
     });
   };
 
-  const changeDate = (_, dates) => {
+  const changeDate = (a, dates) => {
     const after = (dates[0] !== '' && moment(dates[0]).format('YYYY-MM-DD ')) || undefined;
     const before =
       (dates[1] !== '' && moment(dates[1]).add(1, 'days').format('YYYY-MM-DD ')) || undefined;
