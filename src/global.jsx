@@ -77,7 +77,7 @@ if (pwa) {
       onClose: async () => null,
     });
   });
-} else ifa ('serviceWorker' in navigator && isHttps) {
+} else if ('serviceWorker' in navigator && isHttps) {
   // unregister service worker
   const { serviceWorker } = navigator;
 
