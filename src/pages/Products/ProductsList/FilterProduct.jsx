@@ -208,7 +208,7 @@ class FilterProduct extends Component {
             />
           </Col>
           <Col span={6}>
-            <Button type="primary" style={{ marginRight: 10 }} onClick={this.search}>
+            <Button type="primary" style={{ marginRight: 10 }} onClick={() => this.search(search)}>
               {' '}
               查询
             </Button>
