@@ -9,11 +9,6 @@ export default {
 
   effects: {
     *fetch({ payload, save }, { call, put }) {
-      const res = yield call(ordersList, payload);
-      yield put({
-        type: 'saveOrdersList',
-        payload: res,
-      });
       if (save) {
         yield put({
           type: 'saveQuery',
@@ -21,6 +16,24 @@ export default {
         });
         sessionStorage.setItem('orderQuery', JSON.stringify(payload));
       }
+      let res = yield call(ordersList, payload);
+      if (payload && res.meta && payload.page > res.meta.last_page) {
+        const newPayload = payload;
+        newPayload.page = res.meta.last_page;
+        res = yield call(ordersList, payload);
+        if (save) {
+          yield put({
+            type: 'saveQuery',
+            payload: newPayload,
+          });
+          sessionStorage.setItem('orderQuery', JSON.stringify(newPayload));
+        }
+      }
+      yield put({
+        type: 'saveOrdersList',
+        payload: res,
+      });
+
       return res;
     },
     *batchOrder({ operating, ids, status }, { call }) {

@@ -94,6 +94,7 @@ class Home extends Component {
       salesLoading,
       visitsLoading,
     } = this.props;
+    // const loading = ordersLoading || hotProductsLoading || salesLoading || visitsLoading;
     return (
       <>
         <Statistics summaryData={summaryData} />
