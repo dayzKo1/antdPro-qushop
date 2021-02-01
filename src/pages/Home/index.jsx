@@ -25,14 +25,7 @@ class Home extends Component {
     const date = JSON.parse(sessionStorage.getItem('reportsOrdersQuery')) || {};
     const startDay = date['filter[start]'];
     const endDay = date['filter[end]'];
-    // // qian天的时间
-    // const befyesterday = new Date();
-    // befyesterday.setTime(befyesterday.getTime()-2*24*60*60*1000);
-    // const befyesterdays = `${befyesterday.getFullYear()}-${  befyesterday.getMonth()+1  }-${  befyesterday.getDate()}`;
-    // 昨天的时间
-    // const yesterday = new Date();
-    // yesterday.setTime(yesterday.getTime()-24*60*60*1000);
-    // const yesterdays = `${yesterday.getFullYear()}-${  yesterday.getMonth()+1  }-${  yesterday.getDate()}`;
+
     // 今天
     const today = new Date();
     today.setTime(today.getTime());

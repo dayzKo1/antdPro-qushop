@@ -10,14 +10,13 @@ class User extends Component {
     const { reportsVisitsList, visitsLoading } = this.props;
     const { data } = reportsVisitsList;
     const scale = {
-      price: {
-        min: 0,
-        max: 1.5,
-      },
-      year: {
-        range: [0.05, 0.95],
+      value: {
+        type: 'linear',
+        tickCount: 10,
+        ticks: ['0', '2', '4', '6', '8'],
       },
     };
+
     return (
       <Card loading={visitsLoading}>
         <Tabs defaultActiveKey="1">

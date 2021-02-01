@@ -9,14 +9,11 @@ class Sales extends Component {
     // 数据源
     const { reportsSalesList = {}, salesLoading } = this.props;
     const { data } = reportsSalesList;
-
     const scale = {
       value: {
-        min: 0,
-        // max: 1.5,
-      },
-      datetime: {
-        range: [0.05, 0.95],
+        type: 'linear',
+        tickCount: 10,
+        ticks: ['0', '2', '4', '6', '8'],
       },
     };
 
