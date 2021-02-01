@@ -65,6 +65,7 @@ const Customers = (props) => {
       dataIndex: 'order_total',
       width: '20%',
       align: 'center',
+      sorter: true,
       render: (text) => <div>{`$ ${text}`}</div>,
     },
   ];
@@ -109,6 +110,16 @@ const Customers = (props) => {
     const { field, order } = sorter;
     if (field === 'order_count') {
       const val = order === 'ascend' ? 'count' : '-count';
+      dispatch({
+        type: 'customers/queryCustomers',
+        payload: {
+          ...query,
+          sort: order ? val : undefined,
+        },
+      });
+    }
+    if (field === 'order_total') {
+      const val = order === 'ascend' ? 'total' : '-total';
       dispatch({
         type: 'customers/queryCustomers',
         payload: {
