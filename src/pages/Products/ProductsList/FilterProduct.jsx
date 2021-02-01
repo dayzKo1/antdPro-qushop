@@ -9,9 +9,9 @@ const { Search } = Input;
 @connect(({ product, tag, categories, loading }) => ({
   query: product.query,
   tagsList: tag.tagsList,
-  categoriesList: categories.categoriesList,
-  tagLoading: loading.effects['tags/fetchProTags'],
-  categoryLoading: loading.effects['categories/fetchList'],
+  categoriesData: categories.categoriesData,
+  tagLoading: loading.effects['tags/fetch'],
+  categoryLoading: loading.effects['categories/queryCategories'],
 }))
 class FilterProduct extends Component {
   state = {
@@ -145,13 +145,13 @@ class FilterProduct extends Component {
   };
 
   render() {
-    const { tagLoading, tagsList = {}, categoriesList = {} } = this.props;
+    const { tagLoading, categoryLoading, tagsList = {}, categoriesData = {} } = this.props;
     const { tag, category, search, status } = this.state;
     const tagOptions =
       tagsList?.data?.length > 0 && tagsList?.data.map((d) => <Option key={d.id}>{d.name}</Option>);
     const categoriesOptions =
-      categoriesList?.data?.length > 0 &&
-      categoriesList?.data.map((d) => <Option key={d.term_taxonomy_id}>{d.name}</Option>);
+      categoriesData?.length > 0 &&
+      categoriesData?.map((d) => <Option key={d.term_taxonomy_id}>{d.name}</Option>);
 
     return (
       // <PageContainer>
@@ -166,7 +166,7 @@ class FilterProduct extends Component {
               allowClear
               onChange={this.changeCategories}
               // onSearch={this.changeCategories}
-              loading={tagLoading}
+              loading={categoryLoading}
             >
               {categoriesOptions}
             </Select>
