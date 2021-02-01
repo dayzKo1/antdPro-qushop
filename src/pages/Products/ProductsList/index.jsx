@@ -13,10 +13,8 @@ import style from './style.less';
   productsList: product.productsList,
   query: product.query,
   tagsList: tag.tagsList,
-  categoriesList: categories.categoriesList,
+  categoriesData: categories.categoriesData,
   productLoading: loading.effects['product/fetch'],
-  tagLoading: loading.effects['tags/fetchProTags'],
-  categoryLoading: loading.effects['categories/fetchList'],
 }))
 class ProducstList extends Component {
   state = {
@@ -45,7 +43,7 @@ class ProducstList extends Component {
       },
     });
     await dispatch({
-      type: 'categories/fetch',
+      type: 'categories/queryCategories',
       payload: {
         sort: 'name',
       },
