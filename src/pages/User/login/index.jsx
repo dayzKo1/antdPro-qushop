@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { Alert } from 'antd';
 import React, { useState } from 'react';
-import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
+import ProForm, { ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
 // import { getFakeCaptcha } from '@/services/login';
 import { removeToken } from '@/utils/authority';
@@ -30,7 +30,7 @@ const Login = (props) => {
   const { submitting } = props;
   // const { status, type: loginType } = userLogin;
   // const [type, setType] = useState('account');
-  const [errStatus, setErrStatus] = useState(false);
+  const [errStatus, setErrStatus] = useState('');
   const intl = useIntl();
 
   const handleSubmit = async (values) => {
@@ -42,7 +42,16 @@ const Login = (props) => {
         payload: { ...values, type: 'account' },
       });
     } catch (error) {
-      setErrStatus(true);
+      // if (error && error.status_code === 422) {
+      //   const msg = error.errors;
+      //   const warn = Object.values(msg);
+      //   message.warning(warn[0]);
+      // }
+      console.log('--1', error);
+      // const msg = error.errors;
+      // const warn = Object.values(msg);
+      // // message.warning(warn[0]);
+      setErrStatus(error?.message || '账户或密码错误（admin@qushop.com/a12345)');
     }
   };
 
@@ -77,16 +86,10 @@ const Login = (props) => {
           />
         </Tabs> */}
 
-        {errStatus && (
-          <LoginMessage
-            content={intl.formatMessage({
-              id: 'pages.login.accountLogin.errorMessage',
-              defaultMessage: '账户或密码错误（admin@qushop.com/123456)',
-            })}
-          />
-        )}
+        {errStatus && <LoginMessage content={errStatus} />}
         {
           <>
+            <div style={{ fontSize: '18px', padding: '4px' }}>用户名</div>
             <ProFormText
               name="username"
               fieldProps={{
@@ -109,8 +112,10 @@ const Login = (props) => {
                 },
               ]}
             />
+            <div style={{ fontSize: '18px', padding: '4px' }}>密码</div>
             <ProFormText.Password
               name="password"
+              defaultMessage="adfasd"
               fieldProps={{
                 size: 'large',
                 prefix: <LockTwoTone className={styles.prefixIcon} />,
@@ -219,22 +224,15 @@ const Login = (props) => {
             />
           </>
         )} */}
-        <div
-          style={{
-            marginBottom: 24,
-          }}
-        >
-          <ProFormCheckbox noStyle name="autoLogin">
-            <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
-          </ProFormCheckbox>
-          {/* <a
+        {/* <div
             style={{
-              float: 'right',
+              marginBottom: 24,
             }}
           >
-            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-          </a> */}
-        </div>
+            <ProFormCheckbox noStyle name="autoLogin">
+              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
+            </ProFormCheckbox>
+          </div> */}
       </ProForm>
     </div>
   );

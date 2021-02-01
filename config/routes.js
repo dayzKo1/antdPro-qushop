@@ -30,13 +30,13 @@ export default [
               {
                 path: '/home',
                 name: 'Home',
-                icon: 'smile',
+                icon: 'HomeOutlined',
                 component: './Home',
               },
               {
                 path: '/order',
                 name: 'Order',
-                icon: 'crown',
+                icon: 'CopyOutlined',
                 component: './Order',
                 authority: ['admin'],
                 routes: [
@@ -52,7 +52,7 @@ export default [
               {
                 path: '/products',
                 name: 'Products',
-                icon: 'crown',
+                icon: 'DatabaseOutlined',
                 // component: './Products/ProductsList',
                 authority: ['admin'],
                 routes: [
@@ -75,7 +75,7 @@ export default [
               {
                 path: '/customers',
                 name: 'Customers',
-                icon: 'crown',
+                icon: 'TeamOutlined',
                 component: './Customers',
                 authority: ['admin'],
                 routes: [
@@ -91,7 +91,7 @@ export default [
               {
                 path: '/set',
                 name: 'Set',
-                icon: 'crown',
+                icon: 'SettingOutlined',
                 component: './Set',
                 authority: ['admin'],
                 routes: [
@@ -126,12 +126,6 @@ export default [
               //     },
               //   ],
               // },
-              {
-                name: 'list.table-list',
-                icon: 'table',
-                path: '/list',
-                component: './TableList',
-              },
               {
                 component: './404',
               },

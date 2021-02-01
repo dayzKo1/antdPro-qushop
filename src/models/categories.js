@@ -1,23 +1,35 @@
-import { categoriesList } from '@/services/api';
+import { categoriesList, batchesCategories } from '@/services/api';
 
 export default {
   namespace: 'categories',
   state: {
-    categoriesList: {},
+    categoriesData: [],
+    meta: {},
+    query: {},
   },
   effects: {
-    *fetch({ payload }, { call, put }) {
-      const res = yield call(categoriesList, payload);
+    *queryCategories({ payload }, { call, put }) {
+      const response = yield call(categoriesList, payload);
+      yield put({ type: 'save', payload: response, query: payload });
+      return response;
+    },
+    *batchDel({ payload, query }, { call, put }) {
+      console.log('fffffffffff');
+      const batchesIds = [];
+      for (let i = 0; i < payload.length; i += 1) {
+        batchesIds.push({ id: payload[i] });
+      }
+      console.log('fffffffffff', batchesIds, payload);
+      yield call(batchesCategories, { delete_category: batchesIds });
       yield put({
-        type: 'saveCategoriesList',
-        payload: res,
+        type: 'queryCategories',
+        payload: query,
       });
-      return res;
     },
   },
   reducers: {
-    saveCategoriesList(state, { payload }) {
-      return { ...state, categoriesList: payload };
+    save(state, { payload, query }) {
+      return { ...state, categoriesData: payload.data, query };
     },
   },
 };
