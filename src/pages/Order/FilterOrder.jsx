@@ -117,7 +117,7 @@ class FilterOrder extends Component {
   };
 
   render() {
-    // const { loading, ordersList } = this.props;
+    const { loading } = this.props;
     const { fulfillmentStatus, postStatus, date, search } = this.state;
     const startDate = date && date.split(',')[0];
     const endDate = date && date.split(',')[1];
@@ -156,6 +156,7 @@ class FilterOrder extends Component {
         <Col span={5}>
           <RangePicker
             locale={locale}
+            style={{ width: '100%' }}
             value={date ? [moment(startDate), moment(endDate)] : []}
             onChange={this.changeDate}
           />
@@ -171,11 +172,18 @@ class FilterOrder extends Component {
           />
         </Col>
         <Col span={5}>
-          <Button type="primary" style={{ marginRight: 10 }} onClick={this.search}>
+          <Button
+            type="primary"
+            style={{ marginRight: 10 }}
+            onClick={() => this.search(search)}
+            loading={loading}
+          >
             {' '}
             查询
           </Button>
-          <Button onClick={this.reset}>重置</Button>
+          <Button onClick={this.reset} loading={loading}>
+            重置
+          </Button>
         </Col>
       </Row>
     );

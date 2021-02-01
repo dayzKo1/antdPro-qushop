@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Card, Tabs, Row, Col, DatePicker, Badge } from 'antd';
+import { Card, Tabs, Row, Col, DatePicker, Badge, Empty } from 'antd';
 import { Chart, Interval } from 'bizcharts';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -79,6 +79,14 @@ class OrderTrend extends Component {
       />
     );
 
+    const scale = {
+      value: {
+        type: 'linear',
+        tickCount: 10,
+        ticks: ['0', '2', '4', '6', '8'],
+      },
+    };
+
     return (
       <Card className={styles.home} loading={hotProductsLoading || ordersLoading}>
         <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
@@ -86,45 +94,47 @@ class OrderTrend extends Component {
             <Row>
               <Col span={16}>
                 <p className={styles.tableTitle}>订单增长趋势</p>
-                <Chart height={300} autoFit data={ordersData}>
+                <Chart height={300} autoFit data={ordersData} scale={scale}>
                   <Interval position="datetime*value" />
                 </Chart>
               </Col>
               <Col span={8}>
                 <p className={styles.tableTitle}>商品销售数排名</p>
-                {hotProductsList && hotProductsList?.data?.length > 0
-                  ? hotProductsList &&
-                    hotProductsList.data.map((item, index) => {
-                      return (
+                {hotProductsList && hotProductsList?.data?.length > 0 ? (
+                  hotProductsList &&
+                  hotProductsList.data.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          width: '100%',
+                          padding: '10px 0',
+                        }}
+                      >
                         <div
-                          key={index}
                           style={{
                             display: 'flex',
-                            justifyContent: 'space-between',
                             alignItems: 'center',
-                            width: '100%',
-                            padding: '10px 0',
                           }}
                         >
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <Badge
-                              count={index + 1}
-                              style={{ marginRight: '10px' }}
-                              className={index + 1 > 3 ? styles.badgeCount : styles.badgeCount_3}
-                            />
-                            {/* <span style={{ marginRight: '10px' }}>{index + 1}</span> */}
-                            <span> {item.title}</span>
-                          </div>
-                          <div> {item.qty}</div>
+                          <Badge
+                            count={index + 1}
+                            style={{ marginRight: '10px' }}
+                            className={index + 1 > 3 ? styles.badgeCount : styles.badgeCount_3}
+                          />
+                          {/* <span style={{ marginRight: '10px' }}>{index + 1}</span> */}
+                          <span> {item.title}</span>
                         </div>
-                      );
-                    })
-                  : ''}
+                        <div> {item.qty}</div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                )}
               </Col>
             </Row>
           </TabPane>

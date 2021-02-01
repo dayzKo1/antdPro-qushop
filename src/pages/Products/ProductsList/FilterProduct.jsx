@@ -12,6 +12,7 @@ const { Search } = Input;
   categoriesData: categories.categoriesData,
   tagLoading: loading.effects['tags/fetch'],
   categoryLoading: loading.effects['categories/queryCategories'],
+  productLoading: loading.effects['product/fetch'],
 }))
 class FilterProduct extends Component {
   state = {
@@ -145,7 +146,13 @@ class FilterProduct extends Component {
   };
 
   render() {
-    const { tagLoading, categoryLoading, tagsList = {}, categoriesData = {} } = this.props;
+    const {
+      tagLoading,
+      categoryLoading,
+      productLoading,
+      tagsList = {},
+      categoriesData = {},
+    } = this.props;
     const { tag, category, search, status } = this.state;
     const tagOptions =
       tagsList?.data?.length > 0 && tagsList?.data.map((d) => <Option key={d.id}>{d.name}</Option>);
@@ -208,11 +215,18 @@ class FilterProduct extends Component {
             />
           </Col>
           <Col span={6}>
-            <Button type="primary" style={{ marginRight: 10 }} onClick={this.search}>
+            <Button
+              type="primary"
+              style={{ marginRight: 10 }}
+              onClick={() => this.search(search)}
+              loading={productLoading}
+            >
               {' '}
               查询
             </Button>
-            <Button onClick={this.reset}>重置</Button>
+            <Button onClick={this.reset} loading={productLoading}>
+              重置
+            </Button>
           </Col>
         </Row>
       </>

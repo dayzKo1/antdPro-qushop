@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Icon, Modal, message } from 'antd';
+import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import styles from '../styles.less';
 
 @connect(({ categories, loading }) => ({
@@ -39,7 +40,7 @@ class BatchSelect extends Component {
   };
 
   render() {
-    const { batchSel, selectedRowKeys, showBatchSel, updateLoading } = this.props;
+    const { batchSel, selectedRowKeys, updateLoading } = this.props;
     const { modalVisible } = this.state;
     const isSelected = selectedRowKeys.length === 0;
     return (
@@ -56,8 +57,12 @@ class BatchSelect extends Component {
         <div className={batchSel ? styles.batchSelect : styles.batchSelectDefault}>
           {batchSel ? (
             <>
-              <Icon onClick={showBatchSel} style={{ marginTop: 5 }} type="caret-left" />
-              <span className={isSelected ? styles.disabled : ''} onClick={this.showModal}>
+              <CaretLeftOutlined style={{ marginLeft: '0px' }} />
+              <span
+                className={isSelected ? styles.disabled : ''}
+                style={{ marginLeft: '25px' }}
+                onClick={this.showModal}
+              >
                 删除
               </span>
               <Modal
@@ -66,7 +71,8 @@ class BatchSelect extends Component {
                 onCancel={this.handleCancel}
                 onOk={this.delBatch}
                 okText="删除"
-                okButtonProps={{ loading: updateLoading, type: 'danger', size: 'large' }}
+                cancelText="取消"
+                okButtonProps={{ loading: updateLoading, size: 'large' }}
                 cancelButtonProps={{ size: 'large' }}
                 width={700}
                 destroyOnClose
@@ -76,7 +82,7 @@ class BatchSelect extends Component {
                   <Icon
                     style={{
                       fontSize: 22,
-                      color: '#ffb75d',
+                      color: '#1890ff',
                       marginRight: 10,
                       position: 'relative',
                       bottom: -2,
@@ -89,7 +95,7 @@ class BatchSelect extends Component {
               </Modal>
             </>
           ) : (
-            <Icon onClick={showBatchSel} style={{ marginTop: 5 }} type="caret-right" />
+            <CaretRightOutlined style={{ marginLeft: '0px' }} />
           )}
         </div>
       </div>
