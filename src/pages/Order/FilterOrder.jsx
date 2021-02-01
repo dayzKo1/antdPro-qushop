@@ -156,6 +156,7 @@ class FilterOrder extends Component {
         <Col span={5}>
           <RangePicker
             locale={locale}
+            style={{ width: '100%' }}
             value={date ? [moment(startDate), moment(endDate)] : []}
             onChange={this.changeDate}
           />
@@ -171,7 +172,7 @@ class FilterOrder extends Component {
           />
         </Col>
         <Col span={5}>
-          <Button type="primary" style={{ marginRight: 10 }} onClick={this.search}>
+          <Button type="primary" style={{ marginRight: 10 }} onClick={() => this.search(search)}>
             {' '}
             查询
           </Button>
