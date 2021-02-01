@@ -9,11 +9,6 @@ export default {
   },
   effects: {
     *fetch({ payload, save }, { call, put }) {
-      const res = yield call(productList, payload);
-      yield put({
-        type: 'saveProductsList',
-        payload: res,
-      });
       if (save) {
         yield put({
           type: 'saveQuery',
@@ -21,6 +16,23 @@ export default {
         });
         sessionStorage.setItem('proQuery', JSON.stringify(payload));
       }
+      let res = yield call(productList, payload);
+      if (payload && res.meta && payload.page > res.meta.last_page) {
+        const newPayload = payload;
+        newPayload.page = res.meta.last_page;
+        res = yield call(productList, payload);
+        if (save) {
+          yield put({
+            type: 'saveQuery',
+            payload: newPayload,
+          });
+          sessionStorage.setItem('proQuery', JSON.stringify(newPayload));
+        }
+      }
+      yield put({
+        type: 'saveProductsList',
+        payload: res,
+      });
       return res;
     },
     *batchProduct({ operating, ids, status }, { call }) {
@@ -32,20 +44,14 @@ export default {
             status: status === 'put' ? 'publish' : 'private',
           });
         }
-        console.log(selectedPro);
-        const res = yield call(batch, { product_status: selectedPro });
-        console.log('---', res);
-        // return res;
+        yield call(batch, { product_status: selectedPro });
       }
       if (operating === 'delProducts') {
         const selectedPro = [];
         for (let i = 0; i < ids.length; i += 1) {
           selectedPro.push({ id: ids[i] });
         }
-        console.log(selectedPro);
-        const res = yield call(batch, { delete_product: selectedPro });
-        console.log('---', res);
-        // return res;
+        yield call(batch, { delete_product: selectedPro });
       }
     },
   },

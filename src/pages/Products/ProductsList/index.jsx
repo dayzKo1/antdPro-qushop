@@ -171,7 +171,7 @@ class ProducstList extends Component {
 
     const { productLoading, productsList, query } = this.props;
     const { currentPage, selectedRowKeys, batchSel } = this.state;
-    const nuewCurrenPage = query.page;
+    const nuewCurrenPage = query?.page;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.batchSelect,
