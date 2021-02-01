@@ -4,8 +4,8 @@ import styles from './styles.less';
 
 class Grid extends Component {
   render() {
-    const { children,className } = this.props;
-    console.log("-1111",className);
+    const { children, className } = this.props;
+    console.log('-1111', className);
     return (
       <Row type="flex" justify="center" className={`${styles.gridWraper} ${className}`}>
         <Col span={24}>{children}</Col>
