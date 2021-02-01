@@ -58,6 +58,7 @@ const Customers = (props) => {
       dataIndex: 'order_count',
       width: '20%',
       align: 'center',
+      sorter: true,
     },
     {
       title: '订单总金额',
@@ -105,6 +106,16 @@ const Customers = (props) => {
 
   function onChange(pagination, filters, sorter, extra) {
     console.log('params', pagination, filters, sorter, extra);
+    const {field,order}=sorter
+    if(field==="order_count"){
+      dispatch({
+        type: 'customers/queryCustomers',
+        payload: {
+          ...query,
+          sort:order?(order==="ascend"?"count":"-count"):undefined
+        },
+      });
+    }
   }
 
   const changePage = (page, prePage) => {

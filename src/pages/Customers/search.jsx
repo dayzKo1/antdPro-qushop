@@ -37,6 +37,7 @@ const Searchs = (props) => {
       type: 'customers/queryCustomers',
       payload: {
         page: currentPage,
+        sort:query?.sort||undefined
       },
     });
   };

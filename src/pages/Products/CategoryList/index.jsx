@@ -12,7 +12,7 @@ import style from './style.less';
 const CategoryList = (props) => {
   const [batchSel, setBatchSel] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const { dispatch, categoriesData, loading, updateLoading } = props;
+  const { dispatch, categoriesData, loading, updateLoading,query } = props;
   useEffect(() => {
     dispatch({
       type: 'categories/queryCategories',
@@ -66,6 +66,16 @@ const CategoryList = (props) => {
 
   function onChange(pagination, filters, sorter, extra) {
     console.log('params', pagination, filters, sorter, extra);
+    const {field,order}=sorter
+    if(field==="total_count"){
+      dispatch({
+        type: 'categories/queryCategories',
+        payload: {
+          ...query,
+          sort:order?(order==="ascend"?"product_count":"-product_count"):undefined
+        },
+      });
+    }
   }
 
   // 选择行
