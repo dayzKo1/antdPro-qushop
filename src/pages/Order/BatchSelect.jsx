@@ -5,7 +5,7 @@ import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import style from './styles.less';
 
 @connect(({ loading }) => ({
-  loading: loading.effects['order/batchOrder'],
+  loading: loading.effects['orders/batchOrder'],
 }))
 class BatchSelect extends Component {
   state = {
