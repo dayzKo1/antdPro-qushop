@@ -94,7 +94,7 @@ class Home extends Component {
       salesLoading,
       visitsLoading,
     } = this.props;
-    const loading = ordersLoading || hotProductsLoading || salesLoading || visitsLoading;
+    // const loading = ordersLoading || hotProductsLoading || salesLoading || visitsLoading;
     return (
       <>
         <Statistics summaryData={summaryData} />
@@ -106,10 +106,10 @@ class Home extends Component {
         />
         <Row gutter={[16, 16]} className={styles.home}>
           <Col xs={24} sm={24} md={24} lg={12}>
-            <User reportsVisitsList={reportsVisitsList} visitsLoading={loading} />
+            <User reportsVisitsList={reportsVisitsList} visitsLoading={visitsLoading} />
           </Col>
           <Col xs={24} sm={24} md={24} lg={12}>
-            <Sales reportsSalesList={reportsSalesList} salesLoading={loading} />
+            <Sales reportsSalesList={reportsSalesList} salesLoading={salesLoading} />
           </Col>
         </Row>
       </>
