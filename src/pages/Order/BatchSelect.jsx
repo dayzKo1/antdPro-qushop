@@ -94,21 +94,24 @@ class BatchSelect extends Component {
           {batchSel ? (
             <div style={{ backgroundColor: '#fafafa' }}>
               <CaretLeftOutlined onClick={changeBetch} style={{ marginLeft: '0px' }} />
-              <a
+              <span
                 onClick={() => this.showModal('fulfilled')}
                 className={disabled ? style.disabled : ''}
               >
                 发货
-              </a>
-              <a
+              </span>
+              <span
                 onClick={() => this.showModal('complete')}
                 className={disabled ? style.disabled : ''}
               >
                 标记已完成
-              </a>
-              <a onClick={() => this.showModal('ing')} className={disabled ? style.disabled : ''}>
+              </span>
+              <span
+                onClick={() => this.showModal('ing')}
+                className={disabled ? style.disabled : ''}
+              >
                 标记进行中
-              </a>
+              </span>
             </div>
           ) : (
             <CaretRightOutlined onClick={changeBetch} style={{ marginLeft: '0px' }} />
