@@ -39,7 +39,7 @@
     }
   },
   "lint-staged": {
-    "**/*.less": "stylelint --syntax less",
+    "**/*.less": "npm run lint:style",
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
       "prettier --write",
       "git add"

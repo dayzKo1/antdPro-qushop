@@ -10,7 +10,7 @@ import {
 import { Alert } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
-import { useIntl, connect, FormattedMessage } from 'umi';
+import { connect, FormattedMessage } from 'umi';
 // import { getFakeCaptcha } from '@/services/login';
 import { removeToken } from '@/utils/authority';
 import styles from './index.less';
@@ -31,7 +31,6 @@ const Login = (props) => {
   // const { status, type: loginType } = userLogin;
   // const [type, setType] = useState('account');
   const [errStatus, setErrStatus] = useState('');
-  const intl = useIntl();
 
   const handleSubmit = async (values) => {
     const { dispatch } = props;
@@ -42,16 +41,13 @@ const Login = (props) => {
         payload: { ...values, type: 'account' },
       });
     } catch (error) {
-      // if (error && error.status_code === 422) {
-      //   const msg = error.errors;
-      //   const warn = Object.values(msg);
-      //   message.warning(warn[0]);
-      // }
-      console.log('--1', error);
-      // const msg = error.errors;
-      // const warn = Object.values(msg);
-      // // message.warning(warn[0]);
-      setErrStatus(error?.message || '账户或密码错误（admin@qushop.com/a12345)');
+      if (error && error.status_code === 422) {
+        const msg = error.errors;
+        const warn = Object.values(msg);
+        setErrStatus(warn[0] || '账户或密码错误（admin@qushop.com/a12345)');
+      } else {
+        setErrStatus(error?.message || '账户或密码错误（admin@qushop.com/a12345)');
+      }
     }
   };
 
@@ -63,6 +59,9 @@ const Login = (props) => {
         }}
         submitter={{
           render: (_, dom) => dom.pop(),
+          searchConfig: {
+            submitText: '登录',
+          },
           submitButtonProps: {
             loading: submitting,
             size: 'large',
@@ -89,17 +88,14 @@ const Login = (props) => {
         {errStatus && <LoginMessage content={errStatus} />}
         {
           <>
-            <div style={{ fontSize: '18px', padding: '4px' }}>用户名</div>
+            <div style={{ fontSize: '17px', padding: '4px' }}>用户名</div>
             <ProFormText
               name="username"
               fieldProps={{
                 size: 'large',
                 prefix: <UserOutlined className={styles.prefixIcon} />,
               }}
-              placeholder={intl.formatMessage({
-                id: 'pages.login.username.placeholder',
-                defaultMessage: '用户名: admin@qushop.com',
-              })}
+              placeholder="请输入用户名"
               rules={[
                 {
                   required: true,
@@ -112,7 +108,7 @@ const Login = (props) => {
                 },
               ]}
             />
-            <div style={{ fontSize: '18px', padding: '4px' }}>密码</div>
+            <div style={{ fontSize: '17px', padding: '4px' }}>密码</div>
             <ProFormText.Password
               name="password"
               defaultMessage="adfasd"
@@ -120,10 +116,7 @@ const Login = (props) => {
                 size: 'large',
                 prefix: <LockTwoTone className={styles.prefixIcon} />,
               }}
-              placeholder={intl.formatMessage({
-                id: 'pages.login.password.placeholder',
-                defaultMessage: '密码: 123456',
-              })}
+              placeholder="请输入密码"
               rules={[
                 {
                   required: true,

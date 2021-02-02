@@ -54,7 +54,7 @@ const Searchs = (props) => {
     });
   };
 
-  const changeDate = (a, dates) => {
+  const changeDate = (_, dates) => {
     const after = (dates[0] !== '' && moment(dates[0]).format('YYYY-MM-DD ')) || undefined;
     const before =
       (dates[1] !== '' && moment(dates[1]).add(1, 'days').format('YYYY-MM-DD ')) || undefined;

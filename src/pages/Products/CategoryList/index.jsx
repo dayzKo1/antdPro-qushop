@@ -6,7 +6,7 @@ import Grid from '@/components/Grid';
 import Search from './search';
 import BasicHeader from '@/components/BasicHeader';
 import defaultImg from '@/assets/defaultImg.png';
-import BatchSelect from './BatchSelect';
+import BatchSelect from './BatchSelect.jsx';
 import style from './style.less';
 
 const CategoryList = (props) => {
@@ -22,7 +22,7 @@ const CategoryList = (props) => {
   const columns = [
     {
       title: () => (
-        <div className={style.title} style={{ paddingLeft: '20%' }}>
+        <div className={style.title} style={{ paddingLeft: '40%' }}>
           分类
         </div>
       ),
@@ -30,14 +30,14 @@ const CategoryList = (props) => {
       width: '33%',
       render: (text, record) => (
         <Row>
-          <Col>
+          <Col xs={8} style={{ margin: 'auto 0' }}>
             <Avatar
               size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 64, xxl: 64 }}
               src={record.thumbnail_url || defaultImg}
               shape="square"
             />
           </Col>
-          <Col className={style.avatar}>
+          <Col xs={16} className={style.avatar}>
             <div className={style.avatarText}>{text}</div>
             <div className={style.avatarText2}>已上架{record.product_count || 0}个商品</div>
           </Col>
@@ -64,7 +64,13 @@ const CategoryList = (props) => {
     },
   ];
 
-  function onChange(pagination, filters, sorter, extra) {
+  // 批量导入后清除选中列表
+  const clearSelRowKeys = () => {
+    setBatchSel(false);
+    setSelectedRowKeys([]);
+  };
+
+  const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
     const { field, order } = sorter;
     if (field === 'total_count') {
@@ -77,7 +83,8 @@ const CategoryList = (props) => {
         },
       });
     }
-  }
+    clearSelRowKeys();
+  };
 
   // 选择行
   const select = (selectedRow) => {
@@ -89,11 +96,6 @@ const CategoryList = (props) => {
     setSelectedRowKeys(selectedRow);
   };
 
-  // 批量导入后清除选中列表
-  const clearSelRowKeys = () => {
-    setBatchSel(false);
-    setSelectedRowKeys([]);
-  };
   //  展示批量选择
   const showBatchSel = () => {
     setBatchSel(!batchSel);
@@ -102,14 +104,14 @@ const CategoryList = (props) => {
   return (
     <Grid>
       <BasicHeader title="分类列表" />
-      <Card>
+      <Card style={{ minWidth: '900px' }}>
         <BatchSelect
           batchSel={batchSel}
           selectedRowKeys={selectedRowKeys}
           clearSelRowKeys={clearSelRowKeys}
           showBatchSel={showBatchSel}
         />
-        <Search />
+        <Search clearSelRowKeys={clearSelRowKeys} />
         <Table
           columns={columns}
           dataSource={categoriesData || []}

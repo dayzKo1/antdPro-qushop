@@ -1,48 +1,37 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'dva';
 import { Icon, Modal, message } from 'antd';
 import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import styles from '../styles.less';
 
-@connect(({ categories, loading }) => ({
-  updateLoading: loading.effects['categories/batchDel'],
-  query: categories.query,
-}))
-class BatchSelect extends Component {
-  state = {
-    modalVisible: false,
-  };
+const BatchSelect=props=>{
+  const [modalVisible,setModalVisible]=useState(false)
+  const { batchSel, selectedRowKeys, updateLoading,showBatchSel } = props;
+  const isSelected = selectedRowKeys.length === 0;
 
   // 批量删除
-  delBatch = async () => {
-    const { selectedRowKeys, clearSelRowKeys, dispatch, query } = this.props;
+  const delBatch = async () => {
+    const { selectedRowKeys, clearSelRowKeys, dispatch, query } = props;
     await dispatch({
       type: 'categories/batchDel',
       payload: selectedRowKeys,
       query,
     });
     message.success('删除成功');
-    this.handleCancel();
+    handleCancel();
     clearSelRowKeys();
   };
 
   // Modal事件
-  showModal = () => {
-    this.setState({
-      modalVisible: true,
-    });
+  const  showModal = () => {
+    setModalVisible(true)
   };
 
-  handleCancel = () => {
-    this.setState({
-      modalVisible: false,
-    });
+  const  handleCancel = () => {
+    setModalVisible(false)
   };
 
-  render() {
-    const { batchSel, selectedRowKeys, updateLoading } = this.props;
-    const { modalVisible } = this.state;
-    const isSelected = selectedRowKeys.length === 0;
+
     return (
       <div
         style={{
@@ -57,19 +46,19 @@ class BatchSelect extends Component {
         <div className={batchSel ? styles.batchSelect : styles.batchSelectDefault}>
           {batchSel ? (
             <>
-              <CaretLeftOutlined style={{ marginLeft: '0px' }} />
+              <CaretLeftOutlined style={{ marginLeft: '0px' }}  onClick={showBatchSel}  />
               <span
                 className={isSelected ? styles.disabled : ''}
                 style={{ marginLeft: '25px' }}
-                onClick={this.showModal}
+                onClick={showModal}
               >
                 删除
               </span>
               <Modal
                 title="提示"
                 visible={modalVisible}
-                onCancel={this.handleCancel}
-                onOk={this.delBatch}
+                onCancel={handleCancel}
+                onOk={delBatch}
                 okText="删除"
                 cancelText="取消"
                 okButtonProps={{ loading: updateLoading, size: 'large' }}
@@ -95,12 +84,14 @@ class BatchSelect extends Component {
               </Modal>
             </>
           ) : (
-            <CaretRightOutlined style={{ marginLeft: '0px' }} />
+            <CaretRightOutlined style={{ marginLeft: '0px' }} onClick={showBatchSel} />
           )}
         </div>
       </div>
     );
-  }
 }
 
-export default BatchSelect;
+export default connect(({ categories, loading }) => ({
+  updateLoading: loading.effects['categories/batchDel'],
+  query: categories.query,
+}))(BatchSelect);
