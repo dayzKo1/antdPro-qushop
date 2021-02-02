@@ -126,7 +126,7 @@ const saleData = [
   {
     month: '00:00',
     city: '21-02-02',
-    temperature: 327,
+    temperature: 427,
   },
   {
     month: '00:00',
