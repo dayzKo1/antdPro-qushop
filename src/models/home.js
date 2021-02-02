@@ -1,4 +1,4 @@
-import { reportsOrders, reportsHotProducts, reportsSales, reportsVisits } from '@/services/api';
+import { order, hotProduct, sale, user } from '@/services/api';
 
 export default {
   namespace: 'home',
@@ -11,23 +11,16 @@ export default {
   },
 
   effects: {
-    *reportsOrdersFetch({ payload, save }, { call, put }) {
-      const res = yield call(reportsOrders, payload);
+    *reportsOrdersFetch({ payload }, { call, put }) {
+      const res = yield call(order, payload);
       yield put({
         type: 'saveReportsOrdersList',
         payload: res,
       });
-      if (save) {
-        yield put({
-          type: 'saveQuery',
-          payload,
-        });
-        sessionStorage.setItem('reportsOrdersQuery', JSON.stringify(payload));
-      }
       return res;
     },
     *reportsHotProductsFetch({ payload }, { call, put }) {
-      const res = yield call(reportsHotProducts, payload);
+      const res = yield call(hotProduct, payload);
       yield put({
         type: 'saveHotProductsList',
         payload: res,
@@ -35,7 +28,7 @@ export default {
       return res;
     },
     *reportsSalesFetch({ payload }, { call, put }) {
-      const res = yield call(reportsSales, payload);
+      const res = yield call(sale, payload);
       yield put({
         type: 'saveReportsSalesList',
         payload: res,
@@ -43,7 +36,7 @@ export default {
       return res;
     },
     *reportsVisitsFetch({ payload }, { call, put }) {
-      const res = yield call(reportsVisits, payload);
+      const res = yield call(user, payload);
       yield put({
         type: 'saveReportsVisitsList',
         payload: res,

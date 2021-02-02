@@ -51,31 +51,33 @@ export async function queryCountries() {
 // 数据分析
 // 订单
 export async function reportsOrders(params) {
-  return request('/api/admin/reports/orders', {
+  return request('/api/admin/reports', {
     method: 'GET',
     params,
   });
 }
 
-// 商品销售数
-export async function reportsHotProducts(params) {
-  return request('/api/admin/reports/hot_products', {
+// mock
+export async function user(params) {
+  return request('/mock/user', {
     method: 'GET',
     params,
   });
 }
-
-// 总销售额
-export async function reportsSales(params) {
-  return request('/api/admin/reports/sales', {
+export async function sale(params) {
+  return request('/mock/sale', {
     method: 'GET',
     params,
   });
 }
-
-// 访客
-export async function reportsVisits(params) {
-  return request('/api/admin/reports/visits', {
+export async function hotProduct(params) {
+  return request('/mock/hotProduct', {
+    method: 'GET',
+    params,
+  });
+}
+export async function order(params) {
+  return request('/mock/order', {
     method: 'GET',
     params,
   });
