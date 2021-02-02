@@ -76,35 +76,47 @@ class BatchSelect extends Component {
   };
 
   render() {
-    const { batchSel, selectedRowKeys, loading } = this.props;
+    const { batchSel, selectedRowKeys, loading, changeBetch } = this.props;
     const { visible, type } = this.state;
+    const disabled = selectedRowKeys.length === 0;
+
     return (
       <div
         style={{
           padding: '0 50px 0 0',
-          width: batchSel ? '98.5%' : '50px',
+          width: batchSel ? '99.2%' : '50px',
           position: 'absolute',
           zIndex: 2,
-          left: 40,
-          top: 70,
+          left: 36,
+          top: 53,
         }}
       >
-        <div>
+        {/*  */}
+        <div className={batchSel ? style.batchSelect : style.batchSelectDefault}>
           {batchSel ? (
             <div style={{ backgroundColor: '#fafafa' }}>
-              <CaretLeftOutlined style={{ marginRight: '10px' }} />
-              <a onClick={() => this.showModal('put')} className={style.link}>
+              <CaretLeftOutlined onClick={changeBetch} style={{ marginLeft: '0px' }} />
+              <span
+                onClick={() => this.showModal('put')}
+                className={disabled ? style.disabled : ''}
+              >
                 上架
-              </a>
-              <a onClick={() => this.showModal('off')} className={style.link}>
+              </span>
+              <span
+                onClick={() => this.showModal('off')}
+                className={disabled ? style.disabled : ''}
+              >
                 下架
-              </a>
-              <a onClick={() => this.showModal('del')} className={style.link}>
+              </span>
+              <span
+                onClick={() => this.showModal('del')}
+                className={disabled ? style.disabled : ''}
+              >
                 删除
-              </a>
+              </span>
             </div>
           ) : (
-            <CaretRightOutlined />
+            <CaretRightOutlined onClick={changeBetch} style={{ marginLeft: '0px' }} />
           )}
         </div>
         <Modal

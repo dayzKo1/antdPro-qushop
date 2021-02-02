@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Card, Tabs, Row, Col, DatePicker, Badge, Empty } from 'antd';
-import { Chart, Interval } from 'bizcharts';
-import moment from 'moment';
+import { Chart, Interval, Tooltip } from 'bizcharts';
+// import moment from 'moment';
 import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import styles from './styles.less';
@@ -19,83 +19,31 @@ class OrderTrend extends Component {
     endDate: undefined,
   };
 
-  // 时间筛选
-  changeDate = async (_, dateStrings) => {
-    const day = new Date();
-    day.setTime(day.getTime());
-    const s = `${day.getFullYear()}-${day.getMonth() + 1}-${day.getDate()}`;
-    // 明天的时间
-    const day3 = new Date();
-    day3.setTime(day3.getTime() + 24 * 60 * 60 * 1000);
-    const s3 = `${day3.getFullYear()}-${day3.getMonth() + 1}-${day3.getDate()}`;
-    const startDate = dateStrings[0] ? dateStrings[0] : s;
-    const endDate = dateStrings[1] ? dateStrings[1] : s3;
-    const { dispatch } = this.props;
-    // 订单趋势
-    await dispatch({
-      type: 'home/reportsOrdersFetch',
-      payload: {
-        // ...query,
-        'filter[start]': startDate,
-        'filter[end]': endDate,
-      },
-      save: true,
-    });
-    // 商品销售额
-    await dispatch({
-      type: 'home/reportsHotProductsFetch',
-      payload: {
-        'filter[start]': startDate,
-        'filter[end]': endDate,
-      },
-    });
-    this.setState({
-      startDate,
-      endDate,
-    });
-  };
-
   render() {
     const {
       reportsOrdersList = {},
       hotProductsList = {},
-      query = {},
       ordersLoading,
       hotProductsLoading,
     } = this.props;
-    const ordersData = reportsOrdersList?.data;
-    const { startDate, endDate } = this.state;
-
-    const operations = (
-      <RangePicker
-        locale={locale}
-        value={
-          [moment(startDate), moment(endDate)] || [
-            moment(query['filter[start]']),
-            moment(query['filter[end]']),
-          ]
-        }
-        onChange={this.changeDate}
-      />
-    );
-
-    const scale = {
-      value: {
-        type: 'linear',
-        tickCount: 10,
-        ticks: ['0', '2', '4', '6', '8'],
-      },
-    };
+    const operations = <RangePicker locale={locale} />;
 
     return (
-      <Card className={styles.home} loading={hotProductsLoading || ordersLoading}>
+      <Card className={styles.home} loading={ordersLoading || hotProductsLoading}>
         <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
           <TabPane tab="订单趋势" key="1">
-            <Row>
+            <Row gutter={16}>
               <Col span={16}>
                 <p className={styles.tableTitle}>订单增长趋势</p>
-                <Chart height={300} autoFit data={ordersData} scale={scale}>
-                  <Interval position="datetime*value" />
+                <Chart
+                  height={300}
+                  autoFit
+                  data={reportsOrdersList && reportsOrdersList.data}
+                  interactions={['active-region']}
+                  padding="auto"
+                >
+                  <Interval position="year*value" />
+                  <Tooltip />
                 </Chart>
               </Col>
               <Col span={8}>

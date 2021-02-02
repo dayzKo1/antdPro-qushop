@@ -110,6 +110,14 @@ class ProducstList extends Component {
     });
   };
 
+  // changeBetch
+  changeBetch = () => {
+    const { batchSel } = this.state;
+    this.setState({
+      batchSel: !batchSel,
+    });
+  };
+
   render() {
     const columns = [
       {
@@ -186,6 +194,7 @@ class ProducstList extends Component {
             selectedRowKeys={selectedRowKeys}
             clearBatchSelect={this.clearBatchSelect}
             updateData={this.updateData}
+            changeBetch={this.changeBetch}
           />
           <Table
             loading={productLoading}
