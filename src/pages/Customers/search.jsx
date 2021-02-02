@@ -105,7 +105,7 @@ const Searchs = (props) => {
               </Select>
             </Form.Item>
           </Col>
-          <Col>
+          <Col style={{ width: '230px' }}>
             <Form.Item name="time">
               <DatePicker.RangePicker onChange={changeDate} />
             </Form.Item>

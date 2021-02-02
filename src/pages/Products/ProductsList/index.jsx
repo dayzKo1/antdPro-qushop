@@ -123,6 +123,7 @@ class ProducstList extends Component {
       {
         title: '商品',
         dataIndex: 'title',
+        width: '40%',
         render: (title, r) => (
           <>
             <Row>
@@ -171,6 +172,7 @@ class ProducstList extends Component {
         title: '操作',
         // dataIndex: 'address',
         align: 'right',
+        width: '10%',
         render: () => <div className={style.link}>编辑</div>,
       },
     ];
@@ -187,7 +189,7 @@ class ProducstList extends Component {
       // <PageContainer>
       <>
         <BasicHeader title="商品列表" />
-        <Card className={style.cardbox}>
+        <Card className={style.cardbox} style={{ minWidth: '900px' }}>
           <FilterProduct />
           <BatchSelect
             batchSel={batchSel}
