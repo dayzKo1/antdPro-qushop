@@ -1,22 +1,28 @@
-import { order, hotProduct, sale, user } from '@/services/api';
+import { reportsOrders, hotProduct } from '@/services/api';
 
 export default {
   namespace: 'home',
   state: {
     reportsOrdersList: {},
     hotProductsList: {},
-    reportsSalesList: {},
-    reportsVisitsList: {},
+    visitSalesList: {},
     query: {},
   },
 
   effects: {
-    *reportsOrdersFetch({ payload }, { call, put }) {
-      const res = yield call(order, payload);
+    *reportsOrdersFetch({ payload, save }, { call, put }) {
+      const res = yield call(reportsOrders, payload);
       yield put({
         type: 'saveReportsOrdersList',
         payload: res,
       });
+      if (save) {
+        yield put({
+          type: 'saveQuery',
+          payload,
+        });
+        sessionStorage.setItem('reportsOrdersQuery', JSON.stringify(payload));
+      }
       return res;
     },
     *reportsHotProductsFetch({ payload }, { call, put }) {
@@ -27,18 +33,11 @@ export default {
       });
       return res;
     },
-    *reportsSalesFetch({ payload }, { call, put }) {
-      const res = yield call(sale, payload);
+
+    *reportsFetch({ payload }, { call, put }) {
+      const res = yield call(reportsOrders, payload);
       yield put({
-        type: 'saveReportsSalesList',
-        payload: res,
-      });
-      return res;
-    },
-    *reportsVisitsFetch({ payload }, { call, put }) {
-      const res = yield call(user, payload);
-      yield put({
-        type: 'saveReportsVisitsList',
+        type: 'saveReportsList',
         payload: res,
       });
       return res;
@@ -51,14 +50,8 @@ export default {
     saveHotProductsList(state, { payload }) {
       return { ...state, hotProductsList: payload };
     },
-    saveReportsSalesList(state, { payload }) {
-      return { ...state, reportsSalesList: payload };
-    },
-    saveReportsVisitsList(state, { payload }) {
-      return { ...state, reportsVisitsList: payload };
-    },
-    saveQuery(state, { payload }) {
-      return { ...state, query: payload };
+    saveReportsList(state, { payload }) {
+      return { ...state, visitSalesList: payload };
     },
   },
 };

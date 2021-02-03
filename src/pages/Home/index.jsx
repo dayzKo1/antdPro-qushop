@@ -4,39 +4,56 @@ import { Row, Col } from 'antd';
 import Statistics from './Statistics';
 import OrderTrend from './OrderTrend';
 import Sales from './Sales';
-import User from './User';
+import Visits from './Visits';
 import styles from './styles.less';
 
 @connect(({ user, home, loading }) => ({
   reportsOrdersList: home.reportsOrdersList,
   hotProductsList: home.hotProductsList,
-  reportsSalesList: home.reportsSalesList,
-  reportsVisitsList: home.reportsVisitsList,
+  visitSalesList: home.visitSalesList,
+  // reportsVisitsList: home.reportsVisitsList,
   query: home.query,
   summaryData: user.summaryData,
   ordersLoading: loading.effects['home/reportsOrdersFetch'],
   hotProductsLoading: loading.effects['home/reportsHotProductsFetch'],
-  salesLoading: loading.effects['home/reportsSalesFetch'],
-  visitsLoading: loading.effects['home/reportsVisitsFetch'],
+  salesVisitsLoading: loading.effects['home/reportsFetch'],
+  // visitsLoading: loading.effects['home/reportsVisitsFetch'],
 }))
 class Home extends Component {
   async componentDidMount() {
     const { dispatch } = this.props;
+    // 今天
+    const today = new Date();
+    today.setTime(today.getTime());
+    const todays = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+
     // 订单
     await dispatch({
       type: 'home/reportsOrdersFetch',
+      payload: {
+        'filter[start]': `${todays} 00:00:00`,
+        'filter[end]': `${todays} 23:59:59`,
+        // ...query
+      },
+      save: true,
     });
     // 商品销售额
     await dispatch({
       type: 'home/reportsHotProductsFetch',
+      payload: {
+        'filter[start]': `${todays} 00:00:00`,
+        'filter[end]': `${todays} 23:59:59`,
+        // ...query
+      },
     });
-    // 销售额
+    // 销售额 访客
     await dispatch({
-      type: 'home/reportsSalesFetch',
-    });
-    // 访客
-    await dispatch({
-      type: 'home/reportsVisitsFetch',
+      type: 'home/reportsFetch',
+      payload: {
+        'filter[start]': `${todays} 00:00:00`,
+        'filter[end]': `${todays} 23:59:59`,
+        // ...query
+      },
     });
   }
 
@@ -45,29 +62,39 @@ class Home extends Component {
       summaryData,
       reportsOrdersList,
       hotProductsList,
-      reportsSalesList,
-      reportsVisitsList,
+      visitSalesList,
       ordersLoading,
       hotProductsLoading,
-      salesLoading,
-      visitsLoading,
+      salesVisitsLoading,
     } = this.props;
 
+    const OrdersList =
+      reportsOrdersList && reportsOrdersList.length > 0
+        ? reportsOrdersList.filter((item) => item.type === 'orders')
+        : {};
+    const reportsVisitsList =
+      visitSalesList && visitSalesList.length > 0
+        ? visitSalesList.filter((item) => item.type === 'visits')
+        : {};
+    const reportsSalesList =
+      visitSalesList && visitSalesList.length > 0
+        ? visitSalesList.filter((item) => item.type === 'sales')
+        : {};
     return (
       <>
         <Statistics summaryData={summaryData} />
         <OrderTrend
-          reportsOrdersList={reportsOrdersList}
+          reportsOrdersList={OrdersList}
           hotProductsList={hotProductsList}
           ordersLoading={ordersLoading}
           hotProductsLoading={hotProductsLoading}
         />
         <Row gutter={[16, 16]} className={styles.home}>
           <Col xs={24} sm={24} md={24} lg={12}>
-            <User reportsVisitsList={reportsVisitsList} visitsLoading={visitsLoading} />
+            <Visits reportsVisitsList={reportsVisitsList} visitsLoading={salesVisitsLoading} />
           </Col>
           <Col xs={24} sm={24} md={24} lg={12}>
-            <Sales reportsSalesList={reportsSalesList} salesLoading={salesLoading} />
+            <Sales reportsSalesList={reportsSalesList} salesLoading={salesVisitsLoading} />
           </Col>
         </Row>
       </>
