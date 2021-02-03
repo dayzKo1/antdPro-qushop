@@ -10,7 +10,7 @@ import styles from './styles.less';
 @connect(({ user, home, loading }) => ({
   reportsOrdersList: home.reportsOrdersList,
   hotProductsList: home.hotProductsList,
-  saveReportsList: home.saveReportsList,
+  visitSalesList: home.visitSalesList,
   // reportsVisitsList: home.reportsVisitsList,
   query: home.query,
   summaryData: user.summaryData,
@@ -22,10 +22,6 @@ import styles from './styles.less';
 class Home extends Component {
   async componentDidMount() {
     const { dispatch } = this.props;
-    // const date = JSON.parse(sessionStorage.getItem('reportsOrdersQuery')) || {};
-    // const startDay = date['filter[start]'];
-    // const endDay = date['filter[end]'];
-
     // 今天
     const today = new Date();
     today.setTime(today.getTime());
@@ -66,7 +62,7 @@ class Home extends Component {
       summaryData,
       reportsOrdersList,
       hotProductsList,
-      saveReportsList,
+      visitSalesList,
       ordersLoading,
       hotProductsLoading,
       salesVisitsLoading,
@@ -77,12 +73,12 @@ class Home extends Component {
         ? reportsOrdersList.filter((item) => item.type === 'orders')
         : {};
     const reportsVisitsList =
-      saveReportsList && saveReportsList.length > 0
-        ? saveReportsList.filter((item) => item.type === 'visits')
+      visitSalesList && visitSalesList.length > 0
+        ? visitSalesList.filter((item) => item.type === 'visits')
         : {};
     const reportsSalesList =
-      saveReportsList && saveReportsList.length > 0
-        ? saveReportsList.filter((item) => item.type === 'sales')
+      visitSalesList && visitSalesList.length > 0
+        ? visitSalesList.filter((item) => item.type === 'sales')
         : {};
     return (
       <>

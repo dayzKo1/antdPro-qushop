@@ -5,8 +5,7 @@ export default {
   state: {
     reportsOrdersList: {},
     hotProductsList: {},
-    reportsSalesList: {},
-    reportsVisitsList: {},
+    visitSalesList: {},
     query: {},
   },
 
@@ -38,7 +37,7 @@ export default {
     *reportsFetch({ payload }, { call, put }) {
       const res = yield call(reportsOrders, payload);
       yield put({
-        type: 'reportsOrders',
+        type: 'saveReportsList',
         payload: res,
       });
       return res;
@@ -51,8 +50,8 @@ export default {
     saveHotProductsList(state, { payload }) {
       return { ...state, hotProductsList: payload };
     },
-    reportsOrders(state, { payload }) {
-      return { ...state, saveReportsList: payload };
+    saveReportsList(state, { payload }) {
+      return { ...state, visitSalesList: payload };
     },
   },
 };
