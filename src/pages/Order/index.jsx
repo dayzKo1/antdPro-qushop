@@ -28,13 +28,12 @@ class Order extends Component {
 
   async componentDidMount() {
     const { dispatch } = this.props;
-    const query = JSON.parse(sessionStorage.getItem('orderQuery')) || {};
+    // const query = JSON.parse(sessionStorage.getItem('orderQuery')) || {};
     await dispatch({
       type: 'orders/fetch',
       payload: {
         page: 1,
-        'filter[financial_status]': 'paid',
-        ...query,
+        // ...query,
       },
       save: true,
     });

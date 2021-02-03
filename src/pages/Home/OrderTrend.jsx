@@ -21,12 +21,54 @@ class OrderTrend extends Component {
 
   render() {
     const {
-      reportsOrdersList = {},
-      hotProductsList = {},
+      // reportsOrdersList = {},
+      // hotProductsList = {},
       ordersLoading,
       hotProductsLoading,
     } = this.props;
     const operations = <RangePicker locale={locale} />;
+    const reportsOrdersList = {
+      data: [
+        { year: '20-12-23', value: 38 },
+        { year: '20-12-24', value: 52 },
+        { year: '20-12-25', value: 61 },
+        { year: '20-12-26', value: 45 },
+        { year: '20-12-27', value: 48 },
+        { year: '20-12-28', value: 38 },
+        { year: '20-12-29', value: 38 },
+        { year: '20-12-80', value: 38 },
+      ],
+    };
+
+    const hotProductsList = {
+      data: [
+        {
+          title: '2020 New Woodworking Edge Corner Plane【Christmas Sale-70%OFF】',
+          qty: '98',
+        },
+        {
+          title:
+            'Portable Ultrasonic Washing Machines（Suitable For Bowls, Clothes, Glasses, Fruits, Vegetables And Tea Sets）',
+          qty: '85',
+        },
+        {
+          title: 'Multifunctional stainless steel basin-Buy 2 free shipping&get 10% off',
+          qty: '76',
+        },
+        {
+          title: 'Hot Selling!!!Premium Windshield Snow Cover Sunshade',
+          qty: '34',
+        },
+        {
+          title: 'Car Oil Fuel Filter for 4003 WIX - 1/2-28 5/8-24',
+          qty: '30',
+        },
+        {
+          title: ' Edge Corner Plane【Christmas Sale-70%OFF】',
+          qty: '19',
+        },
+      ],
+    };
 
     return (
       <Card className={styles.home} loading={ordersLoading || hotProductsLoading}>

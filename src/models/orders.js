@@ -16,7 +16,7 @@ export default {
         });
         sessionStorage.setItem('orderQuery', JSON.stringify(payload));
       }
-      let res = yield call(ordersList, payload);
+      let res = yield call(ordersList, { 'filter[financial_status]': 'paid', ...payload });
       if (payload && res.meta && payload.page > res.meta.last_page) {
         const newPayload = payload;
         newPayload.page = res.meta.last_page;
