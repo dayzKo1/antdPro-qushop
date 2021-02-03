@@ -57,28 +57,35 @@ export async function reportsOrders(params) {
   });
 }
 
-// mock
-export async function user(params) {
-  return request('/mock/user', {
-    method: 'GET',
-    params,
-  });
-}
-export async function sale(params) {
-  return request('/mock/sale', {
-    method: 'GET',
-    params,
-  });
-}
 export async function hotProduct(params) {
-  return request('/mock/hotProduct', {
+  return request('/api/admin/reports/hot_products', {
     method: 'GET',
     params,
   });
 }
-export async function order(params) {
-  return request('/mock/order', {
-    method: 'GET',
-    params,
-  });
-}
+
+// // mock
+// export async function user(params) {
+//   return request('/mock/user', {
+//     method: 'GET',
+//     params,
+//   });
+// }
+// export async function sale(params) {
+//   return request('/mock/sale', {
+//     method: 'GET',
+//     params,
+//   });
+// }
+// export async function hotProduct(params) {
+//   return request('/mock/hotProduct', {
+//     method: 'GET',
+//     params,
+//   });
+// }
+// export async function order(params) {
+//   return request('/mock/order', {
+//     method: 'GET',
+//     params,
+//   });
+// }

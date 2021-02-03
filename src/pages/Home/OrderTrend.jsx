@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Card, Tabs, Row, Col, DatePicker, Badge, Empty } from 'antd';
 import { Chart, Interval, Tooltip } from 'bizcharts';
-// import moment from 'moment';
+import moment from 'moment';
 import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import styles from './styles.less';
@@ -19,55 +19,59 @@ class OrderTrend extends Component {
     endDate: undefined,
   };
 
+  // 时间筛选
+  changeDate = async (_, dateStrings) => {
+    const day = new Date();
+    day.setTime(day.getTime());
+    const today = `${day.getFullYear()}-${day.getMonth() + 1}-${day.getDate()}`;
+    const startDate = dateStrings[0] ? `${dateStrings[0]} 00:00:00` : `${today} 00:00:00`;
+    const endDate = dateStrings[1] ? `${dateStrings[1]} 23:59:59` : `${today} 23:59:59`;
+    const { dispatch } = this.props;
+    // 订单趋势
+    await dispatch({
+      type: 'home/reportsOrdersFetch',
+      payload: {
+        // ...query,
+        'filter[start]': startDate,
+        'filter[end]': endDate,
+      },
+      save: true,
+    });
+    // 商品销售额
+    await dispatch({
+      type: 'home/reportsHotProductsFetch',
+      payload: {
+        'filter[start]': startDate,
+        'filter[end]': endDate,
+      },
+    });
+    this.setState({
+      startDate,
+      endDate,
+    });
+  };
+
   render() {
     const {
-      // reportsOrdersList = {},
-      // hotProductsList = {},
+      reportsOrdersList = {},
+      hotProductsList = {},
       ordersLoading,
       hotProductsLoading,
     } = this.props;
-    const operations = <RangePicker locale={locale} />;
-    const reportsOrdersList = {
-      data: [
-        { year: '20-12-23', value: 38 },
-        { year: '20-12-24', value: 52 },
-        { year: '20-12-25', value: 61 },
-        { year: '20-12-26', value: 45 },
-        { year: '20-12-27', value: 48 },
-        { year: '20-12-28', value: 38 },
-        { year: '20-12-29', value: 38 },
-        { year: '20-12-80', value: 38 },
-      ],
-    };
+    const { startDate, endDate } = this.state;
+    const operations = (
+      <RangePicker
+        locale={locale}
+        value={[moment(startDate), moment(endDate)]}
+        onChange={this.changeDate}
+      />
+    );
 
-    const hotProductsList = {
-      data: [
-        {
-          title: '2020 New Woodworking Edge Corner Plane【Christmas Sale-70%OFF】',
-          qty: '98',
-        },
-        {
-          title:
-            'Portable Ultrasonic Washing Machines（Suitable For Bowls, Clothes, Glasses, Fruits, Vegetables And Tea Sets）',
-          qty: '85',
-        },
-        {
-          title: 'Multifunctional stainless steel basin-Buy 2 free shipping&get 10% off',
-          qty: '76',
-        },
-        {
-          title: 'Hot Selling!!!Premium Windshield Snow Cover Sunshade',
-          qty: '34',
-        },
-        {
-          title: 'Car Oil Fuel Filter for 4003 WIX - 1/2-28 5/8-24',
-          qty: '30',
-        },
-        {
-          title: ' Edge Corner Plane【Christmas Sale-70%OFF】',
-          qty: '19',
-        },
-      ],
+    const scale = {
+      temperature: { min: 0 },
+      value: {
+        tickInterval: 1,
+      },
     };
 
     return (
@@ -79,12 +83,13 @@ class OrderTrend extends Component {
                 <p className={styles.tableTitle}>订单增长趋势</p>
                 <Chart
                   height={300}
+                  scale={scale}
                   autoFit
-                  data={reportsOrdersList && reportsOrdersList.data}
+                  data={reportsOrdersList && reportsOrdersList[0]?.data}
                   interactions={['active-region']}
                   padding="auto"
                 >
-                  <Interval position="year*value" />
+                  <Interval position="datetime*value" />
                   <Tooltip />
                 </Chart>
               </Col>
