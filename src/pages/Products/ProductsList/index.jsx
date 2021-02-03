@@ -194,7 +194,7 @@ class ProducstList extends Component {
       // <PageContainer>
       <>
         <BasicHeader title="商品列表" />
-        <Card className={style.cardbox}>
+        <Card className={style.cardbox} style={{ minWidth: '900px' }}>
           <FilterProduct />
           <BatchSelect
             batchSel={batchSel}

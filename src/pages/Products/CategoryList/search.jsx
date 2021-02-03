@@ -6,7 +6,7 @@ import { connect } from 'dva';
 
 const Searchs = (props) => {
   const [form] = Form.useForm();
-  const { loading, query, dispatch } = props;
+  const { loading, query, dispatch, clearSelRowKeys } = props;
   const handleSubmit = ({ search }) => {
     dispatch({
       type: 'categories/queryCategories',
@@ -18,16 +18,18 @@ const Searchs = (props) => {
         },
       },
     });
+    clearSelRowKeys();
   };
 
   const resetting = () => {
     form.resetFields();
     dispatch({
-			type: 'categories/queryCategories',
-			payload:{
-				sort:query?.sort||undefined
-			}
+      type: 'categories/queryCategories',
+      payload: {
+        sort: query?.sort || undefined,
+      },
     });
+    clearSelRowKeys();
   };
   return (
     <div style={{ margin: '10px 0 30px' }}>
