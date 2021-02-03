@@ -1,37 +1,28 @@
 import React, { Component } from 'react';
 import { Card, Tabs } from 'antd';
-import { Chart, Path } from 'bizcharts';
+import { Chart, LineAdvance } from 'bizcharts';
 
 const { TabPane } = Tabs;
 
 class Sales extends Component {
   render() {
-    // 数据源
-    const { reportsSalesList = {}, salesLoading } = this.props;
-    const { data } = reportsSalesList;
-    const scale = {
-      value: {
-        type: 'linear',
-        tickCount: 10,
-        ticks: ['0', '2', '4', '6', '8'],
-      },
-    };
-
+    const { reportsSalesList, salesLoading } = this.props;
     return (
       <Card loading={salesLoading}>
         <Tabs defaultActiveKey="1">
           <TabPane tab="销售额日增长" key="1">
-            <Chart height={200} autoFit data={data} scale={scale}>
-              <Path
-                animate={{
-                  appear: {
-                    animation: 'path-in',
-                    duration: 1000,
-                    easing: 'easeLinear',
-                  },
-                }}
+            <Chart
+              scale={{ temperature: { min: 0 } }}
+              padding={[10, 20, 50, 40]}
+              autoFit
+              height={320}
+              data={reportsSalesList && reportsSalesList.data}
+            >
+              <LineAdvance
+                point={{ size: 3 }}
                 shape="smooth"
-                position="datetime*value"
+                position="month*temperature"
+                color="city"
               />
             </Chart>
           </TabPane>

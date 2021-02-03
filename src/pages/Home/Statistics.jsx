@@ -24,11 +24,11 @@ class Statistics extends Component {
                   fontSize: '10px',
                   width: '100%',
                   display: 'flex',
-                  justifyContent: 'space-around',
+                  justifyContent: 'flex-start',
                   marginTop: '9px',
                 }}
               >
-                <div>
+                <div style={{ marginRight: '10px' }}>
                   <span>周同比</span>
                   <CaretUpOutlined style={{ color: '#52c41aa5' }} />
                   <span>12%</span>

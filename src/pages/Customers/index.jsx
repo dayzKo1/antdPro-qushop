@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Table } from 'antd';
 import { connect } from 'dva';
+import currencyFormatter from 'currency-formatter';
 import Grid from '@/components/Grid';
 import Search from './search';
 import TableFooter from '@/components/TableFooter';
@@ -26,10 +27,11 @@ const Customers = (props) => {
 
   const columns = [
     {
-      title: '姓名',
+      title: () => <div style={{ paddingLeft: '15px' }}>姓名</div>,
       dataIndex: 'display_name',
-      width: '20%',
-      align: 'center',
+      width: '15%',
+      // align: 'center',
+      render: (text) => <div style={{ paddingLeft: '15px' }}>{text}</div>,
     },
     {
       title: '地区',
@@ -41,7 +43,7 @@ const Customers = (props) => {
     {
       title: '订阅状态',
       dataIndex: 'subscribed',
-      width: '20%',
+      width: '25%',
       align: 'center',
       render: (text) => (
         <div>
@@ -66,42 +68,9 @@ const Customers = (props) => {
       width: '20%',
       align: 'center',
       sorter: true,
-      render: (text) => <div>{`$ ${text}`}</div>,
-    },
-  ];
-
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      chinese: 98,
-      math: 60,
-      english: 70,
-      qqq: 70,
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      chinese: 98,
-      math: false,
-      english: 89,
-      qqq: 70,
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      chinese: 98,
-      math: 90,
-      english: 70,
-      qqq: 70,
-    },
-    {
-      key: '4',
-      name: 'Jim Red',
-      chinese: 88,
-      math: false,
-      english: 89,
-      qqq: 70,
+      render: (text, r) => (
+        <div>{`${currencyFormatter?.findCurrency(r?.billing_country)?.symbol || '$'} ${text}`}</div>
+      ),
     },
   ];
 
@@ -150,7 +119,7 @@ const Customers = (props) => {
         <Table
           className={style.tables}
           columns={columns}
-          dataSource={customersData || data}
+          dataSource={customersData}
           onChange={onChange}
           pagination={false}
           loading={loading}

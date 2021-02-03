@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Table, Row, Col, Tag } from 'antd';
+import { Link } from 'umi';
 import { connect } from 'dva';
 import defaultImg from '@/assets/defaultImg.png';
 // import { PageContainer } from '@ant-design/pro-layout';
@@ -110,11 +111,20 @@ class ProducstList extends Component {
     });
   };
 
+  // changeBetch
+  changeBetch = () => {
+    const { batchSel } = this.state;
+    this.setState({
+      batchSel: !batchSel,
+    });
+  };
+
   render() {
     const columns = [
       {
         title: '商品',
         dataIndex: 'title',
+        width: '50%',
         render: (title, r) => (
           <>
             <Row>
@@ -162,8 +172,13 @@ class ProducstList extends Component {
       {
         title: '操作',
         // dataIndex: 'address',
+        width: '15%',
         align: 'right',
-        render: () => <div className={style.link}>编辑</div>,
+        render: () => (
+          <Link to="./" disabled>
+            编辑
+          </Link>
+        ),
       },
     ];
 
@@ -179,13 +194,14 @@ class ProducstList extends Component {
       // <PageContainer>
       <>
         <BasicHeader title="商品列表" />
-        <Card className={style.cardbox}>
+        <Card className={style.cardbox} style={{ minWidth: '900px' }}>
           <FilterProduct />
           <BatchSelect
             batchSel={batchSel}
             selectedRowKeys={selectedRowKeys}
             clearBatchSelect={this.clearBatchSelect}
             updateData={this.updateData}
+            changeBetch={this.changeBetch}
           />
           <Table
             loading={productLoading}

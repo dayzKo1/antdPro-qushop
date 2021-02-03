@@ -1,3 +1,4 @@
+/* eslint-disable prefer-rest-params */
 import { parse } from 'querystring';
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 
@@ -21,3 +22,12 @@ export const isAntDesignProOrDev = () => {
   return isAntDesignPro();
 };
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
+
+let debounceSearch = null;
+export function debounce(fake) {
+  if (debounceSearch) {
+    clearTimeout(debounceSearch);
+    debounceSearch = null;
+  }
+  debounceSearch = setTimeout(fake, 1000);
+}

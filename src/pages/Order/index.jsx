@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Table, Badge } from 'antd';
+import { Link } from 'umi';
 import { connect } from 'dva';
 import BasicHeader from '@/components/BasicHeader';
 import TableFooter from '@/components/TableFooter';
@@ -31,6 +32,7 @@ class Order extends Component {
       type: 'orders/fetch',
       payload: {
         page: 1,
+        'filter[financial_status]': 'paid',
         ...query,
       },
       save: true,
@@ -97,6 +99,14 @@ class Order extends Component {
     });
   };
 
+  // changeBetch
+  changeBetch = () => {
+    const { batchSel } = this.state;
+    this.setState({
+      batchSel: !batchSel,
+    });
+  };
+
   render() {
     const columns = [
       {
@@ -145,7 +155,11 @@ class Order extends Component {
         title: '操作',
         // dataIndex: 'address',
         align: 'right',
-        render: () => <div className={style.link}>编辑</div>,
+        render: () => (
+          <Link to="./" disabled>
+            编辑
+          </Link>
+        ),
       },
     ];
 
@@ -155,6 +169,10 @@ class Order extends Component {
     const rowSelection = {
       selectedRowKeys,
       onChange: this.batchSelect,
+      getCheckboxProps: (record) => ({
+        disabled: record.post_status === 'wc-cancelled',
+        // name: record.name,
+      }),
     };
 
     return (
@@ -162,12 +180,13 @@ class Order extends Component {
       <>
         <BasicHeader title="订单列表" />
         <Card className={style.cardbox}>
-          <FilterOrder />
+          <FilterOrder clearBatchSelect={this.clearBatchSelect} />
           <BatchSelect
             batchSel={batchSel}
             selectedRowKeys={selectedRowKeys}
             clearBatchSelect={this.clearBatchSelect}
             updateData={this.updateData}
+            changeBetch={this.changeBetch}
           />
           <Table
             loading={loading}

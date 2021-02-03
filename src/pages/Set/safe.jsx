@@ -68,7 +68,7 @@ const Safe = (props) => {
         >
           <Row className={style.rows}>
             <Col xs={4} className={style.letfCols}>
-              当前密码:
+              旧密码:
             </Col>
             <Col xs={12} className={style.rightCols}>
               <Form.Item
@@ -78,7 +78,7 @@ const Safe = (props) => {
                   { min: 6, message: '最少输入6位密码' },
                 ]}
               >
-                <Input.Password size="large" placeholder="请输入当前的密码" />
+                <Input.Password size="large" placeholder="请输入旧密码" />
               </Form.Item>
             </Col>
           </Row>

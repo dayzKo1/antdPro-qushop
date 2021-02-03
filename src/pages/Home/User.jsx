@@ -1,37 +1,30 @@
 import React, { Component } from 'react';
 import { Card, Tabs } from 'antd';
-import { Chart, Path } from 'bizcharts';
+import { Chart, LineAdvance } from 'bizcharts';
+// import { Chart, Path } from 'bizcharts';
 
 const { TabPane } = Tabs;
 
 class User extends Component {
   render() {
-    // 数据源
-    const { reportsVisitsList, visitsLoading } = this.props;
-    const { data } = reportsVisitsList;
-    const scale = {
-      value: {
-        type: 'linear',
-        tickCount: 10,
-        ticks: ['0', '2', '4', '6', '8'],
-      },
-    };
+    const { visitsLoading, reportsVisitsList } = this.props;
 
     return (
       <Card loading={visitsLoading}>
         <Tabs defaultActiveKey="1">
           <TabPane tab="访客日增长" key="1">
-            <Chart height={200} autoFit data={data} scale={scale}>
-              <Path
-                animate={{
-                  appear: {
-                    animation: 'path-in',
-                    duration: 1000,
-                    easing: 'easeLinear',
-                  },
-                }}
+            <Chart
+              scale={{ temperature: { min: 0 } }}
+              padding={[10, 20, 50, 40]}
+              autoFit
+              height={320}
+              data={reportsVisitsList && reportsVisitsList.data}
+            >
+              <LineAdvance
+                point={{ size: 3 }}
                 shape="smooth"
-                position="datetime*value"
+                position="month*temperature"
+                color="city"
               />
             </Chart>
           </TabPane>

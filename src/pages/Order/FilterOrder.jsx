@@ -35,7 +35,7 @@ class FilterOrder extends Component {
 
   // 订单状态筛选, wc-completed已完成，进行中(wc-pending待付款,wc-processing已付款)，wc-cancelled已取消，格式如:filter[status]=wc-completed
   changePostStatus = async (value) => {
-    const { dispatch, query } = this.props;
+    const { dispatch, query, clearBatchSelect } = this.props;
     await dispatch({
       type: 'orders/fetch',
       payload: {
@@ -47,11 +47,12 @@ class FilterOrder extends Component {
     this.setState({
       postStatus: value,
     });
+    clearBatchSelect();
   };
 
   // 发货状态：未发货状态：unfulfilled,已发货状态：fulfilled，格式如:filter[fulfillment_status]=unfulfilled
   changeFulfillmentStatus = async (value) => {
-    const { dispatch, query } = this.props;
+    const { dispatch, query, clearBatchSelect } = this.props;
     await dispatch({
       type: 'orders/fetch',
       payload: {
@@ -63,13 +64,14 @@ class FilterOrder extends Component {
     this.setState({
       fulfillmentStatus: value,
     });
+    clearBatchSelect();
   };
 
   // 时间筛选
   changeDate = async (_, dateStrings) => {
     const date =
       dateStrings[0] && dateStrings[1] ? `${dateStrings[0]},${dateStrings[1]}` : undefined;
-    const { dispatch, query } = this.props;
+    const { dispatch, query, clearBatchSelect } = this.props;
     await dispatch({
       type: 'orders/fetch',
       payload: {
@@ -81,6 +83,7 @@ class FilterOrder extends Component {
     this.setState({
       date,
     });
+    clearBatchSelect();
   };
 
   // 保存商品名或SKU搜索信息
@@ -92,7 +95,7 @@ class FilterOrder extends Component {
 
   // 商品名或SKU搜索
   search = async (search) => {
-    const { dispatch, query } = this.props;
+    const { dispatch, query, clearBatchSelect } = this.props;
     await dispatch({
       type: 'orders/fetch',
       payload: {
@@ -101,12 +104,19 @@ class FilterOrder extends Component {
       },
       save: true,
     });
+    clearBatchSelect();
   };
 
   // 重置搜索
   reset = async () => {
-    const { dispatch } = this.props;
-    await dispatch({ type: 'orders/fetch' });
+    const { dispatch, clearBatchSelect } = this.props;
+    await dispatch({
+      type: 'orders/fetch',
+      payload: {
+        'filter[financial_status]': 'paid',
+      },
+      save: true,
+    });
     this.setState({
       fulfillmentStatus: undefined,
       postStatus: undefined,
@@ -114,6 +124,7 @@ class FilterOrder extends Component {
       date: undefined,
       currentPage: 1,
     });
+    clearBatchSelect();
   };
 
   render() {
@@ -129,7 +140,7 @@ class FilterOrder extends Component {
             style={{ width: '100%' }}
             showSearch
             value={postStatus}
-            placeholder="选择订单状态"
+            placeholder="全部订单状态"
             allowClear
             onChange={this.changePostStatus}
           >
@@ -144,7 +155,7 @@ class FilterOrder extends Component {
             showSearch
             style={{ width: '100%' }}
             value={fulfillmentStatus}
-            placeholder="选择发货状态"
+            placeholder="全部发货状态"
             allowClear
             onChange={this.changeFulfillmentStatus}
           >
@@ -161,7 +172,7 @@ class FilterOrder extends Component {
             onChange={this.changeDate}
           />
         </Col>
-        <Col span={8}>
+        <Col span={7}>
           <Search
             placeholder="请输入订单编号/支付编号/商品名/SKU/邮箱"
             className={styles.search}
@@ -171,7 +182,7 @@ class FilterOrder extends Component {
             onSearch={this.search}
           />
         </Col>
-        <Col span={5}>
+        <Col span={6}>
           <Button
             type="primary"
             style={{ marginRight: 10 }}

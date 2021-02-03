@@ -1,7 +1,9 @@
+/* eslint-disable prefer-rest-params */
 import React, { Component } from 'react';
 import { Row, Col, Select, Input, Button } from 'antd';
 import { connect } from 'dva';
 import style from './style.less';
+import { debounce } from '@/utils/utils';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -10,7 +12,7 @@ const { Search } = Input;
   query: product.query,
   tagsList: tag.tagsList,
   categoriesData: categories.categoriesData,
-  tagLoading: loading.effects['tags/fetch'],
+  tagLoading: loading.effects['tag/fetch'],
   categoryLoading: loading.effects['categories/queryCategories'],
   productLoading: loading.effects['product/fetch'],
 }))
@@ -66,30 +68,19 @@ class FilterProduct extends Component {
     });
   };
 
-  // 延迟触发搜索tag
-  delaySearchTag = async (value) => {
-    setTimeout(() => {
-      this.setState({
-        tag: value,
-      });
-      // this.searchTag();
-    }, 3000);
-  };
-
   // 标签搜索
-  searchTag = async () => {
+  searchTag = async (value) => {
     const { dispatch } = this.props;
-    const { tag } = this.state;
-    await dispatch({
-      type: 'tag/fetch',
-      payload: {
-        sort: 'name',
-        'filter[name]': tag,
-      },
-    });
-    // this.setState({
-    //   tag,
-    // });
+    async function tag() {
+      await dispatch({
+        type: 'tag/fetch',
+        payload: {
+          sort: 'name',
+          'filter[name]': value,
+        },
+      });
+    }
+    debounce(tag, 500);
   };
 
   // 状态筛选
@@ -168,8 +159,9 @@ class FilterProduct extends Component {
             <Select
               style={{ width: '100%' }}
               showSearch
+              optionFilterProp="children"
               value={category}
-              placeholder="选择分类"
+              placeholder="全部分类"
               allowClear
               onChange={this.changeCategories}
               // onSearch={this.changeCategories}
@@ -183,10 +175,11 @@ class FilterProduct extends Component {
               showSearch
               style={{ width: '100%' }}
               value={tag}
-              placeholder="选择标签"
+              optionFilterProp="children"
+              placeholder="全部标签"
               allowClear
               onChange={this.changeTag}
-              onSearch={this.delaySearchTag}
+              onSearch={this.searchTag}
               loading={tagLoading}
             >
               {tagOptions}
@@ -196,7 +189,7 @@ class FilterProduct extends Component {
             <Select
               style={{ width: '100%' }}
               value={status}
-              placeholder="选择状态"
+              placeholder="全部状态"
               allowClear
               onChange={this.changeStatus}
             >
