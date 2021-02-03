@@ -17,7 +17,7 @@ class Statistics extends Component {
             title="总销售额"
             value={summaryData?.base?.sales}
             today="日均销售额"
-            todayVal="¥ 12,423"
+            todayVal="$ 123"
             detail={
               <div
                 style={{
