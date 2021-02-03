@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col } from 'antd';
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import ChartCard from '@/components/ChartCard';
+import currencyFormatter from 'currency-formatter';
 import Order from '@/assets/home/order.png';
 import UfilledOrder from '@/assets/home/ufilledOrder.png';
 import User from '@/assets/home/user.png';
@@ -15,7 +16,9 @@ class Statistics extends Component {
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <ChartCard
             title="总销售额"
-            value={summaryData?.base?.sales}
+            value={`${
+              currencyFormatter?.findCurrency(summaryData?.base?.currency)?.symbol || '$'
+            } ${summaryData?.base?.sales}`}
             today="日均销售额"
             todayVal="$ 123"
             detail={
