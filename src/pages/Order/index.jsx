@@ -151,7 +151,7 @@ class Order extends Component {
         title: '订单金额',
         dataIndex: 'order_total',
         render: (v, r) => (
-          <div>{`${currencyFormatter?.findCurrency(r?.billing_country)?.symbol || '$'} ${v}`}</div>
+          <div>{`${currencyFormatter?.findCurrency(r?.order_currency)?.symbol || '$'} ${v}`}</div>
         ),
       },
       {
