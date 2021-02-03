@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Table } from 'antd';
 import { connect } from 'dva';
+import currencyFormatter from 'currency-formatter';
 import Grid from '@/components/Grid';
 import Search from './search';
 import TableFooter from '@/components/TableFooter';
@@ -67,7 +68,9 @@ const Customers = (props) => {
       width: '20%',
       align: 'center',
       sorter: true,
-      render: (text) => <div>{`$ ${text}`}</div>,
+      render: (text, r) => (
+        <div>{`${currencyFormatter?.findCurrency(r?.billing_country)?.symbol || '$'} ${text}`}</div>
+      ),
     },
   ];
 
