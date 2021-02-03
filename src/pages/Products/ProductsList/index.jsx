@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Table, Row, Col, Tag } from 'antd';
+import { Link } from 'umi';
 import { connect } from 'dva';
 import defaultImg from '@/assets/defaultImg.png';
 // import { PageContainer } from '@ant-design/pro-layout';
@@ -123,6 +124,7 @@ class ProducstList extends Component {
       {
         title: '商品',
         dataIndex: 'title',
+        width: '50%',
         render: (title, r) => (
           <>
             <Row>
@@ -170,8 +172,13 @@ class ProducstList extends Component {
       {
         title: '操作',
         // dataIndex: 'address',
+        width: '15%',
         align: 'right',
-        render: () => <div className={style.link}>编辑</div>,
+        render: () => (
+          <Link to="./" disabled>
+            编辑
+          </Link>
+        ),
       },
     ];
 

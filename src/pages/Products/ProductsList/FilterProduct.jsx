@@ -169,7 +169,7 @@ class FilterProduct extends Component {
               style={{ width: '100%' }}
               showSearch
               value={category}
-              placeholder="选择分类"
+              placeholder="全部分类"
               allowClear
               onChange={this.changeCategories}
               // onSearch={this.changeCategories}
@@ -183,7 +183,7 @@ class FilterProduct extends Component {
               showSearch
               style={{ width: '100%' }}
               value={tag}
-              placeholder="选择标签"
+              placeholder="全部标签"
               allowClear
               onChange={this.changeTag}
               onSearch={this.delaySearchTag}
@@ -196,7 +196,7 @@ class FilterProduct extends Component {
             <Select
               style={{ width: '100%' }}
               value={status}
-              placeholder="选择状态"
+              placeholder="全部状态"
               allowClear
               onChange={this.changeStatus}
             >
