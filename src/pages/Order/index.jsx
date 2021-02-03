@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, Table, Badge } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
+import currencyFormatter from 'currency-formatter';
 import BasicHeader from '@/components/BasicHeader';
 import TableFooter from '@/components/TableFooter';
 import FilterOrder from './FilterOrder';
@@ -150,6 +151,9 @@ class Order extends Component {
       {
         title: '订单金额',
         dataIndex: 'order_total',
+        render: (v, r) => (
+          <div>{`${currencyFormatter?.findCurrency(r?.billing_country)?.symbol || '$'} ${v}`}</div>
+        ),
       },
       {
         title: '操作',
