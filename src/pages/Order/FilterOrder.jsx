@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Select, Input, Button, DatePicker } from 'antd';
 import { connect } from 'dva';
-import moment from 'moment';
+// import moment from 'moment';
 import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import styles from './styles.less';
@@ -23,15 +23,15 @@ class FilterOrder extends Component {
     currentPage: 1,
   };
 
-  async componentDidMount() {
-    const query = JSON.parse(sessionStorage.getItem('orderQuery')) || {};
-    this.setState({
-      postStatus: query['filter[status]'],
-      fulfillmentStatus: query['filter[fulfillment_status]'],
-      date: query['filter[date]'],
-      search: query['filter[search]'],
-    });
-  }
+  // async componentDidMount() {
+  //   const query = JSON.parse(sessionStorage.getItem('orderQuery')) || {};
+  //   this.setState({
+  //     postStatus: query['filter[status]'],
+  //     fulfillmentStatus: query['filter[fulfillment_status]'],
+  //     date: query['filter[date]'],
+  //     search: query['filter[search]'],
+  //   });
+  // }
 
   // 订单状态筛选, wc-completed已完成，进行中(wc-pending待付款,wc-processing已付款)，wc-cancelled已取消，格式如:filter[status]=wc-completed
   changePostStatus = async (value) => {
@@ -112,9 +112,6 @@ class FilterOrder extends Component {
     const { dispatch, clearBatchSelect } = this.props;
     await dispatch({
       type: 'orders/fetch',
-      payload: {
-        'filter[financial_status]': 'paid',
-      },
       save: true,
     });
     this.setState({
@@ -129,9 +126,9 @@ class FilterOrder extends Component {
 
   render() {
     const { loading } = this.props;
-    const { fulfillmentStatus, postStatus, date, search } = this.state;
-    const startDate = date && date.split(',')[0];
-    const endDate = date && date.split(',')[1];
+    const { fulfillmentStatus, postStatus, search } = this.state;
+    // const startDate = date && date.split(',')[0];
+    // const endDate = date && date.split(',')[1];
 
     return (
       <Row gutter={5} style={{ marginBottom: 10 }}>
@@ -165,12 +162,9 @@ class FilterOrder extends Component {
           </Select>
         </Col>
         <Col span={5}>
-          <RangePicker
-            locale={locale}
-            style={{ width: '100%' }}
-            value={date ? [moment(startDate), moment(endDate)] : []}
-            onChange={this.changeDate}
-          />
+          {/* <Form.Item   initialValue={date ? [moment(startDate), moment(endDate)] : []}> */}
+          <RangePicker locale={locale} style={{ width: '100%' }} onChange={this.changeDate} />
+          {/* </Form.Item> */}
         </Col>
         <Col span={7}>
           <Search

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, Table, Badge } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
+import currencyFormatter from 'currency-formatter';
 import BasicHeader from '@/components/BasicHeader';
 import TableFooter from '@/components/TableFooter';
 import FilterOrder from './FilterOrder';
@@ -27,13 +28,12 @@ class Order extends Component {
 
   async componentDidMount() {
     const { dispatch } = this.props;
-    const query = JSON.parse(sessionStorage.getItem('orderQuery')) || {};
+    // const query = JSON.parse(sessionStorage.getItem('orderQuery')) || {};
     await dispatch({
       type: 'orders/fetch',
       payload: {
         page: 1,
-        'filter[financial_status]': 'paid',
-        ...query,
+        // ...query,
       },
       save: true,
     });
@@ -150,6 +150,9 @@ class Order extends Component {
       {
         title: '订单金额',
         dataIndex: 'order_total',
+        render: (v, r) => (
+          <div>{`${currencyFormatter?.findCurrency(r?.order_currency)?.symbol || '$'} ${v}`}</div>
+        ),
       },
       {
         title: '操作',

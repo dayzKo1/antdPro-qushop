@@ -13,7 +13,7 @@ countries.registerLocale(require('i18n-iso-countries/langs/zh.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
 
 const Customers = (props) => {
-  const { customersData, dispatch, loading, meta, query } = props;
+  const { customersData, dispatch, loading, meta, query, currency } = props;
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(async () => {
@@ -68,8 +68,8 @@ const Customers = (props) => {
       width: '20%',
       align: 'center',
       sorter: true,
-      render: (text, r) => (
-        <div>{`${currencyFormatter?.findCurrency(r?.billing_country)?.symbol || '$'} ${text}`}</div>
+      render: (text) => (
+        <div>{`${currencyFormatter?.findCurrency(currency)?.symbol || '$'} ${text}`}</div>
       ),
     },
   ];
@@ -141,5 +141,6 @@ export default connect((state) => ({
   customersData: state.customers.customersData,
   meta: state.customers.meta,
   query: state.customers.query,
+  currency: state.user.currency,
   loading: state.loading.effects['customers/queryCustomers'],
 }))(Customers);

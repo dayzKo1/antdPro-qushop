@@ -5,6 +5,7 @@ const UserModel = {
   state: {
     currentUser: {},
     summaryData: {},
+    currency: '',
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -31,6 +32,7 @@ const UserModel = {
         ...state,
         currentUser: action?.payload?.user || {},
         summaryData: action?.payload?.summary,
+        currency: action?.payload?.config?.woocommerce_currency,
       };
     },
 
