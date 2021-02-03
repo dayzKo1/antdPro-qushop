@@ -170,7 +170,6 @@ class FilterOrder extends Component {
             style={{ width: '100%' }}
             value={date ? [moment(startDate), moment(endDate)] : []}
             onChange={this.changeDate}
-            placeholder=""
           />
         </Col>
         <Col span={7}>
