@@ -56,7 +56,7 @@ class Statistics extends Component {
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <ChartCard
-            title="店铺实时访客"
+            title="商品访客数"
             value={summaryData?.base?.visits}
             today="今日新增"
             todayVal="0"
