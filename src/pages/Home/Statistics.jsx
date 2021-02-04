@@ -6,13 +6,13 @@ import currencyFormatter from 'currency-formatter';
 import Order from '@/assets/home/order.png';
 import UfilledOrder from '@/assets/home/ufilledOrder.png';
 import User from '@/assets/home/user.png';
-import styles from './styles.less';
+// import styles from './styles.less';
 
 class Statistics extends Component {
   render() {
     const { summaryData } = this.props;
     return (
-      <Row gutter={[16, 16]} className={styles.home}>
+      <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <ChartCard
             title="总销售额"
