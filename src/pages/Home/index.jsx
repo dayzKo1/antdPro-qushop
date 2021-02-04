@@ -84,12 +84,17 @@ class Home extends Component {
     return (
       <Grid>
         <Statistics summaryData={summaryData} />
-        <OrderTrend
-          reportsOrdersList={OrdersList}
-          hotProductsList={hotProductsList}
-          ordersLoading={ordersLoading}
-          hotProductsLoading={hotProductsLoading}
-        />
+        <Row gutter={[16, 16]} className={styles.home}>
+          <Col span={24}>
+            <OrderTrend
+              reportsOrdersList={OrdersList}
+              hotProductsList={hotProductsList}
+              ordersLoading={ordersLoading}
+              hotProductsLoading={hotProductsLoading}
+            />
+          </Col>
+        </Row>
+
         <Row gutter={[16, 16]} className={styles.home}>
           <Col xs={24} sm={24} md={24} lg={12}>
             <Visits reportsVisitsList={reportsVisitsList} visitsLoading={salesVisitsLoading} />
