@@ -51,7 +51,7 @@ class Statistics extends Component {
             value={summaryData?.base?.orders}
             today="今日新增"
             todayVal="0"
-            detail={<img alt={User} src={User} style={{ width: '100%' }} />}
+            detail={<img alt={User} src={User} style={{ width: '100%', maxHeight: '35px' }} />}
           />
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
@@ -60,7 +60,7 @@ class Statistics extends Component {
             value={summaryData?.base?.visits}
             today="今日新增"
             todayVal="0"
-            detail={<img alt={Order} src={Order} style={{ width: '100%' }} />}
+            detail={<img alt={Order} src={Order} style={{ width: '100%', maxHeight: '35px' }} />}
           />
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
@@ -73,7 +73,7 @@ class Statistics extends Component {
               <img
                 alt={UfilledOrder}
                 src={UfilledOrder}
-                style={{ width: '100%', marginTop: '8px' }}
+                style={{ width: '100%', marginTop: '8px', maxHeight: '35px' }}
               />
             }
           />
