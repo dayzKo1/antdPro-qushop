@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Row, Col } from 'antd';
+import Grid from '@/components/Grid';
 import Statistics from './Statistics';
 import OrderTrend from './OrderTrend';
 import Sales from './Sales';
@@ -81,7 +82,7 @@ class Home extends Component {
         ? visitSalesList.filter((item) => item.type === 'sales')
         : {};
     return (
-      <>
+      <Grid>
         <Statistics summaryData={summaryData} />
         <OrderTrend
           reportsOrdersList={OrdersList}
@@ -97,7 +98,7 @@ class Home extends Component {
             <Sales reportsSalesList={reportsSalesList} salesLoading={salesVisitsLoading} />
           </Col>
         </Row>
-      </>
+      </Grid>
     );
   }
 }
