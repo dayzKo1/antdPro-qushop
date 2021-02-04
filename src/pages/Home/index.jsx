@@ -6,7 +6,7 @@ import Statistics from './Statistics';
 import OrderTrend from './OrderTrend';
 import Sales from './Sales';
 import Visits from './Visits';
-import styles from './styles.less';
+// import styles from './styles.less';
 
 @connect(({ user, home, loading }) => ({
   reportsOrdersList: home.reportsOrdersList,
@@ -84,7 +84,7 @@ class Home extends Component {
     return (
       <Grid>
         <Statistics summaryData={summaryData} />
-        <Row gutter={[16, 16]} className={styles.home}>
+        <Row gutter={[16, 16]}>
           <Col span={24}>
             <OrderTrend
               reportsOrdersList={OrdersList}
@@ -95,7 +95,7 @@ class Home extends Component {
           </Col>
         </Row>
 
-        <Row gutter={[16, 16]} className={styles.home}>
+        <Row gutter={[16, 16]}>
           <Col xs={24} sm={24} md={24} lg={12}>
             <Visits reportsVisitsList={reportsVisitsList} visitsLoading={salesVisitsLoading} />
           </Col>
