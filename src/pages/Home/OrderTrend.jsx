@@ -78,7 +78,7 @@ class OrderTrend extends Component {
       <Card
         className={styles.home}
         loading={ordersLoading || hotProductsLoading}
-        style={{ margin: '8px' }}
+        // style={{ margin: '8px' }}
       >
         <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
           <TabPane tab="订单趋势" key="1">
