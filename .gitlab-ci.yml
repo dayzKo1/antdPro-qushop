@@ -122,15 +122,15 @@ deploy-dev:
     name: dev
     url: http://dev-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
 
-deploy-staging:
+deploy-test:
   image: bitnami/kubectl
   stage: deploy
   variables:
-    APP_ENV_HOST: staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
-    APP_ENV_INNER_HOST: staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    APP_ENV_HOST: test-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+    APP_ENV_INNER_HOST: test-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
     KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
   script:
-    - echo "Deploy to staging server"
+    - echo "Deploy to test server"
     - echo $CI_ENVIRONMENT_NAME
     - echo $CI_ENVIRONMENT_SLUGA
     - echo $CI_PROJECT_PATH_SLUG
@@ -157,8 +157,8 @@ deploy-staging:
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: manual
   environment:
-    name: staging
-    url: http://staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    name: test
+    url: http://test-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
 
 deploy-prod:
   image: bitnami/kubectl
