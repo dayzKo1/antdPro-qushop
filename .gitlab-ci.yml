@@ -126,11 +126,11 @@ deploy-staging:
   image: bitnami/kubectl
   stage: deploy
   variables:
-    APP_ENV_HOST: master-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
-    APP_ENV_INNER_HOST: master-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    APP_ENV_HOST: staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+    APP_ENV_INNER_HOST: staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
     KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
   script:
-    - echo "Deploy to master server"
+    - echo "Deploy to staging server"
     - echo $CI_ENVIRONMENT_NAME
     - echo $CI_ENVIRONMENT_SLUGA
     - echo $CI_PROJECT_PATH_SLUG
