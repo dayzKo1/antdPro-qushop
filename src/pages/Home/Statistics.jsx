@@ -6,13 +6,13 @@ import currencyFormatter from 'currency-formatter';
 import Order from '@/assets/home/order.png';
 import UfilledOrder from '@/assets/home/ufilledOrder.png';
 import User from '@/assets/home/user.png';
-import styles from './styles.less';
+// import styles from './styles.less';
 
 class Statistics extends Component {
   render() {
     const { summaryData } = this.props;
     return (
-      <Row gutter={[16, 16]} className={styles.home}>
+      <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <ChartCard
             title="总销售额"
@@ -51,7 +51,7 @@ class Statistics extends Component {
             value={summaryData?.base?.orders}
             today="今日新增"
             todayVal="0"
-            detail={<img alt={User} src={User} style={{ width: '100%' }} />}
+            detail={<img alt={User} src={User} style={{ width: '100%', maxHeight: '35px' }} />}
           />
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
@@ -60,7 +60,7 @@ class Statistics extends Component {
             value={summaryData?.base?.visits}
             today="今日新增"
             todayVal="0"
-            detail={<img alt={Order} src={Order} style={{ width: '100%' }} />}
+            detail={<img alt={Order} src={Order} style={{ width: '100%', maxHeight: '35px' }} />}
           />
         </Col>
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
@@ -73,7 +73,7 @@ class Statistics extends Component {
               <img
                 alt={UfilledOrder}
                 src={UfilledOrder}
-                style={{ width: '100%', marginTop: '8px' }}
+                style={{ width: '100%', marginTop: '8px', maxHeight: '35px' }}
               />
             }
           />

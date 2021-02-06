@@ -168,7 +168,7 @@ class Order extends Component {
 
     const { loading, ordersList, query } = this.props;
     const { currentPage, selectedRowKeys, batchSel } = this.state;
-    const nuewCurrenPage = query.page;
+    const nuewCurrenPage = query?.page || 1;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.batchSelect,
