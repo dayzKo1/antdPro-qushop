@@ -121,10 +121,6 @@ deploy-dev:
   environment:
     name: develop
     url: http://develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
-  only:
-    - master
-    - tags
-    - yanghui
 
 deploy-staging:
   image: bitnami/kubectl
@@ -165,10 +161,6 @@ deploy-staging:
   environment:
     name: staging
     url: http://staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
-  only:
-    - master
-    - tags
-    - yanghui
 
 deploy-prod:
   image: bitnami/kubectl
@@ -209,7 +201,3 @@ deploy-prod:
   environment:
     name: prod
     url: http://prod-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
-  only:
-    - master
-    - tags
-    - yanghui
