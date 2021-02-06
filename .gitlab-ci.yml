@@ -86,11 +86,11 @@ deploy-dev:
   image: bitnami/kubectl
   stage: deploy
   variables:
-    APP_ENV_HOST: develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
-    APP_ENV_INNER_HOST: develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    APP_ENV_HOST: dev-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+    APP_ENV_INNER_HOST: dev-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
     KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
   script:
-    - echo "Deploy to develop server"
+    - echo "Deploy to dev server"
     - echo $CI_ENVIRONMENT_NAME
     - echo $CI_ENVIRONMENT_SLUGA
     - echo $CI_PROJECT_PATH_SLUG
