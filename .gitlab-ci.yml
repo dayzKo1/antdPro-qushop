@@ -116,12 +116,15 @@ deploy-dev:
       when: always
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: always
+    - if: '$CI_COMMIT_BRANCH == "yanghui"'
+      when: always
   environment:
     name: develop
     url: http://develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
   only:
     - master
     - tags
+    - yanghui
 
 deploy-staging:
   image: bitnami/kubectl
@@ -157,12 +160,15 @@ deploy-staging:
       when: always
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: manual
+    - if: '$CI_COMMIT_BRANCH == "yanghui"'
+      when: manual
   environment:
     name: staging
     url: http://staging-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
   only:
     - master
     - tags
+    - yanghui
 
 deploy-prod:
   image: bitnami/kubectl
@@ -198,9 +204,12 @@ deploy-prod:
       when: manual
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: manual
+    - if: '$CI_COMMIT_BRANCH == "yanghui"'
+      when: manual
   environment:
     name: prod
     url: http://prod-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
   only:
     - master
     - tags
+    - yanghui
