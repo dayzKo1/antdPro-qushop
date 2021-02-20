@@ -12,6 +12,22 @@ export async function ordersList(params) {
   });
 }
 
+// 订单详情
+export async function ordersDetail(params) {
+  const { id } = params;
+  return request(`/api/admin/orders/${id}`, {
+    method: 'GET',
+  });
+}
+
+// 订单详情
+export async function orderStrack(data, id) {
+  return request(`/api/admin/orders/${id}/track`, {
+    method: 'POST',
+    data,
+  });
+}
+
 // 商品分类
 export async function categoriesList(params) {
   return request('/api/admin/categories', {
