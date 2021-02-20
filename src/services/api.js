@@ -20,7 +20,7 @@ export async function ordersDetail(params) {
   });
 }
 
-// 订单详情
+// 订单发货
 export async function orderStrack(data, id) {
   return request(`/api/admin/orders/${id}/track`, {
     method: 'POST',
