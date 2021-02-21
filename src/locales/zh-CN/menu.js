@@ -23,6 +23,7 @@ export default {
   'menu.Products.ProductsList': '商品列表',
   'menu.Products.CategoryList': '分类列表',
   'menu.Order': '订单',
+  'menu.orderDetail': '订单详情',
   'menu.Set': '设置',
   'menu.form.basic-form': '基础表单',
   'menu.form.step-form': '分步表单',

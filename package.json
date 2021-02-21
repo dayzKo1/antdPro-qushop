@@ -69,6 +69,7 @@
     "i18n-iso-countries": "^6.4.0",
     "lodash": "^4.17.11",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "omit.js": "^2.0.2",
     "qs": "^6.9.0",
     "react": "^17.0.0",
