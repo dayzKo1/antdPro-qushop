@@ -68,6 +68,20 @@ export default [
                     component: './Products/CategoryList',
                     authority: ['admin'],
                   },
+                  {
+                    path: '/products/detail/:id',
+                    name: 'productDetail',
+                    component: './Products/ProductsList/Detail',
+                    hideInMenu: true,
+                    authority: ['admin'],
+                  },
+                  {
+                    path: '/products/add',
+                    name: 'productDetail',
+                    component: './Products/ProductsList/Detail',
+                    hideInMenu: true,
+                    authority: ['admin'],
+                  },
                 ],
               },
               {

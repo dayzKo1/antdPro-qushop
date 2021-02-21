@@ -1,4 +1,4 @@
-import { productList } from '@/services/products';
+import { productList, productDetail } from '@/services/products';
 import { batch } from '@/services/api';
 
 export default {
@@ -6,6 +6,7 @@ export default {
   state: {
     productsList: {},
     query: {},
+    productDetail: {},
   },
   effects: {
     *fetch({ payload, save }, { call, put }) {
@@ -54,6 +55,10 @@ export default {
         yield call(batch, { delete_product: selectedPro });
       }
     },
+    *fetchProductDetail({ payload }, { call, put }) {
+      const res = yield call(productDetail, payload);
+      yield put({ type: 'saveProductDetail', payload: res });
+    },
   },
   reducers: {
     saveProductsList(state, { payload }) {
@@ -61,6 +66,9 @@ export default {
     },
     saveQuery(state, { payload }) {
       return { ...state, query: payload };
+    },
+    saveProductDetail(state, { payload }) {
+      return { ...state, productDetail: payload };
     },
   },
 };

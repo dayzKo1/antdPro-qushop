@@ -19,6 +19,7 @@ export default {
   'menu.Customers': '顾客',
   'menu.Products': '商品',
   'menu.Products.ProductsList': '商品列表',
+  'menu.Products.productDetail': '商品详情',
   'menu.Products.CategoryList': '分类列表',
   'menu.Order': '订单',
   'menu.orderDetail': '订单详情',
