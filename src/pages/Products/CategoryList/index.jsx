@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Table, Avatar, Row, Col } from 'antd';
+import { Card, Table, Avatar, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'umi';
+import { routerRedux } from 'dva/router';
 import Grid from '@/components/Grid';
 import Search from './search';
 import BasicHeader from '@/components/BasicHeader';
@@ -56,11 +57,7 @@ const CategoryList = (props) => {
       dataIndex: 'parent',
       width: '33%',
       align: 'center',
-      render: () => (
-        <Link to="./" disabled>
-          编辑
-        </Link>
-      ),
+      render: (_, r) => <Link to={`/products/categoryList/${r.id}/edit`}>编辑</Link>,
     },
   ];
 
@@ -101,9 +98,18 @@ const CategoryList = (props) => {
     setBatchSel(!batchSel);
   };
 
+  // 添加分类
+  const jumpAdd = () => {
+    dispatch(routerRedux.push({ pathname: '/products/categoryList/add' }));
+  };
+
   return (
     <Grid>
-      <BasicHeader title="分类列表" />
+      <BasicHeader title="分类列表">
+        <Button size="large" onClick={jumpAdd} style={{ float: 'right' }} type="primary">
+          添加分类
+        </Button>
+      </BasicHeader>
       <Card style={{ minWidth: '900px' }}>
         <BatchSelect
           batchSel={batchSel}

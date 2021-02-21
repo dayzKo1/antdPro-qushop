@@ -20,10 +20,37 @@ export async function categoriesList(params) {
   });
 }
 
+export async function queryCateDetail(params) {
+  const { id } = params;
+  return request(`/api/admin/categories/${id}`, {
+    method: 'GET',
+  });
+}
+
 export async function batchesCategories(data) {
   return request('/api/admin/batches', {
     method: 'POST',
     data,
+  });
+}
+
+export async function addCategory(data) {
+  return request('/api/admin/categories', {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function updateCategory(data, id) {
+  return request(`/api/admin/categories/${id}`, {
+    method: 'PUT',
+    data,
+  });
+}
+
+export async function delCategory(id) {
+  return request(`/api/admin/categories/${id}`, {
+    method: 'DELETE',
   });
 }
 

@@ -70,6 +70,20 @@ export default [
                     component: './Products/CategoryList',
                     authority: ['admin'],
                   },
+                  {
+                    path: '/products/categoryList/add',
+                    name: 'addCategory',
+                    component: './Products/EditCategory',
+                    hideInMenu: true,
+                    access: 'manage_products',
+                  },
+                  {
+                    path: '/products/categoryList/:id/edit',
+                    name: 'editCategory',
+                    component: './Products/EditCategory',
+                    hideInMenu: true,
+                    access: 'manage_products',
+                  },
                 ],
               },
               {
