@@ -112,6 +112,19 @@ export async function updateDefAddress(data, id) {
   });
 }
 
+export async function queryPayment() {
+  return request('/api/admin/payment-gateways', {
+    method: 'GET',
+  });
+}
+
+export async function updateQueryPayment(data, id) {
+  return request(`/api/admin/payment-gateways/${id}`, {
+    method: 'PUT',
+    data,
+  });
+}
+
 // 查询国家列表
 export async function queryCountries() {
   return request('api/admin/countries');

@@ -196,4 +196,4 @@ deploy-prod:
       when: manual
   environment:
     name: prod
-    url: http://x136.qushop.${BASE_APP_INNER_HOST}
+    url: http://x136-qushop.${BASE_APP_INNER_HOST}

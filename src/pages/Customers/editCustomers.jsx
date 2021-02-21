@@ -4,7 +4,6 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import currencyFormatter from 'currency-formatter';
-import { getLocale } from 'umi-plugin-react/locale';
 import Grid from '@/components/Grid';
 import BasicHeader from '@/components/BasicHeader';
 import BackTop from '@/components/BackTop';
@@ -282,10 +281,7 @@ class CustomerDetail extends Component {
                       {defaultAddress.city && `，${defaultAddress.city}`}
                       {defaultAddress.state_name && `，${defaultAddress.state_name.split('/')[0]}`}
                       {defaultAddress.country &&
-                        `，${countries.getName(
-                          defaultAddress.country,
-                          getLocale() === 'zh-CN' ? 'zh' : 'en',
-                        )}`}
+                        `，${countries.getName(defaultAddress.country, 'zh')}`}
                     </span>
                   </div>
                   <div>

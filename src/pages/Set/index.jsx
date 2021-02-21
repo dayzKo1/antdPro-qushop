@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Row, Col, Tabs } from 'antd';
 import Grid from '@/components/Grid';
 import Safe from './safe';
+import Payment from './payment';
 // import style from "./style.less"
 
 const Set = () => {
@@ -21,8 +22,12 @@ const Set = () => {
             <Tabs.TabPane tab="安全设置" key="1">
               <Safe />
             </Tabs.TabPane>
-            {/* <Tabs.TabPane tab="物流设置" key="2">adf</Tabs.TabPane>
-          <Tabs.TabPane tab="支付配置" key="3">adf</Tabs.TabPane> */}
+            <Tabs.TabPane tab="物流设置" key="2">
+              adf
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="支付配置" key="3">
+              <Payment />
+            </Tabs.TabPane>
           </Tabs>
           <Row>
             <Col></Col>
