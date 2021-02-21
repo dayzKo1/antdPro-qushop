@@ -31,3 +31,6 @@ export function debounce(fake) {
   }
   debounceSearch = setTimeout(fake, 1000);
 }
+
+export const hasErrors = (fieldsError) =>
+  Object.keys(fieldsError).some((field) => fieldsError[field]);
