@@ -82,15 +82,15 @@ build-image:
     - develop
     - tags
 
-deploy-develop:
+deploy-dev:
   image: bitnami/kubectl
   stage: deploy
   variables:
-    APP_ENV_HOST: develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
-    APP_ENV_INNER_HOST: develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    APP_ENV_HOST: dev-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+    APP_ENV_INNER_HOST: dev-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
     KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
   script:
-    - echo "Deploy to develop server"
+    - echo "Deploy to dev server"
     - echo $CI_ENVIRONMENT_NAME
     - echo $CI_ENVIRONMENT_SLUGA
     - echo $CI_PROJECT_PATH_SLUG
@@ -111,21 +111,26 @@ deploy-develop:
       sed 's/\$CI_PROJECT_PATH_SLUG'"/$CI_PROJECT_PATH_SLUG/g" |
       sed 's?\$IMAGE_TAG'"?$IMAGE_TAG?g" |
       kubectl apply -n=$KUBE_NAMESPACE -f -
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+      when: always
   environment:
-    name: develop
-    url: http://develop-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
-  only:
-    - develop
+    name: dev
+    url: http://dev-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
 
-deploy-master:
+deploy-test:
   image: bitnami/kubectl
   stage: deploy
   variables:
-    APP_ENV_HOST: master-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
-    APP_ENV_INNER_HOST: master-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
+    APP_ENV_HOST: test-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_HOST}
+    APP_ENV_INNER_HOST: test-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
     KUBE_NAMESPACE: $CI_PROJECT_NAME-$CI_PROJECT_ID-$CI_ENVIRONMENT_NAME
   script:
-    - echo "Deploy to master server"
+    - echo "Deploy to test server"
     - echo $CI_ENVIRONMENT_NAME
     - echo $CI_ENVIRONMENT_SLUGA
     - echo $CI_PROJECT_PATH_SLUG
@@ -146,11 +151,14 @@ deploy-master:
       sed 's/\$CI_PROJECT_PATH_SLUG'"/$CI_PROJECT_PATH_SLUG/g" |
       sed 's?\$IMAGE_TAG'"?$IMAGE_TAG?g" |
       kubectl apply -n=$KUBE_NAMESPACE -f -
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: manual
   environment:
-    name: master
-    url: http://master-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
-  only:
-    - master
+    name: test
+    url: http://test-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
 
 deploy-prod:
   image: bitnami/kubectl
@@ -181,8 +189,11 @@ deploy-prod:
       sed 's/\$CI_PROJECT_PATH_SLUG'"/$CI_PROJECT_PATH_SLUG/g" |
       sed 's?\$IMAGE_TAG'"?$IMAGE_TAG?g" |
       kubectl apply -n=$KUBE_NAMESPACE -f -
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: manual
   environment:
     name: prod
-    url: http://prod-${CI_PROJECT_NAME}-${CI_PROJECT_NAMESPACE}.${BASE_APP_INNER_HOST}
-  only:
-    - tags
+    url: http://x136.qushop.${BASE_APP_INNER_HOST}
