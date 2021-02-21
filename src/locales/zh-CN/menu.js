@@ -14,6 +14,8 @@ export default {
   'menu.exception.403': '403',
   'menu.exception.404': '404',
   'menu.exception.500': '500',
+  'menu.Products.addCategory': '添加分类',
+  'menu.Products.editCategory': '编辑分类',
   'menu.form': '表单页',
   'menu.Home': '主页',
   'menu.Customers': '顾客',
