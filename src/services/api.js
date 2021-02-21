@@ -12,6 +12,22 @@ export async function ordersList(params) {
   });
 }
 
+// 订单详情
+export async function ordersDetail(params) {
+  const { id } = params;
+  return request(`/api/admin/orders/${id}`, {
+    method: 'GET',
+  });
+}
+
+// 订单发货
+export async function orderStrack(data, id) {
+  return request(`/api/admin/orders/${id}/track`, {
+    method: 'POST',
+    data,
+  });
+}
+
 // 商品分类
 export async function categoriesList(params) {
   return request('/api/admin/categories', {
@@ -20,10 +36,37 @@ export async function categoriesList(params) {
   });
 }
 
+export async function queryCateDetail(params) {
+  const { id } = params;
+  return request(`/api/admin/categories/${id}`, {
+    method: 'GET',
+  });
+}
+
 export async function batchesCategories(data) {
   return request('/api/admin/batches', {
     method: 'POST',
     data,
+  });
+}
+
+export async function addCategory(data) {
+  return request('/api/admin/categories', {
+    method: 'POST',
+    data,
+  });
+}
+
+export async function updateCategory(data, id) {
+  return request(`/api/admin/categories/${id}`, {
+    method: 'PUT',
+    data,
+  });
+}
+
+export async function delCategory(id) {
+  return request(`/api/admin/categories/${id}`, {
+    method: 'DELETE',
   });
 }
 

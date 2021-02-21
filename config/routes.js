@@ -39,15 +39,13 @@ export default [
                 icon: 'CopyOutlined',
                 component: './Order',
                 authority: ['admin'],
-                routes: [
-                  // {
-                  //   path: '/order/add',
-                  //   name: 'sub-page',
-                  //   icon: 'smile',
-                  //   component: './Order/add',
-                  //   authority: ['admin'],
-                  // },
-                ],
+              },
+              {
+                path: '/order/detail/:id',
+                name: 'orderDetail',
+                component: './Order/Detail',
+                hideInMenu: true,
+                authority: ['admin'],
               },
               {
                 path: '/products',
@@ -69,6 +67,20 @@ export default [
                     icon: 'smile',
                     component: './Products/CategoryList',
                     authority: ['admin'],
+                  },
+                  {
+                    path: '/products/categoryList/add',
+                    name: 'addCategory',
+                    component: './Products/EditCategory',
+                    hideInMenu: true,
+                    access: 'manage_products',
+                  },
+                  {
+                    path: '/products/categoryList/:id/edit',
+                    name: 'editCategory',
+                    component: './Products/EditCategory',
+                    hideInMenu: true,
+                    access: 'manage_products',
                   },
                 ],
               },

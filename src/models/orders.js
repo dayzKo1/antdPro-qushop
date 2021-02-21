@@ -1,10 +1,11 @@
-import { ordersList, batch } from '@/services/api';
+import { ordersList, batch, ordersDetail, orderStrack } from '@/services/api';
 
 export default {
   namespace: 'orders',
   state: {
     ordersList: {},
     query: {},
+    orderDetail: {},
   },
 
   effects: {
@@ -61,6 +62,13 @@ export default {
         yield call(batch, { order_shipping: selectedId });
       }
     },
+    *fetchOrderDetail({ payload }, { call, put }) {
+      const res = yield call(ordersDetail, payload);
+      yield put({ type: 'saveOrderDetail', payload: res });
+    },
+    *updateTrackno({ payload, id }, { call }) {
+      yield call(orderStrack, payload, id);
+    },
   },
   reducers: {
     saveOrdersList(state, { payload }) {
@@ -68,6 +76,9 @@ export default {
     },
     saveQuery(state, { payload }) {
       return { ...state, query: payload };
+    },
+    saveOrderDetail(state, { payload }) {
+      return { ...state, orderDetail: payload };
     },
   },
 };

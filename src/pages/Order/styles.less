@@ -93,3 +93,51 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
+.detailTable {
+  :global(.ant-table-tbody) {
+    tr:hover > td {
+      background: #fff;
+    }
+  }
+
+  tr > td {
+    padding: 2px 3px;
+    border-bottom: 0;
+  }
+
+  tr th {
+    padding: 2px 3px;
+    background: #fff;
+    border-bottom: 0;
+  }
+}
+
+.detail > div {
+  display: flex;
+  // color: #2e375e;
+  line-height: 44px;
+  border-bottom: 1px solid #dcddeb;
+
+  div {
+    width: 100%;
+  }
+
+  > span {
+    display: flex;
+    align-items: center;
+    width: 80px;
+  }
+
+  span:nth-child(2) {
+    float: right;
+    // width: 160px;
+  }
+}
+
+.detail2 > div {
+  display: flex;
+  // color: #2e375e;
+  line-height: 44px;
+  // border-bottom: 1px solid #dcddeb;
+}
