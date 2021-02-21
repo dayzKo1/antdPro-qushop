@@ -81,6 +81,8 @@ export default [
                     component: './Products/ProductsList/Detail',
                     hideInMenu: true,
                     authority: ['admin'],
+                  },
+                  {
                     path: '/products/categoryList/add',
                     name: 'addCategory',
                     component: './Products/EditCategory',
