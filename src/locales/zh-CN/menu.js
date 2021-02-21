@@ -24,6 +24,7 @@ export default {
   'menu.Products.addCategory': '添加分类',
   'menu.Products.editCategory': '编辑分类',
   'menu.Order': '订单',
+  'menu.orderDetail': '订单详情',
   'menu.Set': '设置',
   'menu.form.basic-form': '基础表单',
   'menu.form.step-form': '分步表单',

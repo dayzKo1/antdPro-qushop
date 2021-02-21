@@ -121,7 +121,7 @@ class FilterOrder extends Component {
     const { loading } = this.props;
     const { fulfillmentStatus, postStatus, search } = this.state;
     return (
-      <Form ref={this.formRef}>
+      <Form ref={this.formRef} style={{ height: 42 }}>
         <Row gutter={5} style={{ marginBottom: 10 }}>
           <Col span={3}>
             <Form.Item name="postStatus">
