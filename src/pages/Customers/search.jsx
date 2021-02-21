@@ -97,7 +97,7 @@ const Searchs = (props) => {
                 allowClear
                 onChange={(e) => handleChange(e, 'country')}
               >
-                {countryList.map((o) => (
+                {countryList?.map((o) => (
                   <Select.Option value={`${o.code}`} key={`${o.code}`}>
                     {countries.getName(o.code, 'zh')}
                   </Select.Option>
