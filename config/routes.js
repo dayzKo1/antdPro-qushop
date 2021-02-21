@@ -92,15 +92,13 @@ export default [
                 icon: 'TeamOutlined',
                 component: './Customers',
                 authority: ['admin'],
-                routes: [
-                  // {
-                  //   path: '/Customers/add',
-                  //   name: 'sub-page',
-                  //   icon: 'smile',
-                  //   component: './Order/add',
-                  //   authority: ['admin'],
-                  // },
-                ],
+              },
+              {
+                path: '/customers/:id',
+                name: 'CustomersEdit',
+                component: './Customers/editCustomers',
+                hideInMenu: true,
+                authority: ['admin'],
               },
               {
                 path: '/set',

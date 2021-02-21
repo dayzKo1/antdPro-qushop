@@ -1,4 +1,10 @@
-import { queryCustomers, queryCountries } from '@/services/api';
+import {
+  queryCustomers,
+  queryCountries,
+  queryCustomerDetail,
+  queryCustomerOrders,
+  updateDefAddress,
+} from '@/services/api';
 
 const Customers = {
   namespace: 'customers',
@@ -7,6 +13,8 @@ const Customers = {
     meta: {},
     query: {},
     countryList: [],
+    customerDetail: {},
+    customerOrders: {},
   },
 
   effects: {
@@ -20,6 +28,18 @@ const Customers = {
       yield put({ type: 'saveCountries', payload: response });
       return response;
     },
+    *fetchCustomerOrders({ id, payload }, { call, put }) {
+      const res = yield call(queryCustomerOrders, id, payload);
+      yield put({ type: 'saveCustomerOrders', payload: res });
+    },
+    *fetchCustomerDetail({ payload }, { call, put }) {
+      const res = yield call(queryCustomerDetail, payload);
+      yield put({ type: 'saveCustomerDetail', payload: res });
+      return res;
+    },
+    *updateDefAddress({ payload, id }, { call }) {
+      yield call(updateDefAddress, payload, id);
+    },
   },
   reducers: {
     save(state, { payload, query }) {
@@ -27,6 +47,12 @@ const Customers = {
     },
     saveCountries(state, { payload }) {
       return { ...state, countryList: payload };
+    },
+    saveCustomerDetail(state, { payload }) {
+      return { ...state, customerDetail: payload };
+    },
+    saveCustomerOrders(state, { payload }) {
+      return { ...state, customerOrders: payload };
     },
   },
 };

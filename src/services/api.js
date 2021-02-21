@@ -70,6 +70,32 @@ export async function queryCustomers(params) {
   });
 }
 
+export async function queryCustomerDetail(params) {
+  const { id } = params;
+  return request(`/api/admin/customers/${id}`, {
+    method: 'GET',
+  });
+}
+
+export async function queryCustomerOrders(id, params) {
+  return request(`/api/admin/customers/${id}/orders`, {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+  });
+}
+
+export async function updateDefAddress(data, id) {
+  const { addressId } = data;
+  return request(`/api/admin/customers/${id}/addresses/default`, {
+    method: 'POST',
+    data: {
+      address_id: addressId,
+    },
+  });
+}
+
 // 查询国家列表
 export async function queryCountries() {
   return request('api/admin/countries');
@@ -88,6 +114,12 @@ export async function hotProduct(params) {
   return request('/api/admin/reports/hot_products', {
     method: 'GET',
     params,
+  });
+}
+
+export async function settingBase() {
+  return request('/api/admin/options', {
+    method: 'GET',
   });
 }
 

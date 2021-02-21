@@ -18,3 +18,282 @@
     }
   }
 }
+.cardbox {
+  :global(.ant-card-body) {
+    padding: 12px;
+  }
+
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 rgba(35, 35, 112, 0.2), 0 0 0 1px rgba(67, 67, 145, 0.05);
+}
+
+.content > div {
+  display: flex;
+  color: #2e375e;
+  line-height: 44px;
+  border-bottom: 1px solid #dcddeb;
+
+  div {
+    width: 100%;
+  }
+
+  > span {
+    width: 120px;
+    // margin-right: 40px;
+  }
+
+  span:nth-child(2) {
+    float: right;
+  }
+}
+
+.title {
+  padding-bottom: 12px;
+  color: #1a1d2c;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.address {
+  color: #35406a;
+
+  > div {
+    margin-bottom: 15px;
+
+    span:nth-child(2) {
+      margin-left: 10px;
+    }
+  }
+
+  .selectButton {
+    margin: 0 -12px -12px -12px;
+    padding: 16px 0;
+    color: #273a8a;
+    line-height: 20px;
+    text-align: center;
+    border-top: 1px solid #dcddeb;
+    cursor: pointer;
+  }
+
+  .addressTip {
+    float: right;
+    margin-left: 22px;
+    padding: 3px 8px;
+    color: rgb(39, 130, 72);
+    font-size: 12px;
+    font-style: normal;
+    border: 1px solid rgb(61, 138, 39);
+    border-radius: 14px;
+  }
+}
+
+.tablebox {
+  :global(.ant-table-row) {
+    cursor: pointer;
+  }
+
+  tr th {
+    background: #fff;
+    border-top: 1px solid #e8e8e8;
+  }
+}
+
+.addressItem {
+  margin-bottom: 20px;
+  padding: 20px;
+  color: #4e5c8b;
+  border: 1px solid #dcddeb;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.5s;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.option {
+  float: right;
+  color: #273a8a;
+  font-weight: 400;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.historyOrder {
+  :global(.ant-card-body) {
+    padding: 12px;
+  }
+
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 rgba(35, 35, 112, 0.2), 0 0 0 1px rgba(67, 67, 145, 0.05);
+
+  .orderInfo {
+    padding: 14px 20px 15px 13px;
+    color: #909399;
+    span:nth-child(1) {
+      span {
+        margin-left: 10px;
+        color: #273a8a;
+        cursor: pointer;
+      }
+    }
+    span:nth-child(2) {
+      span:nth-child(1) {
+        margin-left: 10px;
+        color: #273a8a;
+      }
+    }
+    span:nth-child(3) {
+      text-align: end;
+    }
+  }
+
+  .tableWrap {
+    margin: 0 -12px 0 -12px;
+    padding: 0 12px;
+    border-top: 1px solid #dcddeb;
+    border-bottom: 1px solid #dcddeb;
+  }
+
+  table {
+    width: 100%;
+    padding: 12px;
+    color: #1e2239;
+
+    .name {
+      cursor: pointer;
+    }
+
+    .sku {
+      margin-top: 4px;
+      color: #696b74;
+    }
+
+    td {
+      padding: 20px 10px;
+      vertical-align: top;
+    }
+
+    tr {
+      margin: 0 10px;
+      border-bottom: 1px solid #dcddeb;
+    }
+
+    tr:last-child {
+      border-bottom: 1px solid #fff;
+    }
+
+    th {
+      padding: 10px;
+      font-weight: 400;
+    }
+  }
+
+  .showMore {
+    height: 30px;
+    padding: 10px;
+    color: #909399;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+
+.searchWrap {
+  position: relative;
+  top: 88px;
+  z-index: 2;
+  margin-top: -45px;
+}
+
+.moreQuery {
+  position: relative;
+  bottom: -44px;
+  height: 40px;
+
+  > span {
+    margin: 9px 20px 0 0;
+    padding: 8px;
+    color: #697c90;
+    background: #f7f8fd;
+    border: 1px solid #efeff5;
+    border-radius: 2px;
+  }
+}
+
+.addonBefore {
+  box-sizing: border-box;
+  height: 30px;
+  padding: 6px;
+  border: 1px solid #d9d9d9;
+  border-right: #fff;
+}
+
+.filterPopover {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+
+  > div {
+    margin-bottom: 20px;
+  }
+}
+
+.subscription {
+  margin-left: 22px;
+  padding: 3px 8px;
+  color: rgb(39, 130, 72);
+  font-size: 12px;
+  font-style: normal;
+  border: 1px solid rgb(61, 138, 39);
+  border-radius: 11px;
+}
+
+.batchSelect {
+  width: 100%;
+  height: 73px;
+  padding: 0 10px;
+  color: #273a8a;
+  line-height: 73px;
+  background-color: white;
+  // border-top: 1px solid #dcdfe6;
+  border-radius: 4px;
+
+  span {
+    margin-left: 25px;
+    cursor: pointer;
+  }
+}
+
+.batchSelectDefault {
+  width: 50px;
+  height: 73px;
+  padding: 0 10px;
+  color: #273a8a;
+  line-height: 73px;
+  border-radius: 4px;
+
+  span {
+    margin-left: 25px;
+    cursor: pointer;
+  }
+}
+
+.disabled {
+  color: #c0c4cc;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.spinWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 700px;
+}
