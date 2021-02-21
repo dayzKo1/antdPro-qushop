@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { Tag, Input, Tooltip } from 'antd';
+// import { connect } from 'dva';
 import { PlusOutlined } from '@ant-design/icons';
+
+// const { Option } = Select;
+
+// @connect(({ categories }) => ({
+//   categoryList: categories.categoryList,
+// }))
 
 class EditableTagGroup extends Component {
   state = {
@@ -17,12 +24,11 @@ class EditableTagGroup extends Component {
     this.setState({
       cates: cateInit,
     });
-    console.log('cateInit ,this.state.cates', cateInit, this.state.cates);
+    // dispatch({ type: 'categories/fetchList' });
   }
 
   handleClose = (removedTag) => {
     const cates = this.state.cates.filter((tag) => tag !== removedTag);
-    console.log(cates);
     this.setState({ cates });
   };
 
@@ -37,14 +43,12 @@ class EditableTagGroup extends Component {
   handleInputConfirm = () => {
     const { inputValue } = this.state;
     let { cates } = this.state;
-    console.log('cates.length', cates);
     if (!cates) {
       cates = [inputValue];
     }
     if (inputValue && cates && cates.indexOf(inputValue) === -1) {
       cates = [...cates, inputValue];
     }
-    console.log('cates', cates);
     this.setState({
       cates,
       inputVisible: false,
@@ -79,6 +83,12 @@ class EditableTagGroup extends Component {
 
   render() {
     const { cates, inputVisible, inputValue, editInputIndex, editInputValue } = this.state;
+    // const { categoryList } = this.props;
+    // const cateOptions = categoryList.map(o => (
+    //   <Option key={o.term_taxonomy_id} value={o.name}>
+    //     {o.name}
+    //   </Option>
+    // ));
     return (
       <>
         {cates &&
@@ -143,6 +153,20 @@ class EditableTagGroup extends Component {
             onBlur={this.handleInputConfirm}
             onPressEnter={this.handleInputConfirm}
           />
+        //   <Select
+        //     mode="multiple"
+        //     ref={this.saveInputRef}
+        //     style={{ width: '100%' }}
+        //     size="small"
+        //     value={inputValue}
+        //     onChange={this.handleInputChange}
+        //     onBlur={this.handleInputConfirm}
+        //     onPressEnter={this.handleInputConfirm}
+        //     allowClear
+        //   // placeholder={tr('products.category1.placeholder', '请选择商品分类')}
+        // >
+        //   {cateOptions}
+        // </Select>
         )}
         {!inputVisible && (
           <Tag onClick={this.showInput}>

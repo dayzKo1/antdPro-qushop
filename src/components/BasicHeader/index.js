@@ -7,7 +7,11 @@ function BasicHeader(props) {
   return (
     <div className={styles.top}>
       <h2>
-        {parentUrl && parent && <Link to={parentUrl}>{parent}</Link>}
+        {parentUrl && parent && (
+          <Link style={{ color: '#00000073' }} to={parentUrl}>
+            {parent}
+          </Link>
+        )}
         {title}
       </h2>
       {children}

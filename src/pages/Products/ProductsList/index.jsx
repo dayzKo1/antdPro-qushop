@@ -122,13 +122,13 @@ class ProducstList extends Component {
   // 点击行
   clickRow = (r) => {
     if (!window.getSelection().toString()) {
-      history.push(`/products/detail/${r.ID}`);
+      history.push(`/products/productsList/${r.ID}/edit`);
     }
   };
 
   // 添加商品
   addProduct = () => {
-    history.push(`/products/add`);
+    history.push(`/products/ProductsList/add`);
   };
 
   render() {

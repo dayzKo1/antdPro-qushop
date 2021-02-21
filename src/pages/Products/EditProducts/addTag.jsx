@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Tag, Input, Tooltip } from 'antd';
+// import { connect } from 'dva';
 import { PlusOutlined } from '@ant-design/icons';
 
+// @connect(({ categories, tags }) => ({
+//   categoryList: categories.categoryList,
+// }))
 class AddTag extends Component {
   state = {
     tags: undefined,
@@ -17,12 +21,11 @@ class AddTag extends Component {
     this.setState({
       tags: tagInit,
     });
-    console.log('cateInit ,this.state.cates', tagInit, this.state.cates);
+  
   }
 
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter((tag) => tag !== removedTag);
-    console.log(tags);
     this.setState({ tags });
   };
 
@@ -37,10 +40,12 @@ class AddTag extends Component {
   handleInputConfirm = () => {
     const { inputValue } = this.state;
     let { tags } = this.state;
-    if (inputValue && tags.indexOf(inputValue) === -1) {
+    if (!tags) {
+      tags = [inputValue];
+    }
+    if (inputValue && tags && tags.indexOf(inputValue) === -1) {
       tags = [...tags, inputValue];
     }
-    console.log(tags);
     this.setState({
       tags,
       inputVisible: false,
@@ -75,7 +80,7 @@ class AddTag extends Component {
 
   render() {
     const { tags, inputVisible, inputValue, editInputIndex, editInputValue } = this.state;
-
+  
     return (
       <>
         {tags &&
@@ -140,6 +145,7 @@ class AddTag extends Component {
             onBlur={this.handleInputConfirm}
             onPressEnter={this.handleInputConfirm}
           />
+       
         )}
         {!inputVisible && (
           <Tag onClick={this.showInput}>
