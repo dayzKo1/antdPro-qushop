@@ -55,16 +55,18 @@ class TinyMce extends React.Component {
             const file = blobInfo.blob();
             const formData = new FormData();
             formData.append('files[]', file, file.name);
+            const token = localStorage.getItem('token') || '';
             const isLt8M = file && file.size / 1024 / 1024 < 8;
             if (isLt8M) {
               axios({
                 method: 'post',
                 url: '/api/admin/attachments?format=object',
                 data: formData,
-                headers: { 'Content-Type': 'multipart/form-data' },
+                headers: { 'Content-Type': 'multipart/form-data', Authorization: token },
               })
                 .then((res) => {
-                  succFun(res[0].url);
+                  const url = res?.data[0]?.url;
+                  succFun(url);
                 })
                 .catch((error) => {
                   const { response } = error;
