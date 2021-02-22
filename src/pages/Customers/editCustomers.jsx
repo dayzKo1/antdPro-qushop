@@ -82,7 +82,7 @@ class CustomerDetail extends Component {
 
   jumpToOrder = (id) => {
     const { dispatch } = this.props;
-    dispatch(routerRedux.push({ pathname: `/order/allOrder/${id}` }));
+    dispatch(routerRedux.push({ pathname: `/order/detail/${id}` }));
   };
 
   productsTax = (arr) => {

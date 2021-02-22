@@ -127,11 +127,8 @@ class LinkProduct extends Component {
   };
 
   // 分页
-  changePage = (page, pre, type) => {
-    const { dispatch, query, productsList } = this.props;
-    const val = {
-      page_size: type ? pre : productsList?.meta && productsList?.meta.per_page,
-    };
+  changePage = (page, prePage) => {
+    const { dispatch, query } = this.props;
     this.setState({
       currentPage: page,
     });
@@ -139,7 +136,7 @@ class LinkProduct extends Component {
       type: 'product/fetch',
       payload: {
         ...query,
-        ...val,
+        page_size: prePage,
         page,
       },
       save: true,
@@ -445,7 +442,6 @@ class LinkProduct extends Component {
             perPage={productsList?.meta && productsList?.meta.per_page}
             // showSizeChanger
             // showQuickJumper
-            // changeShowSize={(page, prePage) => this.changePage(page, prePage, true)}
           />
           <div className={styles.footer}>
             <span>

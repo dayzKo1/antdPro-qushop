@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Form, Input, Button } from 'antd';
+import { Table, Form, Input, Button, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Grid from '@/components/Grid';
 import { connect } from 'dva';
@@ -61,6 +61,7 @@ class Logistics extends React.Component {
       data: [...val],
     });
     this.handleChange(true, 'status', id);
+    message.success('保存成功');
   };
 
   handleDel = async (id) => {
@@ -78,6 +79,7 @@ class Logistics extends React.Component {
       data: [...val],
       editData: edit,
     });
+    message.success('删除成功');
   };
 
   handleAdd = () => {
@@ -140,6 +142,7 @@ class Logistics extends React.Component {
                 </span>
               ) : (
                 <Input
+                  type="number"
                   placeholder="请输入运费"
                   style={{ width: ' 60%' }}
                   addonBefore={symbol || '$'}
