@@ -18,40 +18,6 @@ class Payment extends Component {
   async componentDidMount() {
     const { dispatch } = this.props;
     dispatch({ type: 'setting/queryPaymentData' });
-    const url = window.location.search.replace('mode=development', '');
-    // const url =
-    //   '?gateway=paypal|sandbox|1&merchantId=d39b9874a1706ca2ec93a03965400f20&merchantPayerId=BKN3NM89G8NSN&api_style=signature&api_username=1934879001_api12312311.qq.com&api_password=HTD87MY87HMTQLCW&signature=AJEpniSzu9.5jxsR6vky9-LO53rhAO1bUshlpWkdavasEDLgTJlQtAzT';
-    if (url && url !== '?') {
-      const urlArr = url.substr(1).split('&');
-      const urlObj = {};
-      urlArr.forEach((item) => {
-        const arr = item?.split('=');
-        const [key, value] = arr;
-        urlObj[key] = value;
-      });
-      const gateway = urlObj.gateway.split('|');
-      try {
-        await dispatch({
-          type: 'setting/updateQueryPayment',
-          payload: {
-            api_username: urlObj.api_username,
-            api_password: urlObj.api_password,
-            api_signature: urlObj.signature,
-            sandbox: gateway[1] === 'sandbox',
-            code: gateway[0],
-          },
-          id: gateway[2],
-        });
-        // await router.push('/settings/payment');
-        message.success('设置成功');
-      } catch (e) {
-        // if (e.response && e.response.status === 422) {
-        //   const msg = e.response.data.errors;
-        //   const warn = Object.values(msg);
-        //   message.warning(warn[0]);
-        // }
-      }
-    }
   }
 
   formRef = React.createRef();
@@ -115,6 +81,7 @@ class Payment extends Component {
     console.log('this.formRef.current', this.formRef.current, isFieldsTouched && isFieldsTouched());
     return (
       <div>
+        <h4 style={{ fontSize: 17, fontWeight: 600 }}>支付配置</h4>
         <Form
           ref={this.formRef}
           onFinish={this.save}
