@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Table } from 'antd';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import currencyFormatter from 'currency-formatter';
 import Grid from '@/components/Grid';
 import Search from './search';
@@ -111,6 +112,12 @@ const Customers = (props) => {
     setCurrentPage(page);
   };
 
+  const clickRow = (r) => {
+    if (!window.getSelection().toString()) {
+      dispatch(routerRedux.push({ pathname: `/customers/${r.ID}` }));
+    }
+  };
+
   return (
     <Grid className={style.customers}>
       <BasicHeader title="顾客" />
@@ -122,7 +129,11 @@ const Customers = (props) => {
           dataSource={customersData}
           onChange={onChange}
           pagination={false}
+          rowKey={(r) => r.ID}
           loading={loading}
+          onRow={(record) => ({
+            onClick: clickRow.bind(this, record),
+          })}
         />
         <TableFooter
           total={meta && meta.total}

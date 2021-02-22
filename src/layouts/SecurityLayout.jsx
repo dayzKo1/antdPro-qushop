@@ -20,15 +20,17 @@ class SecurityLayout extends React.Component {
         dispatch({
           type: 'user/fetchCurrent',
         });
+        dispatch({ type: 'setting/querySettingBase' });
       }
     } catch (error) {
       if (error && error.status_code === 401) {
-        dispatch(routerRedux.replace({
-          pathname: '/user/login',
-        }))
+        dispatch(
+          routerRedux.replace({
+            pathname: '/user/login',
+          }),
+        );
       }
     }
-
   }
 
   render() {
