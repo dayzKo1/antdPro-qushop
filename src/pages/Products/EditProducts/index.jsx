@@ -264,7 +264,7 @@ class ProductDetail extends Component {
     const { productDetail, loading, updateLoading, addLoading, categoryList, proTags } = this.props;
     const { postStatus, mediumUrl, alertMsg, noSaveTip } = this.state;
     const { id } = this.props.match.params;
-    const { getFieldsValue, isFieldsTouched } = this.formRef.current || {};
+    const { getFieldsValue } = this.formRef.current || {};
     const isAdd = this.props.location.pathname.includes('add');
     const isDiff =
       getFieldsValue && JSON.stringify(getFieldsValue(true)) !== sessionStorage.getItem('formData');
@@ -507,7 +507,7 @@ class ProductDetail extends Component {
                 style={{ marginRight: '15px' }}
                 type="primary"
                 htmlType="submit"
-                disabled={!(isFieldsTouched && isFieldsTouched() && isDiff)}
+                disabled={!isDiff}
                 // onClick={this.handleSubmit}
               >
                 保存
