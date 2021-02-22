@@ -1,5 +1,5 @@
 import { changePassword } from '@/services/login';
-import { settingBase } from '@/services/api';
+import { settingBase, queryPayment, updateQueryPayment } from '@/services/api';
 import currencyFormatter from 'currency-formatter';
 
 const Setting = {
@@ -7,6 +7,7 @@ const Setting = {
   state: {
     settingBase: {},
     symbol: '',
+    savePayment: {},
   },
 
   effects: {
@@ -20,6 +21,18 @@ const Setting = {
       yield put({ type: 'saveSettingBase', payload: res });
       return res;
     },
+
+    *queryPaymentData({ payload }, { call, put }) {
+      const res = yield call(queryPayment, payload);
+      yield put({ type: 'savePaymentData', payload: res });
+    },
+
+    *updateQueryPayment({ payload, id }, { call, put }) {
+      yield call(updateQueryPayment, payload, id);
+      yield put({
+        type: 'queryPaymentData',
+      });
+    },
   },
   reducers: {
     saveSettingBase(state, { payload }) {
@@ -27,6 +40,9 @@ const Setting = {
       const currency = currencyFormatter.findCurrency(payload && payload.woocommerce_currency);
       const symbol = currency ? currency.symbol : '$';
       return { ...state, settingBase: payload, symbol };
+    },
+    savePaymentData(state, { payload }) {
+      return { ...state, savePayment: payload };
     },
   },
 };
