@@ -6,26 +6,22 @@ import { Prompt } from 'react-router';
 import { routerRedux } from 'dva/router';
 import Grid from '@/components/Grid';
 import BasicHeader from '@/components/BasicHeader';
-import BackTop from '@/components/BackTop';
 import TinyMce from '@/components/TinyMce';
 import ImgUpload from '@/components/ImgUpload';
 import LinkList from './LinkList';
 import styles from './styles.less';
 
 class EditCategory extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      noSaveTip: false,
-      alertMsg: [],
-      isSave: false,
-      linkList: [],
-      location: '',
-      mediumUrl: [],
-      sortType: 'manual',
-      status: false,
-    };
-  }
+  state = {
+    noSaveTip: false,
+    alertMsg: [],
+    isSave: false,
+    linkList: [],
+    location: '',
+    mediumUrl: [],
+    sortType: 'manual',
+    status: false,
+  };
 
   formRef = React.createRef();
 
@@ -138,7 +134,6 @@ class EditCategory extends Component {
     });
   };
 
-  // 保存
   handleSubmit = async (values) => {
     const { dispatch, cateDetail } = this.props;
     const { linkList, sortType, mediumUrl } = this.state;
@@ -223,23 +218,19 @@ class EditCategory extends Component {
     return 0;
   };
 
-  // 判断是否为点击保存产生的页面跳转
   setSaveTrue = () => {
     this.setState({
       isSave: true,
     });
   };
 
-  // react-router切换路由前的提示函数
   handlePrompt = (location) => {
     const { isSave } = this.state;
     const { getFieldsValue } = this.formRef.current;
     const isDiff = JSON.stringify(getFieldsValue()) !== sessionStorage.getItem('formData');
-    // 如果是保存按钮不中断
     if (isSave || location?.pathname === '/user/login') {
       return true;
     }
-    // 如果表单修改过中断跳转，弹出modal
     if (isDiff) {
       this.setState({
         noSaveTip: true,
@@ -250,7 +241,6 @@ class EditCategory extends Component {
     return true;
   };
 
-  // 未保存的modal事件
   noSaveModalCancel = () => {
     this.setState({
       noSaveTip: false,
@@ -335,15 +325,15 @@ class EditCategory extends Component {
               });
             }}
           >
-            <BackTop title={'商品分类'} href="/products/categoryList" backTip={this.back} />
-            <BasicHeader title={isAdd ? '添加分类' : '编辑分类'} />
+            <BasicHeader
+              parent="商品分类"
+              title={isAdd ? '/添加分类' : '/编辑分类'}
+              parentUrl="/products/categoryList"
+            />
             <Row gutter={20}>
               <Col span={24}>
                 <Card loading={totalLoading} className={styles.cardbox}>
-                  <div className={styles.title}>
-                    {/* <span style={{ color: '#f5222d' }}>* </span> */}
-                    分类名称
-                  </div>
+                  <div className={styles.title}>分类名称</div>
                   <Form.Item
                     name="name"
                     rules={[
@@ -387,7 +377,6 @@ class EditCategory extends Component {
                       getLinkData={this.getLinkData}
                       delLink={this.delLink}
                       sortLink={this.sortLink}
-                      moveItem={this.moveItem}
                       batchDelLink={this.batchDelLink}
                       setTopLink={this.setTopLink}
                       sortType={sortType}

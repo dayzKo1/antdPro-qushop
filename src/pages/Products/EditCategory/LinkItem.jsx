@@ -9,7 +9,7 @@ const LinkItem = ({
   index,
   onChange,
   delLink,
-  moveItem,
+  // moveItem,
   type,
   sortType,
   select,
@@ -27,12 +27,12 @@ const LinkItem = ({
       if (dragIndex === hoverIndex) {
         return;
       }
-      moveItem(dragIndex, hoverIndex, onChange);
+      // moveItem(dragIndex, hoverIndex, onChange);
       const child = item;
       child.index = hoverIndex;
     },
   });
-  const [{ isDragging }, preview] = useDrag({
+  const [{ isDragging }] = useDrag({
     item: { type: 'card', index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -72,7 +72,7 @@ const LinkItem = ({
     </div>
   );
   return (
-    <div ref={preview} style={{ cursor: 'pointer' }}>
+    <div style={{ cursor: 'pointer' }}>
       <div
         ref={ref}
         style={{

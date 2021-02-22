@@ -6,7 +6,6 @@ import { routerRedux } from 'dva/router';
 import currencyFormatter from 'currency-formatter';
 import Grid from '@/components/Grid';
 import BasicHeader from '@/components/BasicHeader';
-import BackTop from '@/components/BackTop';
 import TableFooter from '@/components/TableFooter';
 import defaultImg from '@/assets/defaultImg.png';
 import SelectAddress from './SelectAddress';
@@ -36,7 +35,6 @@ class CustomerDetail extends Component {
     this.initData(id);
   }
 
-  // 分页
   changePage = (page, prePage) => {
     const { dispatch } = this.props;
     const { id } = this.props.match.params;
@@ -53,7 +51,6 @@ class CustomerDetail extends Component {
     });
   };
 
-  // 初始化数据
   initData = async (id) => {
     const { dispatch } = this.props;
     const res = await dispatch({
@@ -72,7 +69,6 @@ class CustomerDetail extends Component {
     });
   };
 
-  // 取到数据后选取默认地址展示;
   showDefAddress = (res) => {
     const addressBook = res.address_book;
     addressBook.forEach((item) => {
@@ -84,13 +80,11 @@ class CustomerDetail extends Component {
     });
   };
 
-  // 点击订单号跳转到订单页面
   jumpToOrder = (id) => {
     const { dispatch } = this.props;
     dispatch(routerRedux.push({ pathname: `/order/allOrder/${id}` }));
   };
 
-  // 计算订单商品总税收
   productsTax = (arr) => {
     let tax = 0;
     if (arr.length !== 0) {
@@ -107,8 +101,7 @@ class CustomerDetail extends Component {
     const { defaultAddress, currentPage } = this.state;
     return (
       <Grid>
-        <BackTop title="顾客列表" href="/customers" />
-        <BasicHeader title="顾客详情" />
+        <BasicHeader parent="顾客列表" title="/顾客详情" parentUrl="/customers" />
         <Row gutter={20}>
           <Col span={16}>
             <Card loading={loading || setLoading} className={styles.cardbox}>
