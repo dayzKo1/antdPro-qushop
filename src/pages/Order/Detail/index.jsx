@@ -231,6 +231,7 @@ class Detail extends Component {
           confirmLoading={loadingTrack}
           onOk={this.handleShip}
           onCancel={this.handleCancel}
+          okButtonProps={{ disabled: orderDetail && orderDetail.trackno_source === 'trackhub' }}
         >
           <Form ref={this.formRef} onFinish={this.handleShip}>
             <Form.Item name="trackno">
@@ -250,6 +251,7 @@ class Detail extends Component {
             type="primary"
             size="large"
             onClick={this.showModal}
+            disabled={orderDetail?.post_status === 'wc-cancelled'}
           >
             {orderDetail?.fulfillment_status === 'unfulfilled' ? '发货' : '修改发货'}
           </Button>
