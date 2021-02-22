@@ -69,6 +69,20 @@ export default [
                     authority: ['admin'],
                   },
                   {
+                    path: '/products/productsList/:id/edit',
+                    name: 'editProduct',
+                    component: './Products/EditProducts',
+                    hideInMenu: true,
+                    access: 'manage_products',
+                  },
+                  {
+                    path: '/products/ProductsList/add',
+                    name: 'addProduct',
+                    component: './Products/EditProducts',
+                    hideInMenu: true,
+                    access: 'manage_products',
+                  },
+                  {
                     path: '/products/categoryList/add',
                     name: 'addCategory',
                     component: './Products/EditCategory',

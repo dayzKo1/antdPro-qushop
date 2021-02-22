@@ -20,6 +20,8 @@ export default {
   'menu.CustomersEdit': '顾客详情',
   'menu.Products': '商品',
   'menu.Products.ProductsList': '商品列表',
+  'menu.Products.editProduct': '编辑商品',
+  'menu.Products.addProduct': '添加商品',
   'menu.Products.CategoryList': '分类列表',
   'menu.Products.addCategory': '添加分类',
   'menu.Products.editCategory': '编辑分类',

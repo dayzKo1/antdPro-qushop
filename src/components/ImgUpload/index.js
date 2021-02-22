@@ -24,7 +24,7 @@ class ImgUpload extends Component {
   };
 
   componentDidMount() {
-    const { initValue, isAdd, mediumUrl } = this.props;
+    const { initValue, isAdd, mediumUrl, type } = this.props;
     if (initValue && !isAdd) {
       this.setState({
         fileList: [
@@ -38,6 +38,24 @@ class ImgUpload extends Component {
       });
     } else if (isAdd && mediumUrl !== null) {
       this.setState({ fileList: mediumUrl });
+    }
+    let list = [];
+    if (type === 'product' && !isAdd && initValue && initValue.length > 0) {
+      list = initValue.map((item, index) => ({
+        ID: item.ID,
+        uid: `-${index + 1}`,
+        name: 'image.png',
+        status: 'done',
+        url: item.medium,
+        // response: [item],
+      }));
+      this.setState({
+        fileList: list,
+      });
+    } else {
+      this.setState({
+        fileList: [],
+      });
     }
   }
 
@@ -97,6 +115,7 @@ class ImgUpload extends Component {
 
   render() {
     const { previewVisible, previewImage, fileList, beforeReturn } = this.state;
+    const { type } = this.props;
     const headers = { Authorization: localStorage.getItem('token') };
     const uploadButton = (
       <div
@@ -125,7 +144,7 @@ class ImgUpload extends Component {
             showUploadList={beforeReturn}
             accept=".jpeg,.jpg,.png,.gif"
           >
-            {fileList.length > 0 ? null : uploadButton}
+            {type === 'category' && fileList.length !== 0 ? null : uploadButton}
           </Upload>
           <Modal
             visible={previewVisible}

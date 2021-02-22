@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Card, Table, Row, Col, Tag } from 'antd';
-import { Link } from 'umi';
+import { Card, Table, Row, Col, Tag, Button } from 'antd';
 import { connect } from 'dva';
 import defaultImg from '@/assets/defaultImg.png';
-// import { PageContainer } from '@ant-design/pro-layout';
+import { history } from 'umi';
 import BasicHeader from '@/components/BasicHeader';
 import TableFooter from '@/components/TableFooter';
 import BatchSelect from './BatchSelect';
 import FilterProduct from './FilterProduct';
 import style from './style.less';
+import styles from '@/global.less';
 
 @connect(({ product, tag, categories, loading }) => ({
   productsList: product.productsList,
@@ -119,6 +119,18 @@ class ProducstList extends Component {
     });
   };
 
+  // 点击行
+  clickRow = (r) => {
+    if (!window.getSelection().toString()) {
+      history.push(`/products/productsList/${r.ID}/edit`);
+    }
+  };
+
+  // 添加商品
+  addProduct = () => {
+    history.push(`/products/ProductsList/add`);
+  };
+
   render() {
     const columns = [
       {
@@ -174,10 +186,10 @@ class ProducstList extends Component {
         // dataIndex: 'address',
         width: '15%',
         align: 'right',
-        render: () => (
-          <Link to="./" disabled>
+        render: (_, v) => (
+          <a style={{ padding: '10px 0 10px 10px' }} onClick={() => this.clickRow(v)}>
             编辑
-          </Link>
+          </a>
         ),
       },
     ];
@@ -193,7 +205,17 @@ class ProducstList extends Component {
     return (
       // <PageContainer>
       <>
-        <BasicHeader title="商品列表" />
+        <BasicHeader title="商品列表">
+          <Button
+            style={{ float: 'right' }}
+            loading={productLoading}
+            type="primary"
+            size="large"
+            onClick={this.addProduct}
+          >
+            添加商品
+          </Button>
+        </BasicHeader>
         <Card className={style.cardbox} style={{ minWidth: '900px' }}>
           <FilterProduct />
           <BatchSelect
@@ -205,11 +227,17 @@ class ProducstList extends Component {
           />
           <Table
             loading={productLoading}
+            className={styles.tables}
             pagination={false}
             rowSelection={rowSelection}
             rowKey={(r) => r.ID}
             columns={columns}
             dataSource={productsList.data}
+            onRow={(record) => {
+              return {
+                onClick: () => this.clickRow(record), // 点击行
+              };
+            }}
           />
           <TableFooter
             total={productsList.meta && productsList.meta.total}

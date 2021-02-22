@@ -6,3 +6,10 @@ export async function tagList(params) {
     params,
   });
 }
+
+export async function addProTags(data) {
+  return request('/api/admin/tags', {
+    method: 'POST',
+    data,
+  });
+}
