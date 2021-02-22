@@ -249,16 +249,15 @@ class ProductDetail extends Component {
 
   noSaveModalOk = () => {
     const { location } = this.state;
-    const { dispatch } = this.props;
     this.setState({
       noSaveTip: false,
     });
-    dispatch(history.push({ pathname: location.pathname }));
+    history.push({ pathname: location.pathname });
   };
 
   back = () => {
-    const { dispatch } = this.props;
-    dispatch(history.push({ pathname: '/products/categoryList' }));
+    // const { dispatch } = this.props;
+    history.push({ pathname: '/products/productsList' });
   };
 
   render() {
@@ -513,7 +512,9 @@ class ProductDetail extends Component {
               >
                 保存
               </Button>
-              <Button loading={loading || updateLoading || addLoading}>取消</Button>
+              <Button loading={loading || updateLoading || addLoading} onClick={this.back}>
+                取消
+              </Button>
             </Form.Item>
           </div>
         </Form>
