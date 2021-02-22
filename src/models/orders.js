@@ -66,8 +66,10 @@ export default {
       const res = yield call(ordersDetail, payload);
       yield put({ type: 'saveOrderDetail', payload: res });
     },
-    *updateTrackno({ payload, id }, { call }) {
-      yield call(orderStrack, payload, id);
+    *updateTrackno({ payload, id }, { call, put }) {
+      const res = yield call(orderStrack, payload, id);
+      yield put({ type: 'saveOrderDetail', payload: res });
+      return res;
     },
   },
   reducers: {

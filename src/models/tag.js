@@ -1,10 +1,11 @@
-import { tagList } from '@/services/tag';
+import { tagList, addProTags } from '@/services/tag';
 
 export default {
   namespace: 'tag',
   state: {
     tagsList: {},
     proTags: [],
+    addTags: [],
     page: 0,
     searchTag: '',
   },
@@ -47,6 +48,14 @@ export default {
       }
       return proTags;
     },
+    *add({ payload }, { call, put }) {
+      const tags = [];
+      for (let i = 0; i < payload.length; i += 1) {
+        const res = yield call(addProTags, { name: payload[i] });
+        tags.push(res);
+      }
+      yield put({ type: 'saveAddTags', payload: tags.map((item) => item.term_taxonomy_id) });
+    },
   },
   reducers: {
     saveTagsList(state, { payload }) {
@@ -61,6 +70,9 @@ export default {
     },
     saveSearchTag(state, { payload }) {
       return { ...state, searchTag: payload };
+    },
+    saveAddTags(state, { payload }) {
+      return { ...state, addTags: payload };
     },
   },
 };

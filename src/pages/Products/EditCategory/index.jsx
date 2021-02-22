@@ -366,6 +366,7 @@ class EditCategory extends Component {
                       isAdd={isAdd}
                       changeMedium={this.changeMedium}
                       mediumUrl={mediumUrl}
+                      type="category"
                     />
                   </Form.Item>
                   <div className={styles.title} style={{ marginTop: 20 }}>

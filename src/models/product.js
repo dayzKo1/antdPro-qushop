@@ -1,4 +1,4 @@
-import { productList, productDetail } from '@/services/products';
+import { productList, productDetail, addProduct, updateProduct } from '@/services/products';
 import { batch } from '@/services/api';
 
 export default {
@@ -58,6 +58,22 @@ export default {
     *fetchProductDetail({ payload }, { call, put }) {
       const res = yield call(productDetail, payload);
       yield put({ type: 'saveProductDetail', payload: res });
+      return res;
+    },
+    *add({ payload }, { call, put }) {
+      const res = yield call(addProduct, payload);
+      yield put({ type: 'saveProductDetail', payload: res });
+      return res;
+    },
+    *update({ payload, id }, { call, put }) {
+      const res = yield call(updateProduct, payload, id, 'PUT');
+      yield put({
+        type: 'fetchProductsDetail',
+        payload: {
+          id: res.ID,
+        },
+      });
+      return res;
     },
   },
   reducers: {
@@ -69,6 +85,9 @@ export default {
     },
     saveProductDetail(state, { payload }) {
       return { ...state, productDetail: payload };
+    },
+    clearDetail(state) {
+      return { ...state, productDetail: {} };
     },
   },
 };
