@@ -22,10 +22,11 @@ import currencyFormatter from 'currency-formatter';
 import style from '../styles.less';
 import styles from '@/global.less';
 
-@connect(({ orders, loading }) => ({
+@connect(({ orders, setting, loading }) => ({
   orderDetail: orders.orderDetail,
   loading: loading.effects['orders/fetchOrderDetail'],
   loadingTrack: loading.effects['orders/updateTrackno'],
+  settingBase: setting.settingBase,
 }))
 class Detail extends Component {
   formRef = React.createRef();
@@ -73,10 +74,10 @@ class Detail extends Component {
 
   // 转换订单时间
   changeTime = (times) => {
-    // const { settingBase } = this.props;
-    const settingBase = {
-      timezone_string: 'Asia/Shanghai',
-    };
+    const { settingBase } = this.props;
+    // const settingBase = {
+    //   timezone_string: 'Asia/Shanghai',
+    // };
     const t =
       times &&
       momentTimezone(times)

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Form, Select, Input, Button, DatePicker } from 'antd';
 import { connect } from 'dva';
 // import moment from 'moment';
+import momentTimezone from 'moment-timezone';
 // import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import styles from './styles.less';
@@ -10,9 +11,10 @@ const { Option } = Select;
 const { Search } = Input;
 const { RangePicker } = DatePicker;
 
-@connect(({ orders, loading }) => ({
+@connect(({ orders, setting, loading }) => ({
   query: orders.query,
   loading: loading.effects['orders/fetch'],
+  settingBase: setting.settingBase,
 }))
 class FilterOrder extends Component {
   formRef = React.createRef();
@@ -61,8 +63,22 @@ class FilterOrder extends Component {
 
   // 时间筛选
   changeDate = async (_, dateStrings) => {
-    const date =
-      dateStrings[0] && dateStrings[1] ? `${dateStrings[0]},${dateStrings[1]}` : undefined;
+    const { settingBase } = this.props;
+    const startTime =
+      (dateStrings[0] !== '' &&
+        momentTimezone.tz(dateStrings[0].trim(), settingBase.timezone_string).utc().format()) ||
+      undefined;
+
+    const endTime =
+      (dateStrings[1] !== '' &&
+        momentTimezone
+          .tz(dateStrings[1].trim(), settingBase.timezone_string)
+          .add(1, 'days')
+          .utc()
+          .format()) ||
+      undefined;
+
+    const date = startTime && endTime ? `${startTime},${endTime}` : undefined;
     const { dispatch, query, clearBatchSelect } = this.props;
     await dispatch({
       type: 'orders/fetch',

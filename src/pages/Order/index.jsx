@@ -11,10 +11,11 @@ import momentTimezone from 'moment-timezone';
 import style from './styles.less';
 import styles from '@/global.less';
 
-@connect(({ orders, loading }) => ({
+@connect(({ orders, setting, loading }) => ({
   ordersList: orders.ordersList,
   query: orders.query,
   loading: loading.effects['orders/fetch'],
+  settingBase: setting.settingBase,
 }))
 class Order extends Component {
   state = {
@@ -118,10 +119,10 @@ class Order extends Component {
 
   // 转换订单时间
   changeTime = (times) => {
-    // const { settingBase } = this.props;
-    const settingBase = {
-      timezone_string: 'Asia/Shanghai',
-    };
+    const { settingBase } = this.props;
+    // const settingBase = {
+    //   timezone_string: 'Asia/Shanghai',
+    // };
     const t =
       times &&
       momentTimezone(times)
