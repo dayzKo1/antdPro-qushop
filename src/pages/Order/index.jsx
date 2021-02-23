@@ -189,7 +189,7 @@ class Order extends Component {
         align: 'right',
         render: (_, v) => (
           <a style={{ padding: '10px 0 10px 10px' }} onClick={() => this.clickRow(v)}>
-            编辑
+            查看
           </a>
         ),
       },
