@@ -159,18 +159,10 @@ class ProductDetail extends Component {
             gallery: imgId,
           },
         });
-        // this.setState({ productIndex: 0 });
-        // await dispatch({
-        //   type: 'product/fetch',
-        //   payload: {
-        //     page: 1,
-        //   },
-        //   save: true,
-        // });
         await this.setSaveTrue();
         message.success('保存成功');
         history.push(`/products/productsList/${res.ID}/edit`);
-        this.initProDetail();
+        await this.initProDetail();
       } else {
         await dispatch({
           type: 'product/update',
@@ -183,9 +175,9 @@ class ProductDetail extends Component {
           },
           id,
         });
-        await this.setSaveTrue();
+        await this.initProDetail();
         message.success('保存成功');
-        this.initProDetail();
+        await this.setSaveTrue();
       }
     } catch (error) {
       const { errors } = error;
@@ -264,7 +256,7 @@ class ProductDetail extends Component {
     const { productDetail, loading, updateLoading, addLoading, categoryList, proTags } = this.props;
     const { postStatus, mediumUrl, alertMsg, noSaveTip } = this.state;
     const { id } = this.props.match.params;
-    const { getFieldsValue, isFieldsTouched } = this.formRef.current || {};
+    const { getFieldsValue } = this.formRef.current || {};
     const isAdd = this.props.location.pathname.includes('add');
     const isDiff =
       getFieldsValue && JSON.stringify(getFieldsValue(true)) !== sessionStorage.getItem('formData');
@@ -507,7 +499,7 @@ class ProductDetail extends Component {
                 style={{ marginRight: '15px' }}
                 type="primary"
                 htmlType="submit"
-                disabled={!(isFieldsTouched && isFieldsTouched() && isDiff)}
+                disabled={!isDiff}
                 // onClick={this.handleSubmit}
               >
                 保存

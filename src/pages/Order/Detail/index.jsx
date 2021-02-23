@@ -167,16 +167,15 @@ class Detail extends Component {
       {
         title: '商品',
         width: '10%',
-        dataIndex: 'feature_image.medium',
-        render: (v) => (
+        dataIndex: 'feature_image',
+        render: (_, r) => (
           <div
             style={{
               height: 50,
               width: 50,
-              margin: 0,
               border: '1px solid #dadde4',
               backgroundSize: '100% 100%',
-              backgroundImage: `url(${v || defaultImg})`,
+              backgroundImage: `url(${(r.feature_image && r.feature_image.medium) || defaultImg})`,
             }}
           />
         ),
