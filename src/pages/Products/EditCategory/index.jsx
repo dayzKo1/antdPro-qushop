@@ -42,7 +42,7 @@ class EditCategory extends Component {
         sortType: res.sort_type || 'manual',
         mediumUrl: res.thumbnail ? [res.thumbnail] : [],
       });
-      setFieldsValue({ name: res?.name, description: res?.description });
+      setFieldsValue({ name: res?.name, description: res?.description, thumbnail: res?.thumbnail });
     } else {
       await dispatch({ type: 'categories/clearDetail' });
       setFieldsValue({ name: undefined, description: undefined });
@@ -338,7 +338,7 @@ class EditCategory extends Component {
                     name="name"
                     rules={[
                       { required: true, message: '请输入分类标题，且不多于128个字符' },
-                      { max: 128 },
+                      { max: 128, message: '请输入分类标题，且不多于128个字符' },
                     ]}
                     initialValue={cateDetail?.term && cateDetail?.term?.name}
                   >
