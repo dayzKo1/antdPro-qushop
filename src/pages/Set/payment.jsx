@@ -27,18 +27,27 @@ class Payment extends Component {
     console.log('values', values);
     const item = (savePayment?.data?.length && savePayment?.data[0]) || {};
     const { dispatch } = this.props;
+    const { setFieldsValue } = this.formRef.current || {};
     try {
-      await dispatch({
+      const res = await dispatch({
         type: 'setting/updateQueryPayment',
         payload: {
           ...item,
           api_password: values.apiPassword,
           api_signature: values.apiSignature,
           api_username: values.apiUsername,
+          sandbox: values.paypalSandbox,
           ...values[item?.code],
         },
         id: item?.id,
       });
+      setFieldsValue({
+        apiPassword: res.api_password,
+        apiSignature: res.api_signature,
+        apiUsername: res.api_username,
+        paypalSandbox: res.sandbox,
+      });
+      console.log('res', res);
       message.success('绑定成功');
     } catch (e) {
       if (e.response && e.response.status === 422) {
@@ -78,7 +87,7 @@ class Payment extends Component {
       textDecoration: 'none',
     };
     const item = (savePayment?.data?.length && savePayment?.data[0]) || {};
-    console.log('this.formRef.current', this.formRef.current, isFieldsTouched && isFieldsTouched());
+    console.log('this.formRef.current', item, item?.api_username?.substring(0, 5));
     return (
       <div>
         <h4 style={{ fontSize: 17, fontWeight: 600 }}>支付配置</h4>
@@ -106,13 +115,20 @@ class Payment extends Component {
             </div>
             <div className={styles.box} style={{ padding: 12 }}>
               <div>
-                <Switch
+                {/* <Switch
                   onChange={(e) => {
                     this.toggle(e, item);
                   }}
                   defaultChecked={item?.enabled === 'yes'}
                   loading={updateLoading}
-                />
+                /> */}
+                <Form.Item
+                  name="paypalSandbox"
+                  initialValue={!!item.sandbox}
+                  valuePropName="checked"
+                >
+                  <Switch onChange={this.switch} />
+                </Form.Item>
                 <span style={{ padding: '10px', fontSize: '18px', fontWeight: '600' }}>
                   Sandbox
                 </span>
@@ -177,7 +193,7 @@ class Payment extends Component {
                 </div>
                 <div style={{ flex: 1, padding: 12, paddingLeft: 24 }}>
                   <h3 style={{ fontSize: 14, marginTop: 48 }}>个人账号快速绑定指引 </h3>
-                  {getFieldValue && getFieldValue('paypal.sandbox') ? (
+                  {getFieldValue && getFieldValue('paypalSandbox') ? (
                     <a href={item?.ppec_sandbox} style={aStyle}>
                       设置或关联已存在的paypal沙盒账户
                     </a>

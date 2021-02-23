@@ -73,7 +73,7 @@ const Searchs = (props) => {
   };
 
   return (
-    <div style={{ margin: '10px 0 30px' }}>
+    <div>
       <Form form={form} onFinish={handleSubmit}>
         <Row gutter={{ xxl: 16, xl: 8, lg: 8 }} style={{ display: 'flex' }}>
           <Col>

@@ -33,6 +33,7 @@ class Logistics extends React.Component {
   }
 
   handleChange = async (e, type, id) => {
+    console.log('fdffsfs', e);
     const { editData } = this.state;
     const values = (editData.length && editData[id]) || {};
     values[type] = e;
@@ -95,6 +96,16 @@ class Logistics extends React.Component {
     });
   };
 
+  handleNum = (val) => {
+    if (val === '' || val == null) {
+      return false;
+    }
+    if (!Number.isNaN(val) && val > 0) {
+      return true;
+    }
+    return false;
+  };
+
   render() {
     const { data, editData } = this.state;
     const { symbol } = this.props;
@@ -141,16 +152,31 @@ class Logistics extends React.Component {
                   {text}
                 </span>
               ) : (
-                <Input
-                  type="number"
-                  placeholder="请输入运费"
-                  style={{ width: ' 60%' }}
-                  addonBefore={symbol || '$'}
-                  value={(editData.length && editData[r?.key]?.code) || undefined}
-                  onChange={(e) => {
-                    this.handleChange(e.target.value, 'code', r?.key);
-                  }}
-                />
+                <div>
+                  <Input
+                    placeholder="请输入运费"
+                    style={{ width: ' 60%' }}
+                    addonBefore={symbol || '$'}
+                    value={(editData.length && editData[r?.key]?.code) || undefined}
+                    onChange={(e) => {
+                      this.handleChange(e.target.value, 'code', r?.key);
+                    }}
+                    showCount={true}
+                  />
+                  {!this.handleNum(editData[r?.key]?.code || 1) ? (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: '50%',
+                        fontSize: '12px',
+                        color: 'red',
+                        transform: 'translateX(-50%)',
+                      }}
+                    >
+                      请输入正数
+                    </div>
+                  ) : null}
+                </div>
               )}
             </>
           );
@@ -178,7 +204,13 @@ class Logistics extends React.Component {
                 <Button
                   type="link"
                   style={{ padding: '0 5px' }}
-                  disabled={editData.length && !(editData[r?.key]?.code && editData[r?.key]?.name)}
+                  disabled={
+                    !(
+                      editData[r?.key]?.code &&
+                      editData[r?.key]?.name &&
+                      this.handleNum(editData[r?.key]?.code || 1)
+                    )
+                  }
                   onClick={() => {
                     this.handleSave(r?.key);
                   }}

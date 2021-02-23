@@ -27,6 +27,8 @@ class LinkProduct extends Component {
       selectedRowKeys: [],
       currentPage: 1,
       fetching: false,
+      selectedAll: [],
+      selectedBoss: [],
     };
   }
 
@@ -62,8 +64,11 @@ class LinkProduct extends Component {
   };
 
   select = (selectedRowKeys) => {
+    console.log(selectedRowKeys);
+    const { selectedAll } = this.state;
     this.setState({
       selectedRowKeys,
+      selectedBoss: [...selectedRowKeys, ...selectedAll],
     });
   };
 
@@ -75,9 +80,9 @@ class LinkProduct extends Component {
   };
 
   // 筛选事件
-  changeCate = (category) => {
+  changeCate = async (category) => {
     const { dispatch, query } = this.props;
-    dispatch({
+    const res = await dispatch({
       type: 'product/fetch',
       payload: {
         ...query,
@@ -88,11 +93,12 @@ class LinkProduct extends Component {
       save: true,
     });
     this.backPageOne();
+    this.handleGetChecked(res);
   };
 
   changeTag = async (tag) => {
     const { dispatch, query } = this.props;
-    await dispatch({
+    const res = await dispatch({
       type: 'product/fetch',
       payload: {
         ...query,
@@ -109,11 +115,12 @@ class LinkProduct extends Component {
       await dispatch({ type: 'tag/fetchProTags' });
     }
     this.backPageOne();
+    this.handleGetChecked(res);
   };
 
-  search = (search) => {
+  search = async (search) => {
     const { dispatch, query } = this.props;
-    dispatch({
+    const res = await dispatch({
       type: 'product/fetch',
       payload: {
         ...query,
@@ -124,15 +131,16 @@ class LinkProduct extends Component {
       save: true,
     });
     this.backPageOne();
+    this.handleGetChecked(res);
   };
 
   // 分页
-  changePage = (page, prePage) => {
+  changePage = async (page, prePage) => {
     const { dispatch, query } = this.props;
     this.setState({
       currentPage: page,
     });
-    dispatch({
+    const res = await dispatch({
       type: 'product/fetch',
       payload: {
         ...query,
@@ -141,22 +149,24 @@ class LinkProduct extends Component {
       },
       save: true,
     });
+    this.handleGetChecked(res);
   };
 
   save = () => {
     const { getLinkData, linkList = [], onChange, decoration, type, keyname } = this.props;
-    const { selectedRowKeys } = this.state;
-    if (decoration === 'decoration' && linkList.length + selectedRowKeys.length > 15) {
-      message.warning(
-        `添加的商品数量最多15个，目前已超出${linkList.length + selectedRowKeys.length - 15}个`,
-      );
+    const { selectedRowKeys, selectedAll } = this.state;
+    const arr = [...selectedAll, ...selectedRowKeys];
+    if (decoration === 'decoration' && linkList.length + arr.length > 15) {
+      message.warning(`添加的商品数量最多15个，目前已超出${linkList.length + arr.length - 15}个`);
       return;
     }
-    if (selectedRowKeys.length > 0) {
-      getLinkData(selectedRowKeys, onChange, type, keyname);
+    if (arr.length > 0) {
+      getLinkData(arr, onChange, type, keyname);
     }
     this.setState({
       selectedRowKeys: [],
+      selectedAll: [],
+      selectedBoss: [],
     });
     this.handleCancel();
   };
@@ -212,8 +222,35 @@ class LinkProduct extends Component {
     }
   };
 
+  handleGetChecked = (res, val) => {
+    const { selectedAll, selectedRowKeys } = this.state;
+    const newCheckedAll = [];
+    const newCheckedKeys = [];
+    let arr = [...selectedAll, ...selectedRowKeys];
+    if (val) {
+      arr = val;
+    }
+    const checkedId = res?.data?.map((element) => element.ID) || [];
+    arr.forEach((element) => {
+      let key = true;
+      checkedId.forEach((item) => {
+        if (item === element) {
+          newCheckedKeys.push(element);
+          key = false;
+        }
+      });
+      if (key) {
+        newCheckedAll.push(element);
+      }
+    });
+    this.setState({
+      selectedAll: newCheckedAll,
+      selectedRowKeys: newCheckedKeys,
+    });
+  };
+
   render() {
-    const { modalVisible, selectedRowKeys, currentPage, fetching } = this.state;
+    const { modalVisible, selectedRowKeys, currentPage, fetching, selectedBoss } = this.state;
     const {
       productsList,
       categoryList = [],
@@ -446,7 +483,7 @@ class LinkProduct extends Component {
           <div className={styles.footer}>
             <span>
               总共{productsList?.meta && productsList?.meta.total}个商品，已选择
-              {selectedRowKeys.length}个
+              {selectedBoss.length}个
             </span>
             <Button size="large" style={{ marginRight: 20 }} onClick={this.handleCancel}>
               取消

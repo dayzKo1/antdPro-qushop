@@ -25,13 +25,16 @@ const Setting = {
     *queryPaymentData({ payload }, { call, put }) {
       const res = yield call(queryPayment, payload);
       yield put({ type: 'savePaymentData', payload: res });
+      return res;
     },
 
     *updateQueryPayment({ payload, id }, { call, put }) {
-      yield call(updateQueryPayment, payload, id);
+      const res = yield call(updateQueryPayment, payload, id);
       yield put({
         type: 'queryPaymentData',
       });
+      return res;
+      // ?.data[0]||{}
     },
   },
   reducers: {

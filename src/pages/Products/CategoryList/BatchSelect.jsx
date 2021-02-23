@@ -39,7 +39,7 @@ const BatchSelect = (props) => {
         position: 'absolute',
         zIndex: 2,
         left: 71,
-        top: 95,
+        top: 80,
       }}
     >
       <div className={batchSel ? styles.batchSelect : styles.batchSelectDefault}>
