@@ -159,18 +159,10 @@ class ProductDetail extends Component {
             gallery: imgId,
           },
         });
-        // this.setState({ productIndex: 0 });
-        // await dispatch({
-        //   type: 'product/fetch',
-        //   payload: {
-        //     page: 1,
-        //   },
-        //   save: true,
-        // });
         await this.setSaveTrue();
         message.success('保存成功');
         history.push(`/products/productsList/${res.ID}/edit`);
-        this.initProDetail();
+        await this.initProDetail();
       } else {
         await dispatch({
           type: 'product/update',
@@ -183,9 +175,9 @@ class ProductDetail extends Component {
           },
           id,
         });
-        await this.setSaveTrue();
+        await this.initProDetail();
         message.success('保存成功');
-        this.initProDetail();
+        await this.setSaveTrue();
       }
     } catch (error) {
       const { errors } = error;

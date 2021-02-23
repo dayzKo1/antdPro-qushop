@@ -22,10 +22,11 @@ import currencyFormatter from 'currency-formatter';
 import style from '../styles.less';
 import styles from '@/global.less';
 
-@connect(({ orders, loading }) => ({
+@connect(({ orders, setting, loading }) => ({
   orderDetail: orders.orderDetail,
   loading: loading.effects['orders/fetchOrderDetail'],
   loadingTrack: loading.effects['orders/updateTrackno'],
+  settingBase: setting.settingBase,
 }))
 class Detail extends Component {
   formRef = React.createRef();
@@ -73,10 +74,10 @@ class Detail extends Component {
 
   // 转换订单时间
   changeTime = (times) => {
-    // const { settingBase } = this.props;
-    const settingBase = {
-      timezone_string: 'Asia/Shanghai',
-    };
+    const { settingBase } = this.props;
+    // const settingBase = {
+    //   timezone_string: 'Asia/Shanghai',
+    // };
     const t =
       times &&
       momentTimezone(times)
@@ -167,16 +168,15 @@ class Detail extends Component {
       {
         title: '商品',
         width: '10%',
-        dataIndex: 'feature_image.medium',
-        render: (v) => (
+        dataIndex: 'feature_image',
+        render: (_, r) => (
           <div
             style={{
               height: 50,
               width: 50,
-              margin: 0,
               border: '1px solid #dadde4',
               backgroundSize: '100% 100%',
-              backgroundImage: `url(${v || defaultImg})`,
+              backgroundImage: `url(${(r.feature_image && r.feature_image.medium) || defaultImg})`,
             }}
           />
         ),
