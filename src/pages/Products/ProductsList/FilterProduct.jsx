@@ -41,7 +41,7 @@ class FilterProduct extends Component {
       type: 'product/fetch',
       payload: {
         ...query,
-        'filter[category]': value,
+        'filter[category_id]': value,
         page: 1,
       },
       save: true,
@@ -58,7 +58,7 @@ class FilterProduct extends Component {
       type: 'product/fetch',
       payload: {
         ...query,
-        'filter[tag]': value,
+        'filter[tag_id]': value,
         page: 1,
       },
       save: true,
