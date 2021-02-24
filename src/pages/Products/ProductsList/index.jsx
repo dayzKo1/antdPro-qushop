@@ -28,7 +28,13 @@ class ProducstList extends Component {
   async componentDidMount() {
     const { dispatch } = this.props;
     const query = JSON.parse(sessionStorage.getItem('proQuery')) || {};
-    await dispatch({
+    dispatch({
+      type: 'categories/queryCategories',
+      payload: {
+        sort: 'name',
+      },
+    });
+    dispatch({
       type: 'product/fetch',
       payload: {
         page: 1,
@@ -36,16 +42,10 @@ class ProducstList extends Component {
       },
       save: true,
     });
-    await dispatch({
+    dispatch({
       type: 'tag/fetch',
       payload: {
         page: 1,
-        sort: 'name',
-      },
-    });
-    await dispatch({
-      type: 'categories/queryCategories',
-      payload: {
         sort: 'name',
       },
     });
