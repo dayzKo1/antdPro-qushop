@@ -42,10 +42,14 @@ class EditCategory extends Component {
         sortType: res.sort_type || 'manual',
         mediumUrl: res.thumbnail ? [res.thumbnail] : [],
       });
-      setFieldsValue({ name: res?.name, description: res?.description, thumbnail: res?.thumbnail });
+      setFieldsValue({
+        name: res?.name,
+        description: res?.description,
+        thumbnail: res?.thumbnail?.ID,
+      });
     } else {
       await dispatch({ type: 'categories/clearDetail' });
-      setFieldsValue({ name: undefined, description: undefined });
+      setFieldsValue({ name: undefined, description: undefined, thumbnail: undefined });
     }
     window.addEventListener('beforeunload', this.beforeunload);
     sessionStorage.setItem('formData', JSON.stringify(getFieldsValue()));

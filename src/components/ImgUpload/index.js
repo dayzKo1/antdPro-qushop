@@ -52,7 +52,7 @@ class ImgUpload extends Component {
       this.setState({
         fileList: list,
       });
-    } else {
+    } else if (type === 'product') {
       this.setState({
         fileList: [],
       });

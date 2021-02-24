@@ -70,7 +70,9 @@ class TinyMce extends React.Component {
                 })
                 .catch((error) => {
                   const { response } = error;
-                  message.error(response && response.data && response.data.message);
+                  message.error(
+                    (response && response.data && response.data.message) || '图片尺寸过大',
+                  );
                   succFun('');
                 });
             } else {
