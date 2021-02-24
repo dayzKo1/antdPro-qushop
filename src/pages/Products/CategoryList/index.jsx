@@ -14,8 +14,8 @@ const CategoryList = (props) => {
   const [batchSel, setBatchSel] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const { dispatch, categoriesData, loading, updateLoading, query } = props;
-  useEffect(() => {
-    dispatch({
+  useEffect(async () => {
+    await dispatch({
       type: 'categories/queryCategories',
     });
   }, []);

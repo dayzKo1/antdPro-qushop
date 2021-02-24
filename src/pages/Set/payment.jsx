@@ -17,7 +17,14 @@ class Payment extends Component {
 
   async componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'setting/queryPaymentData' });
+    const res = await dispatch({ type: 'setting/queryPaymentData' });
+    const item = (res?.data?.length && res?.data[0]) || {};
+    const { setFieldsValue } = this.formRef.current || {};
+    if (setFieldsValue) {
+      setFieldsValue({
+        paypalSandbox: item?.sandbox,
+      });
+    }
   }
 
   formRef = React.createRef();
@@ -114,7 +121,7 @@ class Payment extends Component {
               </span>
             </div>
             <div className={styles.box} style={{ padding: 12 }}>
-              <div>
+              <div style={{ display: 'flex' }}>
                 {/* <Switch
                   onChange={(e) => {
                     this.toggle(e, item);
@@ -129,7 +136,15 @@ class Payment extends Component {
                 >
                   <Switch onChange={this.switch} />
                 </Form.Item>
-                <span style={{ padding: '10px', fontSize: '18px', fontWeight: '600' }}>
+                <span
+                  style={{
+                    padding: '10px',
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    position: 'relative',
+                    top: '-8px',
+                  }}
+                >
                   Sandbox
                 </span>
               </div>

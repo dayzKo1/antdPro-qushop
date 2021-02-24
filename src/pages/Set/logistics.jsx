@@ -33,7 +33,6 @@ class Logistics extends React.Component {
   }
 
   handleChange = async (e, type, id) => {
-    console.log('fdffsfs', e);
     const { editData } = this.state;
     const values = (editData.length && editData[id]) || {};
     values[type] = e;
