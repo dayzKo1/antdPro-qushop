@@ -32,7 +32,7 @@ class Sales extends Component {
       temperature: { min: 0 },
       value: {
         type: 'linear',
-        tickInterval: 50,
+        // tickCount: 10,
       },
     };
 

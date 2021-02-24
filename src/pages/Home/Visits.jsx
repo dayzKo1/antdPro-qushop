@@ -33,8 +33,8 @@ class User extends Component {
       temperature: { min: 0 },
       value: {
         tickInterval: 1,
+        // tickCount: 5,
       },
-      tickCount: 5,
     };
 
     return (
