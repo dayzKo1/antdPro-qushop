@@ -49,10 +49,12 @@ class Logistics extends React.Component {
     const val = data;
     val.forEach((element, index) => {
       if (element?.key === id) {
+        console.log(values?.code);
+        const codes = Number(values?.code)?.toFixed(2);
         val[index] = {
           ...element,
           name: values.name,
-          code: values.code,
+          code: codes,
         };
       }
     });
