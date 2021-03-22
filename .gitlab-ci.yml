@@ -81,6 +81,7 @@ build-image:
     - master
     - develop
     - tags
+    - yanghui
 
 deploy-dev:
   image: bitnami/kubectl
@@ -116,7 +117,7 @@ deploy-dev:
       when: always
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: always
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "yanghui"'
       when: always
   environment:
     name: dev
