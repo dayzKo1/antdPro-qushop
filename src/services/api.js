@@ -80,7 +80,7 @@ export async function batch(data) {
 
 // 查询顾客
 export async function queryCustomers(params) {
-  return request('api/admin/customers', {
+  return request('api/admin/customers1', {
     method: 'GET',
     params,
   });

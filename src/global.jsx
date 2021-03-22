@@ -101,3 +101,43 @@ if (pwa) {
     });
   }
 }
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.log('--unhandledrejection122222', event, event?.reason?.isAxiosError);
+  notification.error({
+    message: `请求错误400`,
+    description: <div>请刷新页面重试！点此</div>,
+    duration: 0,
+  });
+  // 统一处理网络异常
+  // if (event?.reason?.isAxiosError) {
+  //   event.preventDefault();
+  //   const { response } = event.reason;
+  //   if (response && response.status) {
+  //     const errorText = codeMessage[response.status] || response.statusText;
+  //     const { status } = response;
+  //     if (response.status === 504) {
+  //       notification.error({
+  //         message: `请求错误 ${status}`,
+  //         description: (
+  //           <div>
+  //             {errorText}请刷新页面重试！点此
+  //             <a href={document.URL}>刷新页面</a>
+  //           </div>
+  //         ),
+  //         duration: 0,
+  //       });
+  //       return;
+  //     }
+  //     notification.error({
+  //       message: `请求错误 ${status}`,
+  //       description: errorText,
+  //     });
+  //   } else if (!response) {
+  //     notification.error({
+  //       description: '您的网络发生异常，无法连接服务器',
+  //       message: '网络异常',
+  //     });
+  //   }
+  // }
+});
