@@ -81,6 +81,7 @@ build-image:
     - master
     - develop
     - tags
+    - yanghui
 
 deploy-dev:
   image: bitnami/kubectl
