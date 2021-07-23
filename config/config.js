@@ -40,4 +40,5 @@ export default defineConfig({
     basePath: '/',
   },
   esbuild: {},
+  mfsu: { production: { output: '.mfsu-production' } },
 });

@@ -8,7 +8,7 @@
 export default {
   dev: {
     '/api/admin/': {
-      target: 'https://x136.wshopon.com/',
+      target: 'http://xuzhongyi2.frp.codefriend.top/',
       // target: 'http://zhoujiawei.frp.codefriend.top/',
       changeOrigin: true,
       pathRewrite: {
@@ -18,7 +18,7 @@ export default {
   },
   test: {
     '/api/': {
-      target: 'https://x136.wshopon.com/',
+      target: 'http://xuzhongyi2.frp.codefriend.top/',
       changeOrigin: true,
       pathRewrite: {
         '^': '',
@@ -27,7 +27,7 @@ export default {
   },
   pre: {
     '/api/': {
-      target: 'https://x136.wshopon.com/',
+      target: 'http://xuzhongyi2.frp.codefriend.top/',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

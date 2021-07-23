@@ -79,7 +79,7 @@
     "react-dom": "^17.0.0",
     "react-helmet-async": "^1.0.4",
     "tinymce": "5.5.1",
-    "umi": "^3.2.14",
+    "umi": "^3.5.0",
     "umi-request": "^1.0.8"
   },
   "devDependencies": {
@@ -101,7 +101,7 @@
     "@umijs/yorkie": "^2.0.3",
     "carlo": "^0.9.46",
     "chalk": "^4.0.0",
-    "cross-env": "^7.0.0",
+    "cross-env": "^7.0.3",
     "cross-port-killer": "^1.1.1",
     "detect-installer": "^1.0.1",
     "enzyme": "^3.11.0",
